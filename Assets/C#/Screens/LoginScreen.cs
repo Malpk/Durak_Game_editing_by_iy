@@ -24,6 +24,7 @@ public class LoginScreen : BaseScreen
     {
         SocketNetwork.loginSucsessed += LoginSuccessed;
         SocketNetwork.error += PrintMaessage;
+        SocketNetwork.error += LoginFailed;
 
         if (PlayerPrefs.HasKey("remember"))
         {
@@ -65,11 +66,11 @@ public class LoginScreen : BaseScreen
     {
         Message.text = resp.ToString();
 
-        ScreenReset();
-
         //Login failed => don't load player data from previous query
-        PlayerPrefs.SetInt("remember", -1);
+        PlayerPrefs.DeleteKey("remember");
         PlayerPrefs.Save();
+
+        ScreenReset();
     }
 
     private void ScreenReset()
