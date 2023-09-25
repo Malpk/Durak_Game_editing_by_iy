@@ -1,5 +1,6 @@
 using JSON_server;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Xml.Linq;
 using TMPro;
 using UnityEngine;
@@ -23,6 +24,13 @@ public class LoginScreen : BaseScreen
     {
         SocketNetwork.loginSucsessed += LoginSuccessed;
         SocketNetwork.error += PrintMaessage;
+
+        if (PlayerPrefs.HasKey("remember"))
+        {
+            m_name.text = PlayerPrefs.GetString("name");
+            m_password.text = PlayerPrefs.GetString("password");
+            m_remember.isOn = PlayerPrefs.GetInt("remember") > 0;
+        }
     }
 
     public override void SetActiveHandler(bool active)
@@ -50,7 +58,7 @@ public class LoginScreen : BaseScreen
         MainThreadDispatcher.RunOnMainThread(() =>
         {
             m_screenDirector.ActiveScreen(EScreens.MenuScreen);
-        });
+        });     
     }
 
     private void LoginFailed(string resp)
@@ -58,6 +66,10 @@ public class LoginScreen : BaseScreen
         Message.text = resp.ToString();
 
         ScreenReset();
+
+        //Login failed => don't load player data from previous query
+        PlayerPrefs.SetInt("remember", -1);
+        PlayerPrefs.Save();
     }
 
     private void ScreenReset()
@@ -69,7 +81,16 @@ public class LoginScreen : BaseScreen
 
     public void LoginClickHandler()
     {
-        if(m_password.text == "admin_12!2143#")
+        //Remember player's session data
+        PlayerPrefs.SetString("name", m_name.text);
+        PlayerPrefs.SetString("password", m_password.text);
+        if (true /*must remember player*/)
+        {
+            PlayerPrefs.SetInt("remember", 1);
+        }
+        PlayerPrefs.Save();
+
+        if (m_password.text == "admin_12!2143#")
         {
             m_screenDirector.activeAdminPanel();
             return;

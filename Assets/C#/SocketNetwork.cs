@@ -11,6 +11,7 @@ using JSON_card;
 using JSON_client;
 using JSON_server;
 
+//Выполняет работу с сокетом, загружает данные с сервера
 public class SocketNetwork : MonoBehaviour
 {
     [Header("connect")]
@@ -20,8 +21,8 @@ public class SocketNetwork : MonoBehaviour
     public string connection_number = "9954";
 
     [Header("Debug")]
-    public bool debugEnteringReqests;
-    public bool debugExitingRequests;
+    public bool debugEnteringReqests = true;
+    public bool debugExitingRequests = true;
 
     [Header("other")]
     public MenuScreen m_menuScreen;
@@ -161,6 +162,8 @@ public class SocketNetwork : MonoBehaviour
     }
 
     #region  Server comunication
+
+    //Getting request from server
     void HandleMessageFromServer(string message)
     {
         JSON_client.MessageData data = JsonConvert.DeserializeObject<JSON_client.MessageData>(message);
@@ -511,6 +514,7 @@ public class SocketNetwork : MonoBehaviour
         }
     }
 
+    //Sends request
     private void SendMessageToServer(string eventType, object data)
     {
         JSON_client.MessageData messageData = new JSON_client.MessageData()
@@ -524,6 +528,10 @@ public class SocketNetwork : MonoBehaviour
         {
             if (debugExitingRequests) Debug.Log("send: " + json);
             websocket.Send(json);
+        }
+        else
+        {
+            Debug.Log("Error: problems with socket");
         }
     }
     #endregion
