@@ -24,13 +24,12 @@ public class LoginScreen : BaseScreen
     {
         SocketNetwork.loginSucsessed += LoginSuccessed;
         SocketNetwork.error += PrintMaessage;
-        SocketNetwork.error += LoginFailed;
 
         if (PlayerPrefs.HasKey("remember"))
         {
             m_name.text = PlayerPrefs.GetString("name");
             m_password.text = PlayerPrefs.GetString("password");
-            m_remember.isOn = PlayerPrefs.GetInt("remember") > 0;
+            //m_remember.isOn = PlayerPrefs.GetInt("remember") > 0;
         }
     }
 
