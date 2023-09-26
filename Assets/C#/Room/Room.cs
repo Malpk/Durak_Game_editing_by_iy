@@ -22,6 +22,7 @@ public class Room : MonoBehaviour
     public GameObject StartScreen;
     public GameObject OwnerStartGameButton;
     public GameObject PlayerCard;
+    public GameObject WinScreen;
 
     public CardController _cardController;
 
@@ -124,12 +125,26 @@ public class Room : MonoBehaviour
         //Trump display
 
         Debug.Log("Trump init start");
+
         GameObject g = GameObject.FindWithTag("TrumpTXT");
         TextMeshProUGUI text = g.GetComponent<TextMeshProUGUI>();
+
         Debug.Log("Trump init get");
+        Debug.Log("Trump is null? " + trump == null);
+
         text.text = trump.suit;
-        g.transform.SetParent(new Canvas().transform);
-        g.transform.SetAsFirstSibling();
+
+        if (trump.suit.Contains('?') || trump.suit.Contains('?'))
+        {
+            text.color = Color.red;
+        }
+        else
+        {
+            text.color = Color.black;
+        }
+
+        Debug.Log(text.text);
+
         Debug.Log("Trump init end");
 
         _roomRow = GetComponent<RoomRow>();
@@ -169,7 +184,18 @@ public class Room : MonoBehaviour
 
     public void OnWinning(uint UserID)
     {
-        if(UserID == Session.UId)
+        string game_result_for_current_player = "You WIN! You've earned 0 points"; //Change in future
+
+        WinScreen = GameObject.FindWithTag("WinScreen");
+        WinScreen.SetActive(true);
+
+        GameObject g = GameObject.FindWithTag("WinTXT");
+        TextMeshProUGUI text = g.GetComponent<TextMeshProUGUI>();
+
+        text.text = game_result_for_current_player;
+
+        /*
+        if (UserID == Session.UId)
         {
             win_panel.SetActive(true);
         }
@@ -182,7 +208,8 @@ public class Room : MonoBehaviour
                     _roomRow.roomPlayers[i].PrintMessage("i won!!!");
                 }
             }
-        }
+
+        }*/
     }
 
     public void OnColodaEmpty()

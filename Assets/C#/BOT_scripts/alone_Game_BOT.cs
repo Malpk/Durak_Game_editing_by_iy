@@ -67,15 +67,22 @@ public class alone_Game_BOT : MonoBehaviour
 
     private void OnDestroy()
     {
-        Table.beatCard_event -= handleTurn;
-        Table.throwCard_event -= handleTurn;
+        try
+        {
+            Table.beatCard_event -= handleTurn;
+            Table.throwCard_event -= handleTurn;
 
-        Room.foldEvent -= FoldHandler;
-        Room.grabEvent -= GrabHandler;
-        Room.passEvent -= PassHandler;
+            Room.foldEvent -= FoldHandler;
+            Room.grabEvent -= GrabHandler;
+            Room.passEvent -= PassHandler;
 
-        Room.grabbing -= (() => setAllDefaultStatus());
-        Table.folding -= (() => setAllDefaultStatus());
+            Room.grabbing -= (() => setAllDefaultStatus());
+            Table.folding -= (() => setAllDefaultStatus());
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
     }
 
     public void handleTurn()
