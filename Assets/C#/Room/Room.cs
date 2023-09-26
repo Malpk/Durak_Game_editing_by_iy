@@ -2,6 +2,7 @@ using JSON_card;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static Table;
 
@@ -69,9 +70,7 @@ public class Room : MonoBehaviour
         SocketNetwork.playerGrab += GrabCards;
         Session.roleChanged += ((ERole role) => { _roomRow.status = EStatus.Null; });
 
-        GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-
-        _roomRow = GetComponent<RoomRow>();
+        GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();    
     }
 
     private void OnDestroy()
@@ -85,6 +84,13 @@ public class Room : MonoBehaviour
         SocketNetwork.cl_grab -= cl_Grab;
         SocketNetwork.playerGrab -= GrabCards;
         Session.roleChanged -= ((ERole role) => { _roomRow.status = EStatus.Null; });
+
+
+        GameObject g = GameObject.FindWithTag("TrumpTXT");
+        TextMesh text = g.GetComponent<TextMesh>();
+
+        text.text = "No game";
+        g.SetActive(true);
     }
 
     ///////\\\\\\
@@ -115,6 +121,19 @@ public class Room : MonoBehaviour
     //Ìû דמעמגû ט חאהא¸ל ÊÎÇÛÐÜ
     public void OnReady(Card trump)
     {
+        //Trump display
+
+        Debug.Log("Trump init start");
+        GameObject g = GameObject.FindWithTag("TrumpTXT");
+        TextMeshProUGUI text = g.GetComponent<TextMeshProUGUI>();
+        Debug.Log("Trump init get");
+        text.text = trump.suit;
+        g.transform.SetParent(new Canvas().transform);
+        g.transform.SetAsFirstSibling();
+        Debug.Log("Trump init end");
+
+        _roomRow = GetComponent<RoomRow>();
+
         StartScreen.SetActive(false);
 
         _roomRow.isGameStarted = true;
