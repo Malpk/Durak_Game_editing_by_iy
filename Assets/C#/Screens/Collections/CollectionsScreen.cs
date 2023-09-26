@@ -5,6 +5,8 @@ using UnityEngine.UI;
 
 public class CollectionsScreen : MonoBehaviour
 {
+    public static bool unlock_all = true;
+
     public Sprite ActiveSprite;
     public Sprite notActiveSprite;
 
@@ -40,7 +42,7 @@ public class CollectionsScreen : MonoBehaviour
 
         foreach (GameObject _collection in collections_list)
         {
-            if (Session.PlayedGames >= _collection.GetComponent<CollectionnDATA>().NeedGames)
+            if (Session.PlayedGames >= _collection.GetComponent<CollectionnDATA>().NeedGames || unlock_all)
             {
                 _collection.GetComponent<CollectionnDATA>().available = true;
 

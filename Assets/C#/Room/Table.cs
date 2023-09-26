@@ -45,6 +45,20 @@ public class Table : BaseScreen
     {
         if (Session.role != ERole.main)
         {
+            //Card newCard = _cardController.AddComponent<Card>(); // Используйте один из приведенных выше примеров
+            //newCard.suit = card.strimg_Suit;
+            //newCard.nominal = card.str_Nnominal;
+            /*
+            if (!_roomRow.isAlone)
+                m_socketNetwork.EmitThrow(card);
+            else
+            {
+                placeCard_(Session.UId, card.strimg_Suit, card.str_Nnominal);
+                _cardController.DestroyCard(card);
+
+                throwCard_event?.Invoke();
+            }
+            */
             if (_roomRow.status == EStatus.Fold || _roomRow.status == EStatus.Pass)
             {
                 return;
@@ -72,7 +86,11 @@ public class Table : BaseScreen
             }
             if (isAbleToBeat(card, beatingCard))
             {
-                if (!_roomRow.isAlone) m_socketNetwork.EmitBeat(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                if (!_roomRow.isAlone) { 
+                    m_socketNetwork.EmitBeat(new Card 
+                    { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, 
+                    new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal }); 
+                }
                 else
                 {
                     beatCard(Session.UId, new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
@@ -139,6 +157,60 @@ public class Table : BaseScreen
             return;
         }
     }
+
+    //Better version
+    public void placeCard_(uint UserID, string suit, string nominal)
+    {
+        if (Session.role == ERole.main)
+        {
+            if (TableCardPairs.Count == 0)
+            {
+                _gameUI.showGrabButton();
+            }
+        }
+
+        GameObject pref_card = Instantiate(_cardController.m_prefabCard);
+        pref_card.transform.localScale = _cardController.StartOfCards.localScale;
+        pref_card.transform.SetParent(gameObject.transform);
+        pref_card.tag = "tableBeatingCard";
+
+        GameCard cardData = pref_card.GetComponent<GameCard>();
+
+        cardData.Init(suit, nominal);
+        cardData.isDraggble = false;
+
+        switch (cardData.Suit)
+        {
+            case ESuit.CLOVERS:
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.Nominal);
+                break;
+            case ESuit.TILE:
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.Nominal);
+                break;
+            case ESuit.PIKES:
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.Nominal);
+                break;
+            default:
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.Nominal);
+                break;
+        }
+
+        CardPair cardPair = new CardPair();
+        cardPair.FirstCard = pref_card;
+
+        TableCardPairs.Add(cardPair);
+
+        SortCardPairs();
+        SetAllTableCardsPos();
+
+        if (Session.role == ERole.main)
+        {
+            _gameUI.showGrabButton();
+            return;
+        }
+    }
+
+
     public void beatCard(uint UserID, Card beatCard, Card beatingCard)
     {
         GameObject pref_card = Instantiate(_cardController.m_prefabCard);

@@ -24,24 +24,25 @@ public class LoginScreen : BaseScreen
     {
         SocketNetwork.loginSucsessed += LoginSuccessed;
         SocketNetwork.error += PrintMaessage;
+        SocketNetwork.error += LoginFailed;
 
+        m_remember.isOn = PlayerPrefs.HasKey("remember");
         if (PlayerPrefs.HasKey("remember"))
         {
             m_name.text = PlayerPrefs.GetString("name");
             m_password.text = PlayerPrefs.GetString("password");
-            //m_remember.isOn = PlayerPrefs.GetInt("remember") > 0;
         }
     }
 
     public override void SetActiveHandler(bool active)
     {
-        if (active == true)
+        if (active)
         {
             if (PlayerPrefs.HasKey("remember"))
             {
                 m_name.text = PlayerPrefs.GetString("name");
                 m_password.text = PlayerPrefs.GetString("password");
-                m_remember.isOn = PlayerPrefs.GetInt("remember") > 0;
+                m_remember.isOn = PlayerPrefs.HasKey("remember");
             }
         }
     }
@@ -76,17 +77,21 @@ public class LoginScreen : BaseScreen
     {
         m_name.text = string.Empty;
         m_password.text = string.Empty;
-        m_remember.isOn = false;
+        m_remember.isOn = PlayerPrefs.HasKey("remember");
     }
 
     public void LoginClickHandler()
     {
         //Remember player's session data
-        PlayerPrefs.SetString("name", m_name.text);
-        PlayerPrefs.SetString("password", m_password.text);
-        if (true /*must remember player*/)
+        if (m_remember.isOn)
         {
+            PlayerPrefs.SetString("name", m_name.text);
+            PlayerPrefs.SetString("password", m_password.text);
             PlayerPrefs.SetInt("remember", 1);
+        }
+        else
+        {
+            PlayerPrefs.DeleteAll();
         }
         PlayerPrefs.Save();
 

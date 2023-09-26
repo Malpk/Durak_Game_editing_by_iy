@@ -144,6 +144,11 @@ public class GameCard : MonoBehaviour
         _suit = card.suit;
         _nominal = card.nominal;
     }
+    public void Init(string suit, string nominal)
+    {
+        _suit = suit;
+        _nominal = nominal;
+    }
 
 
     private void OnMouseDown()
