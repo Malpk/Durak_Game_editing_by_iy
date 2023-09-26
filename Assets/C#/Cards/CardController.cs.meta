@@ -3,7 +3,13 @@ guid: 9900128d11d5b104cad7fdc3c2b69613
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - m_room: {instanceID: 0}
+  - m_prefabCard: {fileID: 5098536998660792207, guid: f83665b83bc48e249987c990649714cc,
+      type: 3}
+  - m_prefabBackCard: {fileID: 3537448625647158221, guid: 1353ad46603438243b6b0cbf7d70c53a,
+      type: 3}
+  - StartOfCards: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

@@ -12,6 +12,7 @@ public class alone_Game_BOT : MonoBehaviour
     public Room B_room;
     public RoomRow B_roomRow;
     public Table B_table;
+    public GameObject gameCardPrefab;
 
     public List<Card> B_room_Deck =  new List<Card>();
     public List<Card> B_room_FoldDeck = new List<Card>();
@@ -351,13 +352,15 @@ public class alone_Game_BOT : MonoBehaviour
             {
                 foreach (Card playerCard in _player.cards)
                 {
-                    GameCard newGameCard = new GameCard();
+                    GameObject newGameCardObject = Instantiate(gameCardPrefab);
+                    GameCard newGameCard = newGameCardObject.GetComponent<GameCard>();
+
                     newGameCard.Init(playerCard);
 
                     if (B_table.isAbleToBeat(newGameCard, B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>()))
                     {
                         B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
-                        B_table.beatCard(_player.user.UserID, new Card { suit = B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>().strimg_Suit, nominal =B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>().str_Nnominal }, playerCard);
+                        B_table.beatCard(_player.user.UserID, new Card { suit = B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>().math.strimg_Suit, nominal =B_table.TableCardPairs[i].FirstCard.GetComponent<GameCard>().math.str_Nnominal }, playerCard);
 
                         _player.cards.Remove(playerCard);
 
@@ -406,7 +409,9 @@ public class alone_Game_BOT : MonoBehaviour
         {
             for (int i = 0; i < _player.cards.Count; i++)
             {
-                GameCard newCard = new GameCard();
+                GameObject newGameCardObject = Instantiate(gameCardPrefab);
+                GameCard newCard = newGameCardObject.GetComponent<GameCard>();
+
                 newCard.Init(_player.cards[i]);
 
                 if (B_table.isAbleToThrow(newCard))
@@ -476,7 +481,9 @@ public class alone_Game_BOT : MonoBehaviour
         {
             for (int i = 0; i < _player.cards.Count; i++)
             {
-                GameCard newCard = new GameCard();
+                GameObject newGameCardObject = Instantiate(gameCardPrefab);
+                GameCard newCard = newGameCardObject.GetComponent<GameCard>();
+
                 newCard.Init(_player.cards[i]);
 
                 if (B_table.isAbleToThrow(newCard))

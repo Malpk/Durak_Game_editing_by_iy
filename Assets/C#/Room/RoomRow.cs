@@ -51,11 +51,11 @@ public class RoomRow : BaseScreen
         GameUI = GetComponent<GameUIs>();
         SocketNetwork.changePlayers += UpdateRoomPlayers;
     }
-
     private void OnDestroy()
     {
         SocketNetwork.changePlayers -= UpdateRoomPlayers;
     }
+
 
     public void Init(uint roomID) 
     {

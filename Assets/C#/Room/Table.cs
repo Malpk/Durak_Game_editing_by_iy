@@ -41,6 +41,7 @@ public class Table : BaseScreen
     }
 
     // server BEAT/THROW pre-emit functions
+    /*
     public void ThrowCard(GameCard card)
     {
         if (Session.role != ERole.main)
@@ -48,7 +49,7 @@ public class Table : BaseScreen
             //Card newCard = _cardController.AddComponent<Card>(); // Используйте один из приведенных выше примеров
             //newCard.suit = card.strimg_Suit;
             //newCard.nominal = card.str_Nnominal;
-            /*
+            
             if (!_roomRow.isAlone)
                 m_socketNetwork.EmitThrow(card);
             else
@@ -58,12 +59,38 @@ public class Table : BaseScreen
 
                 throwCard_event?.Invoke();
             }
-            */
+            
+
             if (_roomRow.status == EStatus.Fold || _roomRow.status == EStatus.Pass)
             {
                 return;
             }
             if (isAbleToThrow(card))
+            {
+                if (!_roomRow.isAlone) m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                else
+                {
+                    placeCard(Session.UId, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                    _cardController.DestroyCard(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+
+                    throwCard_event?.Invoke();
+                }
+            }
+        }
+    }
+    */
+
+    public void ThrowCard(GameCard g_card)
+    {
+        CardMath card = g_card.math;
+
+        if (Session.role != ERole.main)
+        {
+            if (_roomRow.status == EStatus.Fold || _roomRow.status == EStatus.Pass)
+            {
+                return;
+            }
+            if (isAbleToThrow(g_card))
             {
                 if (!_roomRow.isAlone) m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
                 else
@@ -88,20 +115,20 @@ public class Table : BaseScreen
             {
                 if (!_roomRow.isAlone) { 
                     m_socketNetwork.EmitBeat(new Card 
-                    { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, 
-                    new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal }); 
+                    { suit = beatingCard.math.strimg_Suit, nominal = beatingCard.math.str_Nnominal }, 
+                    new Card { suit = card.math.strimg_Suit, nominal = card.math.str_Nnominal }); 
                 }
                 else
                 {
-                    beatCard(Session.UId, new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-                    _cardController.DestroyCard(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal });
+                    beatCard(Session.UId, new Card { suit = beatingCard.math.strimg_Suit, nominal = beatingCard.math.str_Nnominal }, new Card { suit = card.math.strimg_Suit, nominal = card.math.str_Nnominal });
+                    _cardController.DestroyCard(new Card { suit = beatingCard.math.strimg_Suit, nominal = beatingCard.math.str_Nnominal });
 
                     beatCard_event?.Invoke();
                 }
             }
-            if(_roomRow.GameType == ETypeGame.Transferable && card.Nominal == beatingCard.Nominal)
+            if(_roomRow.GameType == ETypeGame.Transferable && card.math.Nominal == beatingCard.math.Nominal)
             {
-                m_socketNetwork.EmitBeat(new Card { suit = beatingCard.strimg_Suit, nominal = beatingCard.str_Nnominal }, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
+                m_socketNetwork.EmitBeat(new Card { suit = beatingCard.math.strimg_Suit, nominal = beatingCard.math.str_Nnominal }, new Card { suit = card.math.strimg_Suit, nominal = card.math.str_Nnominal });
             }
         }
     }
@@ -117,7 +144,7 @@ public class Table : BaseScreen
             }
         }
 
-        GameObject pref_card = Instantiate(_cardController.m_prefabCard);
+        GameObject pref_card = Instantiate(CardController.m_prefabCard);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableBeatingCard";
@@ -127,19 +154,19 @@ public class Table : BaseScreen
         cardData.Init(card);
         cardData.isDraggble = false;
 
-        switch (cardData.Suit)
+        switch (cardData.math.Suit)
         {
             case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.math.Nominal);
                 break;
             case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.math.Nominal);
                 break;
             case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.math.Nominal);
                 break;
             default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.math.Nominal);
                 break;
         }
 
@@ -169,7 +196,7 @@ public class Table : BaseScreen
             }
         }
 
-        GameObject pref_card = Instantiate(_cardController.m_prefabCard);
+        GameObject pref_card = Instantiate(CardController.m_prefabCard);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableBeatingCard";
@@ -179,19 +206,19 @@ public class Table : BaseScreen
         cardData.Init(suit, nominal);
         cardData.isDraggble = false;
 
-        switch (cardData.Suit)
+        switch (cardData.math.Suit)
         {
             case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.math.Nominal);
                 break;
             case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.math.Nominal);
                 break;
             case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.math.Nominal);
                 break;
             default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.math.Nominal);
                 break;
         }
 
@@ -213,7 +240,7 @@ public class Table : BaseScreen
 
     public void beatCard(uint UserID, Card beatCard, Card beatingCard)
     {
-        GameObject pref_card = Instantiate(_cardController.m_prefabCard);
+        GameObject pref_card = Instantiate(CardController.m_prefabCard);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableNotBeatingCard";
@@ -223,25 +250,25 @@ public class Table : BaseScreen
         cardData.Init(beatingCard);
         cardData.isDraggble = false;
 
-        switch (cardData.Suit)
+        switch (cardData.math.Suit)
         {
             case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.math.Nominal);
                 break;
             case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.math.Nominal);
                 break;
             case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.math.Nominal);
                 break;
             default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.math.Nominal);
                 break;
         }
 
         for (int i = 0; i < TableCardPairs.Count; i++)
         {
-            if(TableCardPairs[i].FirstCard.GetComponent<GameCard>().strimg_Suit == beatCard.suit && TableCardPairs[i].FirstCard.GetComponent<GameCard>().str_Nnominal == beatCard.nominal)
+            if(TableCardPairs[i].FirstCard.GetComponent<GameCard>().math.strimg_Suit == beatCard.suit && TableCardPairs[i].FirstCard.GetComponent<GameCard>().math.str_Nnominal == beatCard.nominal)
             {
                 TableCardPairs[i].FirstCard.tag = "tableNotBeatingCard";
                 TableCardPairs[i].SecondCard = pref_card;
@@ -303,15 +330,15 @@ public class Table : BaseScreen
     #region checkers
     public bool isAbleToBeat(GameCard beatCard, GameCard beatingCard)
     {
-        if (beatCard.Suit == _roomRow.Trump && beatingCard.Suit != _roomRow.Trump)
+        if (beatCard.math.Suit == _roomRow.Trump && beatingCard.math.Suit != _roomRow.Trump)
             return true;
 
-        if (beatingCard.Suit == _roomRow.Trump && beatCard.Suit != _roomRow.Trump)
+        if (beatingCard.math.Suit == _roomRow.Trump && beatCard.math.Suit != _roomRow.Trump)
             return false;
 
-        if(((int)beatingCard.Suit) == ((int)beatCard.Suit))
+        if(((int)beatingCard.math.Suit) == ((int)beatCard.math.Suit))
         {
-            return ((int)beatCard.Nominal) > ((int)beatingCard.Nominal);
+            return ((int)beatCard.math.Nominal) > ((int)beatingCard.math.Nominal);
         }
         else
         {
@@ -342,11 +369,11 @@ public class Table : BaseScreen
     {
         foreach (CardPair cardPair in TableCardPairs)
         {
-            if (cardPair.FirstCard.GetComponent<GameCard>().str_Nnominal == card.str_Nnominal) return true;
+            if (cardPair.FirstCard.GetComponent<GameCard>().math.str_Nnominal == card.math.str_Nnominal) return true;
 
             else if (cardPair.SecondCard != null)
             {
-                if (cardPair.SecondCard.GetComponent<GameCard>().str_Nnominal == card.str_Nnominal) return true;
+                if (cardPair.SecondCard.GetComponent<GameCard>().math.str_Nnominal == card.math.str_Nnominal) return true;
             }
         }
         return false;

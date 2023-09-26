@@ -15,8 +15,9 @@ public class CardController: MonoBehaviour
 
     public Room m_room;
 
-    public GameObject m_prefabCard;
-    public GameObject m_prefabBackCard;
+    public static GameObject m_prefabCard;
+    public static GameObject m_prefabBackCard;
+    public static GameObject m_prefabEmpty;
 
     #region styles
     [Space, Space, Header("Styleshes"), Space]
@@ -184,19 +185,19 @@ public class CardController: MonoBehaviour
 
         cardData.Init(cardbytes);
 
-        switch (cardData.Suit)
+        switch (cardData.math.Suit)
         {
             case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Clubs, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Clubs, cardData.math.Nominal);
                 break;
             case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Diamonds, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Diamonds, cardData.math.Nominal);
                 break;
             case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Spades, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Spades, cardData.math.Nominal);
                 break;
             default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Hearts, cardData.Nominal);
+                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Hearts, cardData.math.Nominal);
                 break;
         }
 
@@ -208,9 +209,9 @@ public class CardController: MonoBehaviour
     {
         foreach(GameCard card in PlayerCards)
         {
-            if(card.strimg_Suit == cardbytes.suit)
+            if(card.math.strimg_Suit == cardbytes.suit)
             {
-                if(card.str_Nnominal == cardbytes.nominal)
+                if(card.math.str_Nnominal == cardbytes.nominal)
                 {
                     Destroy(card.gameObject);
                     PlayerCards.Remove(card);
@@ -223,20 +224,33 @@ public class CardController: MonoBehaviour
     }
     #endregion
 
-    #region ather users cards
+    #region other users cards
     public void AtherUserGotCard(uint UserID)
     {
+
+        Debug.Log("Ather user");
+
         for(int i = 1; i< m_room._roomRow.roomPlayers.Count; i++)
         {
             if (m_room._roomRow.roomPlayers[i].UserID == UserID)
             {
-                GameObject card = new GameObject();
+                Debug.Log("Try instinate");
 
-                Sprite back_card_sprite = Sprite.Create(m_room._roomRow.GameUI.back_card_image, new Rect(0, 0, m_room._roomRow.GameUI.back_card_image.width, m_room._roomRow.GameUI.back_card_image.height), Vector2.zero);
+                GameObject card = Instantiate(m_prefabBackCard);
+
+                Debug.Log("After instinate");
+
+                Sprite s = card.GetComponent<Sprite>();
+                s = Sprite.Create(m_room._roomRow.GameUI.back_card_image, new Rect(0, 0, m_room._roomRow.GameUI.back_card_image.width, m_room._roomRow.GameUI.back_card_image.height), Vector2.zero);
+
+                /*
                 card.AddComponent<SpriteRenderer>().sprite = back_card_sprite;
+                */
                 card.GetComponent<SpriteRenderer>().sortingLayerName = "Cards";
 
                 m_room._roomRow.roomPlayers[i].UserCards.Add(card);
+
+                Debug.Log("After sprite");
             }
         }
 
@@ -319,27 +333,27 @@ class CardSorter : IComparer<GameCard>
     {
         if (SortBy == CardOrderMethod.SuitThenKind)
         {
-            if (x.Suit > y.Suit)
+            if (x.math.Suit > y.math.Suit)
             {
                 return 1;
             }
-            if (x.Suit < y.Suit)
+            if (x.math.Suit < y.math.Suit)
             {
                 return -1;
             }
-            return x.Nominal > y.Nominal ? 1 : -1;
+            return x.math.Nominal > y.math.Nominal ? 1 : -1;
         }
         if (SortBy == CardOrderMethod.KindThenSuit)
         {
-            if (x.Nominal > y.Nominal)
+            if (x.math.Nominal > y.math.Nominal)
             {
                 return 1;
             }
-            if (x.Nominal < y.Nominal)
+            if (x.math.Nominal < y.math.Nominal)
             {
                 return -1;
             }
-            return x.Suit > y.Suit ? 1 : -1;
+            return x.math.Suit > y.math.Suit ? 1 : -1;
         }
         throw new NotImplementedException($"CardOrderMethod {SortBy} is not implemented.");
     }

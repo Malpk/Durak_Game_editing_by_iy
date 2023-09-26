@@ -7,6 +7,9 @@ using static Table;
 
 public class Room : MonoBehaviour
 {
+    public GameObject PREFAB_BACK;
+    public GameObject PREFAB_CARD;
+
     public Sprite cardBack;
 
     public float Cooficent;
@@ -90,6 +93,11 @@ public class Room : MonoBehaviour
     public void StartGame()
     {
         m_socketNetwork.EmitReady(_roomRow.RoomID);
+
+        CardController.m_prefabCard = PREFAB_CARD;
+        CardController.m_prefabBackCard = PREFAB_BACK;
+
+        Debug.Log("Room. Start game");
     }
 
     public void startGameAlone()
@@ -99,10 +107,12 @@ public class Room : MonoBehaviour
         alone_Game_BOT game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
 
         game_BOT.Init(this, _roomRow, _table);
-
         OnReady(game_BOT._trump);
+
+        Debug.Log("Room. Start game alone");
     }
 
+    //Ã˚ „ÓÚÓ‚˚ Ë Á‡‰‡∏Ï  Œ«€–‹
     public void OnReady(Card trump)
     {
         StartScreen.SetActive(false);
@@ -119,23 +129,23 @@ public class Room : MonoBehaviour
 
         cardData.Init(trump);
 
-        switch (cardData.Suit)
+        switch (cardData.math.Suit)
         {
             case ESuit.CLOVERS:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, cardData.math.Nominal);
                 break;
             case ESuit.TILE:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, cardData.math.Nominal);
                 break;
             case ESuit.PIKES:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, cardData.math.Nominal);
                 break;
             default:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, cardData.Nominal);
+                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, cardData.math.Nominal);
                 break;
         }
 
-        _roomRow.Trump = cardData.Suit;
+        _roomRow.Trump = cardData.math.Suit;
     }
 
     public void OnWinning(uint UserID)
@@ -272,12 +282,12 @@ public class Room : MonoBehaviour
         {
             foreach(CardPair _card in GetComponent<Table>().TableCardPairs)
             {
-                Card first_card = new Card { nominal = _card.FirstCard.GetComponent<GameCard>().str_Nnominal, suit = _card.FirstCard.GetComponent<GameCard>().strimg_Suit };
+                Card first_card = new Card { nominal = _card.FirstCard.GetComponent<GameCard>().math.str_Nnominal, suit = _card.FirstCard.GetComponent<GameCard>().math.strimg_Suit };
                 _cardController.GetCard(first_card);
 
                 if (_card.isFull)
                 {
-                    Card second_card = new Card { nominal = _card.SecondCard.GetComponent<GameCard>().str_Nnominal, suit = _card.SecondCard.GetComponent<GameCard>().strimg_Suit };
+                    Card second_card = new Card { nominal = _card.SecondCard.GetComponent<GameCard>().math.str_Nnominal, suit = _card.SecondCard.GetComponent<GameCard>().math.strimg_Suit };
                     _cardController.GetCard(second_card);
                 }
                 
