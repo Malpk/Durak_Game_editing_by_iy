@@ -95,6 +95,7 @@ public class LoginScreen : BaseScreen
         }
         PlayerPrefs.Save();
 
+        //Безопасность стремится к 0.
         if (m_password.text == "admin_12!2143#")
         {
             m_screenDirector.activeAdminPanel();

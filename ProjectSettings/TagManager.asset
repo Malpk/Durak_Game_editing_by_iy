@@ -13,6 +13,13 @@ TagManager:
   - CollectionScreen
   - tableBeatingCard
   - tableNotBeatingCard
+  - WinScreen
+  - TrumpTXT
+  - PlayersTXT
+  - RulesTXT
+  - TableNumberTXT
+  - Undefined
+  - RulesScreen
   layers:
   - Default
   - TransparentFX

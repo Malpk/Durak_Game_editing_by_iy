@@ -1,4 +1,4 @@
-using JSON_card;
+Ôªøusing JSON_card;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -8,8 +8,9 @@ using static Table;
 
 public class Room : MonoBehaviour
 {
-    public GameObject PREFAB_BACK;
-    public GameObject PREFAB_CARD;
+    public static string CurrentRules = "Error: no rules defined";
+    public static string CurrentPlayers = "Error: no players defined";
+    public static string CurrentTableID = "Table: local (with bot)";
 
     public Sprite cardBack;
 
@@ -18,6 +19,9 @@ public class Room : MonoBehaviour
 
     public float PlaceMultiplyer;
     public float RotationMultiplyer;
+
+    public GameObject PREFAB_BACK;
+    public GameObject PREFAB_CARD;
 
     public GameObject StartScreen;
     public GameObject OwnerStartGameButton;
@@ -71,7 +75,10 @@ public class Room : MonoBehaviour
         SocketNetwork.playerGrab += GrabCards;
         Session.roleChanged += ((ERole role) => { _roomRow.status = EStatus.Null; });
 
-        GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();    
+        GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+        
+        rulesUI = GameObject.FindWithTag("RulesScreen");
+        rulesUI.SetActive(false);
     }
 
     private void OnDestroy()
@@ -92,6 +99,38 @@ public class Room : MonoBehaviour
 
         text.text = "No game";
         g.SetActive(true);
+    }
+
+
+    //UI Rules update
+    private GameObject rulesUI;
+    public void upd_rules()
+    {
+        bool screen_active = rulesUI.activeInHierarchy;
+        rulesUI.SetActive(true);
+
+        try
+        {
+            CurrentRules = $"Rules: {_roomRow.GameType}";
+            CurrentPlayers = $"Players: {_roomRow.maxPlayers_number} / {_roomRow.roomPlayers.Count}";
+            CurrentTableID = $"ID Room: {_roomRow.RoomID}";
+
+            GameObject.FindWithTag("PlayersTXT").GetComponent<TextMeshProUGUI>().text =
+            CurrentPlayers;
+
+            GameObject.FindWithTag("RulesTXT").GetComponent<TextMeshProUGUI>().text =
+            CurrentRules;
+
+            GameObject.FindWithTag("TableNumberTXT").GetComponent<TextMeshProUGUI>().text =
+            CurrentTableID;
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Can't update rules' UI");
+            Debug.Log(ex.Message);
+        }
+
+        rulesUI.SetActive(screen_active);
     }
 
     ///////\\\\\\
@@ -119,9 +158,11 @@ public class Room : MonoBehaviour
         Debug.Log("Room. Start game alone");
     }
 
-    //Ã˚ „ÓÚÓ‚˚ Ë Á‡‰‡∏Ï  Œ«€–‹
+    //–ú—ã –≥–æ—Ç–æ–≤—ã –∏ –∑–∞–¥–∞—ë–º –ö–û–ó–´–†–¨
     public void OnReady(Card trump)
     {
+        upd_rules();
+
         //Trump display
 
         Debug.Log("Trump init start");
@@ -134,7 +175,7 @@ public class Room : MonoBehaviour
 
         text.text = trump.suit;
 
-        if (trump.suit.Contains('?') || trump.suit.Contains('?'))
+        if (trump.suit.Contains('‚ô•') || trump.suit.Contains('‚ô¶'))
         {
             text.color = Color.red;
         }
@@ -194,7 +235,9 @@ public class Room : MonoBehaviour
 
         text.text = game_result_for_current_player;
 
-        /*
+        Debug.Log("OnWinning(uint UserID) finished");
+
+        
         if (UserID == Session.UId)
         {
             win_panel.SetActive(true);
@@ -209,7 +252,7 @@ public class Room : MonoBehaviour
                 }
             }
 
-        }*/
+        }
     }
 
     public void OnColodaEmpty()
