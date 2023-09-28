@@ -3508,7 +3508,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -0.00026787567, y: 300}
+  m_AnchoredPosition: {x: -0.00026787567, y: 0.000045776367}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1303599671
@@ -4260,20 +4260,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u0417\u0434\u0435\u0441\u044C \u0431\u0443\u0434\u0435\u0442 \u043E\u0442\u043E\u0431\u0440\u0430\u0436\u0430\u0442\u044C\u0441\u044F
-    \u0441\u0442\u0430\u0442\u0438\u0441\u0442\u0438\u043A\u0430 \u0432 \u0432\u0438\u0434\u0435
-    \u043E\u0433\u0440\u043E\u043C\u043D\u043E\u0433\u043E String, \u043F\u0440\u0438\u0445\u043E\u0434\u044F\u0449\u0435\u0433\u043E
-    \u0441 \u0441\u0435\u0440\u0432\u0435\u0440\u0430. \u041D\u0430\u043F\u0440\u0438\u043C\u0435\u0440:\n\n\u0424\u0438\u0448\u0435\u043A
-    \u0432\u0441\u0435\u0433\u043E: 820\n\u0421\u0443\u043C\u043C\u0430\u0440\u043D\u0430\u044F
-    \u043A\u043E\u043C\u0438\u0441\u0441\u0438\u044F: 90\n\n\u041E\u043F\u0435\u0440\u0430\u0446\u0438\u0438:\n\u0424\u0438\u0448\u043A\u0438
-    <- \u0412\u0430\u043B\u044E\u0442\u0430 500\n\u0424\u0438\u0448\u043A\u0438 ->
-    \u0412\u0430\u043B\u044E\u0442\u0430 210\n\n\u0418\u0433\u0440: 23\n\n\u0421\u0442\u0430\u0432\u043A\u0438
-    (\u0438\u0433\u0440):\n\n\u041E\u0442 \u2265\t\t\u0414\u043E <\t\t\u0418\u0433\u0440\n100\t\t500\t\t10\n500\t\t1000\t\t1\n1000\t\t5000\t\t2\n5000\t\t10\u041A\t\t1\n10\u041A\t\t50\u041A\t\t0\n50\u041A\t\t100\u041A\t\t0\n100\u041A\t\t1\u041C\t\t0\n1\u041C\t\t10\u041C\t\t0\n10\u041C\t\t\u221E\t\t1\n\n\u0415\u0441\u043B\u0438
-    \u0432\u044B \u0432\u0438\u0434\u0438\u0442\u0435 \u0434\u0430\u043D\u043D\u043E\u0435
-    \u0441\u043E\u043E\u0431\u0449\u0435\u043D\u0438\u0435, \u0437\u043D\u0430\u0447\u0438\u0442
-    \u043D\u0430\u0441\u0442\u0440\u043E\u0439\u043A\u0430 \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438
-    \u0434\u0430\u043D\u043D\u044B\u0445 \u043D\u0430 \u0421\u0415\u0420\u0412\u0415\u0420\u041D\u041E\u0419
-    \u0447\u0430\u0441\u0442\u0438 \u0435\u0449\u0451 \u043D\u0435 \u0437\u0430\u043A\u043E\u043D\u0447\u0435\u043D\u0430."
+  m_text: "\u041D\u0430\u0436\u043C\u0438\u0442\u0435 \u043A\u043D\u043E\u043F\u043A\u0443
+    \u0437\u0430\u0433\u0440\u0443\u0437\u043A\u0438 \u0434\u043B\u044F \u043F\u043E\u043B\u0443\u0447\u0435\u043D\u0438\u044F
+    \u043E\u0442\u0447\u0451\u0442\u0430"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 06cb28996b762e64ab6f2a4e091c2161, type: 2}
   m_sharedMaterial: {fileID: -8026014200411444696, guid: 06cb28996b762e64ab6f2a4e091c2161,
@@ -5449,6 +5438,9 @@ MonoBehaviour:
   debugExitingRequests: 1
   m_menuScreen: {fileID: 4225990604967248608}
   card: {fileID: 0}
+  adminPabel: {fileID: 0}
+  text_to_upd: {fileID: 1621476868}
+  btn_for_upd: {fileID: 2081097583}
   m_room: {fileID: 0}
   m_roomRow: {fileID: 0}
   RoomPrefab: {fileID: 6312959936590672660, guid: c4a5766f20b70f44ca51d01e26021595,
@@ -5570,6 +5562,7 @@ GameObject:
   - component: {fileID: 2081097587}
   - component: {fileID: 2081097586}
   - component: {fileID: 2081097585}
+  - component: {fileID: 2081097588}
   m_Layer: 5
   m_Name: btn_load_from_server
   m_TagString: Untagged
@@ -5640,7 +5633,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2081097586}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 11500000, guid: 773a3e84c010ebe498b2f86dfe603b44, type: 3}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 1
 --- !u!114 &2081097586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5679,6 +5684,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2081097583}
   m_CullTransparentMesh: 1
+--- !u!114 &2081097588
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2081097583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 773a3e84c010ebe498b2f86dfe603b44, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ChipsInput: {fileID: 0}
 --- !u!1 &2090177215
 GameObject:
   m_ObjectHideFlags: 0
@@ -17844,7 +17862,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.988831}
+  m_AnchoredPosition: {x: 0, y: -14.98877}
   m_SizeDelta: {x: -520, y: -152.4149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4225990604852351723

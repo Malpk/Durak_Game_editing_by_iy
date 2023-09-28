@@ -10,6 +10,7 @@ using TMPro;
 using JSON_card;
 using JSON_client;
 using JSON_server;
+using UnityEngine.UI;
 
 //Выполняет работу с сокетом, загружает данные с сервера
 public class SocketNetwork : MonoBehaviour
@@ -28,6 +29,11 @@ public class SocketNetwork : MonoBehaviour
     public MenuScreen m_menuScreen;
     public CardController card;
     private ScreenDirector _scrDirector;
+    public AdminPabel adminPabel;
+
+    //Stats collecting
+    public GameObject text_to_upd;
+    public GameObject btn_for_upd;
 
     private WebSocket websocket;
 
@@ -159,6 +165,13 @@ public class SocketNetwork : MonoBehaviour
         Debug.Log("Connecting");
         websocket.Connect(); //-----------------------------------------
         Debug.Log("Connected");
+
+        //Stats init
+
+        btn_for_upd.GetComponent<Button>().onClick.AddListener(() => {
+            if (Session.Token == null) { Debug.LogError("No token"); return; }
+            SendMessageToServer("getstats", new json_stats_out { token = Session.Token });
+        });
     }
 
     #region  Server comunication
@@ -504,6 +517,23 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
+               //-------------------------------------
+            case "getstats":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    Debug.Log("getting stats");
+
+                    var _data = JsonConvert.DeserializeObject <string>(data.data);
+
+                    Debug.Log("setting stats");
+                    string fef = _data/*.text*/;
+
+                    text_to_upd.GetComponent<TextMeshProUGUI>().text = fef;
+
+                    Debug.Log("stats success");
+                });
+                break;               
+
             case "error":
                 error?.Invoke(data.data);
                 break;
@@ -515,7 +545,7 @@ public class SocketNetwork : MonoBehaviour
     }
 
     //Sends request
-    private void SendMessageToServer(string eventType, object data)
+    public void SendMessageToServer(string eventType, object data)
     {
         JSON_client.MessageData messageData = new JSON_client.MessageData()
         {

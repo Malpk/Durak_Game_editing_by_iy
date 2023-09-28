@@ -20,6 +20,9 @@ TagManager:
   - TableNumberTXT
   - Undefined
   - RulesScreen
+  - WinTextPlayers
+  - WinTextWins
+  - WinText
   layers:
   - Default
   - TransparentFX
