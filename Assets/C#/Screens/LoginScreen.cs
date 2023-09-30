@@ -6,22 +6,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Экран из лобби. Авторизация
 public class LoginScreen : BaseScreen
 {
+    //Поля для ввода
     public InputField m_name;
     public InputField m_password;
 
+    //Чекбокс "запомнить меня"
     public Toggle m_remember;
 
+    //Прочие элементы UI для вывода текста (самописный аналог Toast в android)
     [Header("message")]
     public TMP_Text Message;
-
     [Header("Message")]
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
     private void Start()
     {
+        //Говорим сокету, как нужно дополнительно обработать событие, используя методы из этого класса
         SocketNetwork.loginSucsessed += LoginSuccessed;
         SocketNetwork.error += PrintMaessage;
         SocketNetwork.error += LoginFailed;
@@ -34,6 +38,7 @@ public class LoginScreen : BaseScreen
         }
     }
 
+    //Хендлер для события, которое обычно происходит после попытки войти
     public override void SetActiveHandler(bool active)
     {
         if (active)
@@ -47,6 +52,7 @@ public class LoginScreen : BaseScreen
         }
     }
 
+    //Вызывается когда пользователь успешно авторизовался
     public void LoginSuccessed(string token, string name, uint UserID)
     {
         Debug.Log($"My token is {token}");
@@ -62,6 +68,7 @@ public class LoginScreen : BaseScreen
         });     
     }
 
+    //Вызывается, когда пользователь ввёл неверные данные
     private void LoginFailed(string resp)
     {
         Message.text = resp.ToString();
@@ -73,6 +80,7 @@ public class LoginScreen : BaseScreen
         ScreenReset();
     }
 
+    //Обновляем экран, очищаем поля
     private void ScreenReset()
     {
         m_name.text = string.Empty;
@@ -80,6 +88,8 @@ public class LoginScreen : BaseScreen
         m_remember.isOn = PlayerPrefs.HasKey("remember");
     }
 
+    //Вызывается после того, как нажата кнопка входа. Если пользователь был ранее авторизован
+    //Можно ввести пароль заново, если это секретный ключ, откроется админская панель.
     public void LoginClickHandler()
     {
         //Remember player's session data
@@ -96,7 +106,7 @@ public class LoginScreen : BaseScreen
         PlayerPrefs.Save();
 
         //Безопасность стремится к 0.
-        if (m_password.text == "admin_12!2143#")
+        if (m_password.text == "admin_12!2143#" && Session.Token != null)
         {
             m_screenDirector.activeAdminPanel();
             return;
@@ -116,12 +126,14 @@ public class LoginScreen : BaseScreen
         m_socketNetwork.Emit_login(m_name.text, m_password.text);
     }
 
+    //Очистка полей дубль 2
     public void clearEverything()
     {
         m_name.text = "";
         m_password.text = "";
     }
 
+    //Самописный аналог Toast в android
     public void PrintMaessage(string Message)
     {
         MainThreadDispatcher.RunOnMainThread(() =>

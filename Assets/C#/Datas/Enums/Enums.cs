@@ -1,6 +1,8 @@
 using System;
 using Unity.VisualScripting;
 
+//Все перечисляемые типы, вынесены в отдельный файл. Комментарии излишние, перевод каждого слова и есть значение элемента
+
 public enum ETypeGame
 {
     usual = 0,
@@ -74,7 +76,7 @@ public enum ERole
     thrower = 2
 }
 
-public enum ENominal
+public enum ENominal //Заскриньте, можно посмеяться с друзьями. Выглядит забавно. 
 {
     TWO = 0,
     THREE = 1,

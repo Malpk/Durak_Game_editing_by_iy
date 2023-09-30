@@ -3,22 +3,26 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Регистрация
 public class SigninNameAvatarScreen : BaseScreen
 {
+    //Текстовые поля
     public InputField m_name;
     public InputField m_email;
     public InputField m_password;
 
-    [Header("Message")]
+    [Header("Message")] //Самописнй аналог Toast
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
     void Start()
     {
+        //Запихиваем обработку регистрации в сокет
         SocketNetwork.SignInSucsessed += SigninSuccessed;
         SocketNetwork.error += PrintMaessage;
     }
 
+    //Успешная регистрация
     private void SigninSuccessed()
     {
         MainThreadDispatcher.RunOnMainThread(() =>
@@ -28,6 +32,7 @@ public class SigninNameAvatarScreen : BaseScreen
         });
     }
 
+    //Обработка попытки зарегистрироваться (нажатие на кнопку)
     public void SigninClickHandler()
     {
         if (!data_validator.CheckEmail(m_email.text))
@@ -44,7 +49,7 @@ public class SigninNameAvatarScreen : BaseScreen
         m_socketNetwork.Emit_signIn(m_name.text, m_email.text, m_password.text);
     }
 
-
+    //Самописный аналог Toast в Android
     public void PrintMaessage(string Message)
     {
         MainThreadDispatcher.RunOnMainThread(() =>

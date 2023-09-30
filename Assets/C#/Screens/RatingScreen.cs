@@ -3,8 +3,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//“аблица лидеров
 public class RatingScreen : BaseScreen
 {
+    //—трочка в таблице
     public class RatingLine
     {
         public uint ID;
@@ -12,15 +14,18 @@ public class RatingScreen : BaseScreen
         public int total;
         public float win_rate;
     }
-    [Header("Prefabs")]
+
+    [Header("Prefabs")] //ѕрефабы дл€ заполнени€ скроллвью строчками
     public GameObject m_ratingLinePrefab;
     public Transform m_content;
 
     private void Start()
     {
         SocketNetwork.gotRaiting += gotRaiting;
+        //ѕусть сокет обрабатывает получение рейтингов так, как описано в этом классе
     }
 
+    //ѕолучение рейтингов, их сортировка и вывод в саму таблицу [и снова у кого-то были проблемы с английским €зыком]
     public void gotRaiting(List<RatingLine> raitingList)
     {
         for (int i = m_content.childCount - 1; i >= 0; i--)
@@ -31,7 +36,6 @@ public class RatingScreen : BaseScreen
         }
 
         raitingList.Sort((x, y) => y.win_rate.CompareTo(x.win_rate));
-
 
         for (int i = 0; i < raitingList.Count; i++)
         {
@@ -44,11 +48,13 @@ public class RatingScreen : BaseScreen
         }
     }
 
+    //ќткрыли это окно? Ќачинаем загрузку таблицы лидеров!
     public void OnShow()
     {
         m_socketNetwork.getRaiting();
     }
 
+    //ѕолучаем и записываем данные пользовател€, который попал в таблицу лидеров. Ёто дл€ его тображени€ в таблице
     public void ApplyData(Transform line, int lineNumber, uint ID, string name, int total, float winRate)
     {
         line.Find("Avatar").GetComponent<AvatarScr>().UserID = ID;

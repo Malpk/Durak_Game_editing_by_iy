@@ -3,14 +3,16 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Экран выбора стиля
 public class CollectionsScreen : MonoBehaviour
 {
-    public static bool unlock_all = true;
+    public static bool unlock_all = true; //ОТКЛЮЧИТЬ ПЕРЕД ВЫХОДОМ В СВЕТ. Разблокирует все стили
 
+    //Справйты дял отображения того, что выбрал игрок
     public Sprite ActiveSprite;
     public Sprite notActiveSprite;
 
-    [Space, Header("styles")]
+    [Space, Header("styles")] //Объекты, символизирующие стили
     public GameObject standart_style;
     public GameObject Russian_style;
     public GameObject nature_middleLine_style;
@@ -21,8 +23,10 @@ public class CollectionsScreen : MonoBehaviour
     public GameObject horror_style;
     public GameObject erotick_style;
 
+    //Список коллекций
     List<GameObject> collections_list = new List<GameObject>();
 
+    //Загрузка стилей в список (з.ы. дизайнер, перепроверь файлы игры, там чего-то не хватает)
     private void Awake()
     {
         if (standart_style != null) collections_list.Add(standart_style);
@@ -36,9 +40,10 @@ public class CollectionsScreen : MonoBehaviour
         if (erotick_style != null) collections_list.Add(erotick_style);
     }
 
+    //Показывается сама панелька, управление её элементами
     public void OnShow()
     {
-        Debug.Log(Session.played_games);
+        Debug.Log(Session.PlayedGames);
 
         foreach (GameObject _collection in collections_list)
         {
@@ -65,6 +70,7 @@ public class CollectionsScreen : MonoBehaviour
         }
     }
 
+    //Сбрасывает выбранный стиль (не выбрано ничего)
     public void setAllNotActive()
     {
         foreach(GameObject _collection in collections_list)

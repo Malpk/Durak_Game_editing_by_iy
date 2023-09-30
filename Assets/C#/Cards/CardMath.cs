@@ -3,20 +3,24 @@ using System.Collections.Generic;
 using UnityEngine;
 using JSON_card;
 
+//Содержит основные характеристики карты.
 public class CardMath {
 
-    private string _suit;
-    private string _nominal;
+    private string _suit; //символ масти
+    private string _nominal; //номинал карты
 
+    //Конструктор (классический)
     public CardMath(string _suit, string _nominal) { 
         this._suit = _suit;
         this._nominal = _nominal;
     }
 
+    //Переделываем символ рубашки в соответствующий enum
     public ESuit Suit
     {
         get
         {
+            //СОХРАНЯТЬ при копировании ТОЛЬКО НАСИЛЬНО и только В UTF-8
             switch (_suit)
             {
                 case "♥":
@@ -32,6 +36,7 @@ public class CardMath {
             }
         }
     }
+    //Получаем символ масти
     public string strimg_Suit
     {
         get
@@ -40,6 +45,7 @@ public class CardMath {
         }
     }
 
+    //Переделываем получаемый с сервера номинал в нужный enum. Словарь вместо огромного switch-case
     Dictionary<string, ENominal> nominalLookup = new Dictionary<string, ENominal>
         {
             { "2 ", ENominal.TWO    },
@@ -70,6 +76,8 @@ public class CardMath {
             }
         }
     }
+
+    //Строка номинала
     public string str_Nnominal
     {
         get
@@ -78,6 +86,7 @@ public class CardMath {
         }
     }
 
+    //Для переделывания карты в json файл (перед отправкой на сервер)
     public Card json {
         get
         {
