@@ -103,8 +103,8 @@ namespace JSON_server
         public uint UserID;
         public uint RoomID;
 
-        public Card attakingCard;
-        public Card attakedCard;
+        public Card attackingCard;
+        public Card attackedCard;
     }
 
     #endregion
