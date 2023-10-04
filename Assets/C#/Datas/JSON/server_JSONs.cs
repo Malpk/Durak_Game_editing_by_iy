@@ -2,16 +2,24 @@ using JSON_card;
 using System.Linq;
 using System.Net.Mail;
 
+//Тут заспамлено: "Толко для работы с JSON файлами!"
+//Это для того, чтобы сама IDE предостерегала вас от того, чтобы наломать здесь дров
+
+//JSON-ы для общения с сервером. См. класс сокета
 namespace JSON_server
 {
+
+    //Запросы для регистрации
     #region registration requests
 
+    //Только для работы с json
     public class ClientLogin
     {
         public string name;
         public string password;
     }
 
+    //Только для работы с json
     public class ClientSignIN
     {
         public string name;
@@ -20,6 +28,7 @@ namespace JSON_server
         public string email;
     }
 
+    //Только для работы с json
     public class Client_changeEmail
     {
         public string token;
@@ -28,6 +37,7 @@ namespace JSON_server
         public string new_email;
     }
 
+    //Только для работы с json
     public class get_chips
     {
         public string token;
@@ -35,6 +45,7 @@ namespace JSON_server
         public int chips;
     }
 
+    //Только для работы с json
     public class UserData
     {
         public string token;
@@ -44,8 +55,11 @@ namespace JSON_server
     }
     #endregion
 
+    //Запросы на присоединение к игре (войти в комнату)
     #region room enter requests
 
+    //Создание комнаты
+    //Только для работы с json
     public class ServerCreateRoom
     {
         public uint RoomID;
@@ -67,6 +81,8 @@ namespace JSON_server
         public uint roomOwner;
     }
 
+    //Присоединение к комнате
+    //Только для работы с json
     public class ServerJoinRoom
     {
         public uint uid;
@@ -82,6 +98,8 @@ namespace JSON_server
         public int type;
     }
 
+    //Выход из комнаты
+    //Только для работы с json
     public class ServerExitRoom
     {
         public uint rid;
@@ -89,8 +107,10 @@ namespace JSON_server
     }
     #endregion
 
+    //Запросы во время игры (кто как походил)
     #region playing requests
 
+    //Только для работы с json
     public class Throw
     {
         public uint UserID;
@@ -98,6 +118,7 @@ namespace JSON_server
         public Card card;
     }
 
+    //Только для работы с json
     public class Battle
     {
         public uint UserID;
@@ -109,8 +130,10 @@ namespace JSON_server
 
     #endregion
 
+    //Запросы, связанные с внутриигровым чатом
     #region chat server requests
 
+    //Только для работы с json
     public class SendMessage
     {
         public uint RoomID;
@@ -119,12 +142,15 @@ namespace JSON_server
     }
     #endregion
 
+    //Получение аватара
+    //Только для работы с json
     public class AvatarData
     {
         public uint UserID;
         public string avatarImage;
     }
 
+    //Проверка пароля, достаточно ли он сложный, а также адреса почты (реально ли ввели что-то типа tankoman228@gmail.com или ffsdfsd34fds@211234d23)
     public static class data_validator
     {
         public static bool CheckPassword(string pass)
@@ -163,6 +189,7 @@ namespace JSON_server
             return false;
         }
 
+        //Проверка, правда ли это почта или набор символов
         public static bool CheckEmail(string email)
         {
             var valid = true;

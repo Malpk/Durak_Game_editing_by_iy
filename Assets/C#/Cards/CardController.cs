@@ -4,21 +4,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-// cadrs controller
-// responseble for graphic getting and destroying
-// user's and ather player's cards
-
+//Управляет картами. В основном, спрайтами и их внешним видом. Если игра вылетает при задании одного из стилей,
+//проблема либо здесь, либо стили не загружены/не указаны в ассетах
 public class CardController: MonoBehaviour
 {
     public int RotationMultiplyer;
     public int PlaceMultiplyer;
 
-    public Room m_room;
+    public Room m_room; //Указатель на текущую игровую комнату
 
+    //Префабы для создания карт на основе указанных стилей
     public static GameObject m_prefabCard;
     public static GameObject m_prefabBackCard;
     public static GameObject m_prefabEmpty;
 
+    //Стили и спрайты карт, т.е. их внешний вид
     #region styles
     [Space, Space, Header("Styleshes"), Space]
 
@@ -88,15 +88,18 @@ public class CardController: MonoBehaviour
     public List<Sprite> cards_texturies_Spades = new List<Sprite>();
     #endregion
 
+    //Находим недавно созданную комнату (после её создания мы вскоре окажемся здесь) и устанавливаем внешний вид + фон
     private void Start()
     {
         m_room = GameObject.Find("Room(Clone)").GetComponent<Room>();
 
+        //Говорим сокету, как нужно дополнительно обработать событие, используя методы из этого класса
         SocketNetwork.GetCard += GetCard;
         SocketNetwork.DestroyCard += DestroyCard;
         SocketNetwork.userGotCard += AtherUserGotCard;
         SocketNetwork.userDestroyCard += AtherUserDestroyCard;
 
+        //Получаем выбранный ранее стиль и задаём его картам
         string style = PlayerPrefs.GetString("Style");
 
         switch (style)
@@ -167,15 +170,20 @@ public class CardController: MonoBehaviour
     }
     private void OnDestroy()
     {
+        //Говорим сокету, что эти события нашими функциями обрабатывать больше не надо, так как нас больше нет
         SocketNetwork.GetCard -= GetCard;
         SocketNetwork.DestroyCard -= DestroyCard;
         SocketNetwork.userGotCard -= AtherUserGotCard;
         SocketNetwork.userDestroyCard -= AtherUserDestroyCard;
     }
 
+    //Карты в руках и их отображение (спрайты)
     #region hands cards
     public void GetCard(Card cardbytes)
     {
+        Debug.Log("CardController: GetCards {");
+
+        Debug.Log("CardController: Instantinate pref card");
         GameObject pref_card = Instantiate(m_prefabCard, StartOfCards.position, StartOfCards.rotation);
         pref_card.transform.localScale = StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
@@ -183,8 +191,10 @@ public class CardController: MonoBehaviour
 
         GameCard cardData = pref_card.GetComponent<GameCard>();
 
+        Debug.Log("CardController: cardData init");
         cardData.Init(cardbytes);
 
+        Debug.Log("CardController: card_data_math_suit");
         switch (cardData.math.Suit)
         {
             case ESuit.CLOVERS:
@@ -202,33 +212,47 @@ public class CardController: MonoBehaviour
         }
 
         PlayerCards.Add(pref_card.GetComponent<GameCard>());
-
+        Debug.Log("CardController: finishing");
         SetAllCardsPos();
+
+        Debug.Log("}");
     }
     public void DestroyCard(Card cardbytes)
     {
-        foreach(GameCard card in PlayerCards)
+        Debug.Log("CardController: destroy card (foreach)");
+        foreach (GameCard card in PlayerCards)
         {
-            if(card.math.strimg_Suit == cardbytes.suit)
+            Debug.Log(">---<");
+            if (card.math.strimg_Suit == cardbytes.suit)
             {
                 if(card.math.str_Nnominal == cardbytes.nominal)
                 {
+                    Debug.Log("CardController: Destroying found card");
+
                     Destroy(card.gameObject);
                     PlayerCards.Remove(card);
 
+                    Debug.Log("CardController: Set all card pos");
                     SetAllCardsPos();
+
+                    Debug.Log("}");
                     return;
                 }
             }
         }
+
+        Debug.Log("CardController: maybe no card destroyed");
+        Debug.Log("}");
     }
     #endregion
 
+    //Отрисовка карт других игроков. Именно эту шляпу надо переделать, она перегружает игру вплоть до вылета. Но, увы, меня не для анимаций наняли
+    //Если вы аниматор - вам сюда. Вообще анимации в юнити не так делаются. С точки зрения кода - всё верно и багов нет. Но мой процессор так не думает
     #region other users cards
     public void AtherUserGotCard(uint UserID)
     {
 
-        Debug.Log("Ather user");
+        Debug.Log("CardController: Ather user got card"); //Кто писал эти запросы плохо знает английский, тут всё верно с точки зрения кода. НЕ ПРАВИТЬ!
 
         for(int i = 1; i< m_room._roomRow.roomPlayers.Count; i++)
         {
@@ -241,11 +265,9 @@ public class CardController: MonoBehaviour
                 Debug.Log("After instinate");
 
                 Sprite s = card.GetComponent<Sprite>();
-                s = Sprite.Create(m_room._roomRow.GameUI.back_card_image, new Rect(0, 0, m_room._roomRow.GameUI.back_card_image.width, m_room._roomRow.GameUI.back_card_image.height), Vector2.zero);
-
-                /*
-                card.AddComponent<SpriteRenderer>().sprite = back_card_sprite;
-                */
+                s = Sprite.Create(m_room._roomRow.GameUI.back_card_image, new Rect(0, 0, m_room._roomRow.GameUI.back_card_image.width, m_room._roomRow.GameUI.back_card_image.height), Vector2.zero);           
+                //card.AddComponent<SpriteRenderer>().sprite = s; //? 
+                
                 card.GetComponent<SpriteRenderer>().sortingLayerName = "Cards";
 
                 m_room._roomRow.roomPlayers[i].UserCards.Add(card);
@@ -258,39 +280,60 @@ public class CardController: MonoBehaviour
     }
     public void AtherUserDestroyCard(uint UserID)
     {
+        Debug.Log("CardController: Ather user destroy card {");
+
         if (m_room != null && m_room._roomRow != null)
         {
+            Debug.Log("CardController: room and row not null... foreach:");
+
             for (int i = 1; i < m_room._roomRow.roomPlayers.Count; i++)
             {
+                Debug.Log(">-----<");
                 if (m_room._roomRow.roomPlayers[i].UserID == UserID)
                 {
+                    Debug.Log("CardController: destroy card");
                     Destroy(m_room._roomRow.roomPlayers[i].UserCards[0]);
                     m_room._roomRow.roomPlayers[i].UserCards.RemoveAt(0);
                 }
             }
 
+            Debug.Log("CardController: settall user cards");
             m_room.SetPositionsForAllUserCards();
         }
+
+        Debug.Log("}");
     }
     #endregion
 
+    //Вспомогательные функции для получения спрайтов, объектов или обработки. Вынесенные за скобки, условно говоря
     #region help functions
     public void SetAllCardsPos()
     {
+        Debug.Log("CardController: Set all card pos {");
+
         Sort(new CardSorter());
+        Debug.Log("CardController: sorted");
 
         for (int i = 0; i < PlayerCards.Count; i++)
         {
+            Debug.Log(">---<");
+
+            Debug.Log("CardController: new game object");
             PlayerCards[i].gameObject.GetComponent<SpriteRenderer>().sortingOrder = i;
 
+            Debug.Log("CardController: new vectors");
             Vector3 pos = new Vector3((Screen.height/ PlaceMultiplyer) *(i-((PlayerCards.Count)/2)), gameObject.transform.position.y, 0);
             Vector3 rotate = new Vector3(0, 0, (RotationMultiplyer * (i - ((PlayerCards.Count) / 2))) * -1);
 
+            Debug.Log("CardController: set courutine");
             StartCoroutine(PlayerCards[i].GetComponent<GameCard>().MoveTo(pos, rotate, new Vector3(1.5f, 1.5f, 1.5f)));
         }
+
+        Debug.Log("}");
     }
     public Sprite chooseCardNumber(List<Sprite> Cards, ENominal nominal)
     {
+        Debug.Log("CardController: choose card number;");
         switch (nominal)
         {
             case ENominal.TWO:
@@ -325,6 +368,7 @@ public class CardController: MonoBehaviour
     #endregion
 }
 
+//Сортировщик карт (в руке)
 class CardSorter : IComparer<GameCard>
 {
     public CardOrderMethod SortBy = PlayerPrefs.GetString("SortType") == "Suit" ? CardOrderMethod.SuitThenKind : CardOrderMethod.KindThenSuit;

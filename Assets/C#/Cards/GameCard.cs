@@ -2,10 +2,7 @@
 using System.Collections;
 using UnityEngine;
 
-// game card
-// the script that is responseble for 
-// gaming cards on the table
-
+//Карта в игре, содержит все указатели на GameObject, сама им и является
 public class GameCard : MonoBehaviour
 {
     public Table _table; //pointer to current game table
@@ -15,14 +12,17 @@ public class GameCard : MonoBehaviour
 
     public bool isDraggble = true;
 
-    public CardMath math; //special values
+    public CardMath math; //характеристики игровой карты (масть, достоинство)
 
     public GameCard nowChoosedCard = null; //????
 
+    //Для обработки того, как игрок походил картой (что чем отбил)
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if(collision.gameObject.tag == "tableBeatingCard")
         {
+            Debug.Log("GameCard: trigger enter + collide");
+
             GameCard beatingCard = collision.gameObject.GetComponent<GameCard>();
 
             if (beatingCard != null) nowChoosedCard = beatingCard;
@@ -32,6 +32,8 @@ public class GameCard : MonoBehaviour
     {
         if (collision.gameObject.tag == "tableBeatingCard")
         {
+            Debug.Log("GameCard: trigger exit 2D (beating card)");
+
             GameCard beatingCard = collision.gameObject.GetComponent<GameCard>();
 
             if (beatingCard != null)
@@ -46,15 +48,20 @@ public class GameCard : MonoBehaviour
 
     public void Start()
     {
+        Debug.Log("GameCard: Start();");
         _table = GameObject.FindGameObjectWithTag("Room").GetComponent<Table>();
     }
 
+    //Инициализация из JSON
     public void Init(Card card)
     {
+        Debug.Log("GameCard: Init()");
         math = new CardMath(card.suit, card.nominal);
     }
+    //Инициализация по масти и номиналу
     public void Init(string suit, string nominal)
     {
+        Debug.Log("GameCard: Init()");
         math = new CardMath(suit, nominal);
     }
 
@@ -67,7 +74,6 @@ public class GameCard : MonoBehaviour
             isDragging = true;
         }
     }
-
     private void OnMouseDrag()
     {
         if (isDraggble)
@@ -107,12 +113,16 @@ public class GameCard : MonoBehaviour
     }
     #endregion
 
+    //Физическое передвижение GameObject
     public IEnumerator MoveTo(Vector3 MoveToPoint, Vector3 rotate, Vector3 scale, float Time = 1)
     {
+        Debug.Log("GameCard: MoveTo (Time)");
         yield return moveTo(MoveToPoint, rotate, scale, Time);
     }
     private bool moveTo(Vector3 MoveToPoint, Vector3 rotate, Vector3 scale, float Time)
     {
+        Debug.Log("GameCard: MoveTo (bigger )");
+
         LeanTween.moveLocal(gameObject, MoveToPoint, Time);
         LeanTween.rotate(gameObject, rotate, Time);
         LeanTween.scale(gameObject, scale, Time);

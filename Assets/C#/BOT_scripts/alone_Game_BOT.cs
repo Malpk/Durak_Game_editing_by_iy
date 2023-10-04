@@ -5,24 +5,28 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//Скрипт для бота в одиночной игре. Используются все нужные GameObject
 public class alone_Game_BOT : MonoBehaviour
 {
-    public Card _trump;
+    public Card _trump; //Карта, которая козырь. Берётся из json файла
 
+    //Комната и место, где бот играет
     public Room B_room;
     public RoomRow B_roomRow;
     public Table B_table;
     public GameObject gameCardPrefab;
 
+    //Данные о ситуации в игре
     public List<Card> B_room_Deck =  new List<Card>();
     public List<Card> B_room_FoldDeck = new List<Card>();
     public List<Card> B_room_BattleField = new List<Card>();
-
     public List<Player> _players = new List<Player>();
 
+    //Какие карты бывают?
     static string[] suits = { "♥", "♦", "♣", "♠" };
     static string[] nominals = { "2 ", "3 ", "4 ", "5 ", "6 ", "7 ", "8 ", "9 ", "10", "В ", "Д ", "К ", "Т " };
 
+    //добавляем бота, указываем комнату, правила и т.д.
     public void Init(Room Room, RoomRow RoomRow, Table table)
     {
         B_room = Room;
@@ -31,7 +35,7 @@ public class alone_Game_BOT : MonoBehaviour
 
         Table.beatCard_event += handleTurn;
         Table.throwCard_event += handleTurn;
-
+        //Добавляем к обработчикам таким образом, чтобы имитировать поведение других игроков в комнате
         Room.foldEvent += FoldHandler;
         Room.grabEvent += GrabHandler;
         Room.passEvent += PassHandler;
@@ -67,17 +71,25 @@ public class alone_Game_BOT : MonoBehaviour
 
     private void OnDestroy()
     {
-        Table.beatCard_event -= handleTurn;
-        Table.throwCard_event -= handleTurn;
+        try
+        {
+            Table.beatCard_event -= handleTurn;
+            Table.throwCard_event -= handleTurn;
+            //Бота больше нет - имитировать нечего
+            Room.foldEvent -= FoldHandler;
+            Room.grabEvent -= GrabHandler;
+            Room.passEvent -= PassHandler;
 
-        Room.foldEvent -= FoldHandler;
-        Room.grabEvent -= GrabHandler;
-        Room.passEvent -= PassHandler;
-
-        Room.grabbing -= (() => setAllDefaultStatus());
-        Table.folding -= (() => setAllDefaultStatus());
+            Room.grabbing -= (() => setAllDefaultStatus());
+            Table.folding -= (() => setAllDefaultStatus());
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError(ex.Message);
+        }
     }
 
+    //Корутины и вызовы для работы с ними
     public void handleTurn()
     {
         StartCoroutine(HT());
@@ -94,6 +106,7 @@ public class alone_Game_BOT : MonoBehaviour
         }
     }
 
+    //Инициализация стола, указываются правила игры (в др. переменных)
     public void init_Deck()
     {
         int maxCards_num = 0;
@@ -127,6 +140,7 @@ public class alone_Game_BOT : MonoBehaviour
         Shuffle(B_room_Deck);
     }
 
+    //Раздача карт в одиночной игре (всем игрокам)
     public void giveCards()
     {
         if(B_room_Deck.Count == 0) 
@@ -164,6 +178,7 @@ public class alone_Game_BOT : MonoBehaviour
         }
     }
 
+    //Задание ролей (кто ходит, кто отбивается, кто подкидывает)
     public void give_roles(LastMove lastMove = LastMove.folding)
     {
         List<ERole> roles = new List<ERole>();
@@ -204,6 +219,7 @@ public class alone_Game_BOT : MonoBehaviour
         }
     }
 
+    //Выдача карт ИЗ КОЛОДЫ игроку
     public void distribCards(Player _player)
     {
         switch (B_room_Deck.Count)
@@ -271,6 +287,7 @@ public class alone_Game_BOT : MonoBehaviour
         giveCards();
     }
 
+    //Перетасовка колоды
     public static void Shuffle(List<Card> ts)
     {
         var count = ts.Count;
@@ -284,6 +301,7 @@ public class alone_Game_BOT : MonoBehaviour
         }
     }
 
+    //Для сортировки карт в руке
     public static int toCompare(string needSymbol)
     {
         for (int i = 0; i < suits.Length; i++) 
@@ -304,6 +322,8 @@ public class alone_Game_BOT : MonoBehaviour
     }
     #endregion
 
+    //Обработчики событий. То как бот ходит, как он играет. Описание каждого его (вида) хода.
+    #region event_handlers
     public void PassHandler()
     {
         if (getMain_stat() == EStatus.Grab)
@@ -577,8 +597,11 @@ public class alone_Game_BOT : MonoBehaviour
                 break;
         }
     }
+
+    #endregion
 }
 
+//Объявлен и используется в alone_Game_BOT.cs
 public class Player
 {
     public User user;

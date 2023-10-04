@@ -4,16 +4,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+//Элементы интерфейса внутри игры (комнаты)
 public class GameUIs : BaseScreen
 {
-    //help scr room
+    //указатели на соответствующую игре комнату
     public RoomRow _roomRow;
     public Room _room;
 
-
+    //Внутриигровые таймеры (тоже для отображения)
     public float timer;
     public float timeToEnd;
 
+    //Элементы интерфейса (то, зачем вообще этот класс нужен)
+    #region UI_room_elements
     [Header("Fold timer")]
     public Image BeatTimerLine;
     public TMP_Text BeatTimerText;
@@ -37,11 +40,13 @@ public class GameUIs : BaseScreen
 
     [Header("chat")]
     public GameObject chatObject;
+    #endregion
 
-    // event
+    //События, связанные с тем, что игрок профукал время
     public delegate void loseTime();
     public static event loseTime Lose;
 
+    //Стили и текстуры для отображения фона, стола и т.д.
     #region styles
 
     [Space, Space, Header("styles")]
@@ -108,8 +113,9 @@ public class GameUIs : BaseScreen
     private Texture2D table_image;
     public Texture2D back_card_image;
     public Texture2D coloda_image;
-#endregion
+    #endregion
 
+    //Инициализация всех текстур в зависимости от стиля + элементов интерфейса
     private void Start()
     {
         _roomRow = GetComponent<RoomRow>();
@@ -118,7 +124,7 @@ public class GameUIs : BaseScreen
         Session.roleChanged += onRoleChange;
 
         string style = PlayerPrefs.GetString("Style");
-
+        //Получаем стиль и загружаем нужные текстуры. ЕСЛИ ВЫЛЕТАЕТ НА ЭТОМ МОМЕНТЕ, значит, что=то неверно указано тут или в файлах игры проблемки
         switch (style)
         {
             case "Russian":
@@ -185,18 +191,21 @@ public class GameUIs : BaseScreen
                 break;
         }
 
+
         Sprite background_sprite = Sprite.Create(backGround_image, new Rect(0, 0, backGround_image.width, backGround_image.height), Vector2.zero);
         background_screen_obj.sprite = background_sprite;
-
+        //Установка спрайтов для фона с соответствующей стилю текстурой
         Sprite table_sprite = Sprite.Create(table_image, new Rect(0, 0, table_image.width, table_image.height), Vector2.zero);
         table_screen_obj.sprite = table_sprite;
     }
 
     private void OnDestroy()
     {
-        Session.roleChanged -= onRoleChange;
+        Session.roleChanged -= onRoleChange; //Не забываем, комната не вечна, а этот объект пропадает вместе с комнатой
     }
 
+    //Появление кнопок, соответствующих ходу (беру, пас и т.п.)
+    #region Buttons_hide_show
     public void hideGrabButton()
     {
         GrabButton.SetActive(false);
@@ -238,7 +247,9 @@ public class GameUIs : BaseScreen
         FoldButton.SetActive(true);
         timer = timeToEnd;
     }
+    #endregion
 
+    //Обновление таймера (чтобы игроки знали, сколько времени даётся на ход)
     private void FixedUpdate()
     {
         timer += Time.deltaTime;
@@ -262,6 +273,7 @@ public class GameUIs : BaseScreen
         }
     }
 
+    //Когда роль изменилась (после завершения хода) пишем игроку, что ему нужно делать
     private void onRoleChange(ERole role)
     {
         roleObj.SetActive(true);
@@ -284,11 +296,13 @@ public class GameUIs : BaseScreen
         roleText.text = message;
     }
 
+    //Показываем/скрываем окошко с чатом
     public void chatButton()
     {
         chatObject.SetActive(!chatObject.activeSelf);
     }
 
+    //Прячем все кнопки
     public void hide_all_buttons()
     {
         hideGrabButton();

@@ -11,12 +11,12 @@ using UnityEngine.Events;
 
 public class MenuScreen : BaseScreen
 {
-    [Header("User data")]
+    [Header("User data")] //Интерфейс с данными о пользователе
     public Text m_name;
     public TMP_Text m_chips;
     public Transform m_content;
 
-    [Header("Create new room UI")]
+    [Header("Create new room UI")] //Комбо боксы параметров для создания новой комнаты
     public Slider m_betSlider;
     public Image sliderImage;
     public Dropdown m_cardsDropdown;
@@ -24,43 +24,48 @@ public class MenuScreen : BaseScreen
     public Dropdown m_maxPlayersDropdown;
     public Dropdown m_isPrivateDropdown;
 
-    [Header("free rooms")]
+    [Header("free rooms")] //список свободных комнат
     public VerticalLayoutGroup _listOfFreeRooms;
     public GameObject FreeRoomPanel;
 
-    [Header("Message")]
+    [Header("Message")] //для вывода  сообщений (самописный аналог Toast в Android)
     public GameObject MessageScreen;
     public TMP_Text MessageText;
 
-    [Header("exit button")]
+    [Header("exit button")] //кнопка "назад"
     public Button exitButton;
 
+    //Данные с интерфейса для создания комнаты
     private uint m_bet;
     private uint m_numberOfCards;
     private ETypeGame m_typeOfGame;
     private int m_maxPlayers;
     private int m_isPrivate;
 
-    public Text m_betText;
-
+    //Данные о ставках (смешано)
+    public Text m_betText; 
     public uint[] m_betValues;
 
     public void Start()
     {
+        //Обновляем сразу всё, что можно
         BetValueChangedHandler();
         CardsValueChangedHandler();
         TypeGameValueChangedHandler();
         MaxPlayersValueChangedHandler();
         IsPrivateValueChangedHandler();
 
+        //Говорим сокету, как нужно дополнительно обработать событие, используя методы из этого класса
         SocketNetwork.roomChange += reloadRooms;
         SocketNetwork.gotChips += GetChipsSuccessed;
         SocketNetwork.gotGames += GetGamesStatsSuccessed;
         SocketNetwork.error += PrintMaessage;
 
+        //Кнопка назад, задаём слушатель
         exitButton.onClick.AddListener(() => m_screenDirector.ActiveScreen(EScreens.LoginScreen));
     }
 
+    //Когда показываем экран, обновляем часть интерфейса
     public void OnShow()
     {
         m_socketNetwork.GetFreeRooms();
@@ -70,6 +75,7 @@ public class MenuScreen : BaseScreen
         m_name.text = Session.Name;
     }
 
+    //Обновляем данные о комнате(ах)
     public void reloadRooms(uint[] FreeRoomsID)
     {
         MainThreadDispatcher.RunOnMainThread(() =>
@@ -94,9 +100,7 @@ public class MenuScreen : BaseScreen
         });
     }
 
-    //////Value changing functions\\\\\\\\
-    //////////////////////////////////////
-    //==================================\\
+    //Измение значения ставки (ползунок)
     public void BetValueChangedHandler()
     {
         try
@@ -143,6 +147,8 @@ public class MenuScreen : BaseScreen
             m_bet = 0;
         }
     }
+
+    //Обновляем данные с интерфейса после того, как с ним провзаимодействовали
     public void CardsValueChangedHandler()
     {
         try
@@ -178,7 +184,7 @@ public class MenuScreen : BaseScreen
     }
 
 
-    // get functions \\
+    //Получение некоторых значений (Get)
     public void GetChipsSuccessed(int chips)
     {
         MainThreadDispatcher.RunOnMainThread(() =>
@@ -190,11 +196,11 @@ public class MenuScreen : BaseScreen
     }
     public void GetGamesStatsSuccessed(int games)
     {
-        Session.played_games = games;
+        Session.PlayedGames = games;
         Debug.Log("Played games: " + games.ToString());
     }
 
-
+    //Обновление аватара пользователя
     #region  set avatar
     public void OpenFileExplorer()
     {
@@ -205,6 +211,7 @@ public class MenuScreen : BaseScreen
         FileBrowser.ShowLoadDialog(HandleSelectedFilePath, null, FileBrowser.PickMode.Files, false, null, null, "Select Image", "Select");
     }
 
+    //Получение пути к файлу, загрузка его в сокет
     private void HandleSelectedFilePath(string[] path)
     {
         if (path.Length > 0)
@@ -217,7 +224,7 @@ public class MenuScreen : BaseScreen
     }
     #endregion
 
-
+    //Пустые или почти пустые хендлеры для кликов (экраны)
     #region Screens
     public void AddChipsClickHandler(){ }
     public void ExchangeChipsClickHandler() { }
@@ -237,7 +244,7 @@ public class MenuScreen : BaseScreen
     }
     #endregion
 
-
+    //Добавление новой комнаты (действие со стороны пользователя)
     public void CreateRoomClickHandler()
     {
         string token = Session.Token;
@@ -269,6 +276,7 @@ public class MenuScreen : BaseScreen
         m_socketNetwork.EmitCreateRoom(token, m_isPrivate, "", m_bet, m_numberOfCards, m_maxPlayers, m_typeOfGame);
     }
 
+    //Самописный аналог Toast в Android
     #region Message
     public void PrintMaessage(string Message)
     {
@@ -286,6 +294,7 @@ public class MenuScreen : BaseScreen
         });
     }
     #endregion
+
 
     private void OnApplicationQuit()
     {

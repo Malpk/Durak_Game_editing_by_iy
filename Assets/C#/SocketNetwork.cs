@@ -10,33 +10,42 @@ using TMPro;
 using JSON_card;
 using JSON_client;
 using JSON_server;
+using UnityEngine.UI;
 
-//Выполняет работу с сокетом, загружает данные с сервера
+//Выполняет работу с сокетом, загружает данные с сервера. Занимается обработкой всех ответов сервера и вызовом всех
+//необходимых для этого методов, методы можно указать извне. Ответы с сервера обычно получают после запроса
 public class SocketNetwork : MonoBehaviour
 {
     [Header("connect")]
-    public bool isOnLocalHost = false;
 
-    public string URL = "166.88.134.211";
-    public string connection_number = "9954";
+    public string URL = "166.88.134.211"; //Айпи адрес сервера с бекендом
+    public string connection_number = "9954"; //Порт подключения
 
-    [Header("Debug")]
+    [Header("Debug")] //Не ставьте на false, если отлаживаете что-то связанное с сокетом
     public bool debugEnteringReqests = true;
     public bool debugExitingRequests = true;
 
-    [Header("other")]
+    [Header("other")] //GameObject и экраны, с которыми связан сокет
     public MenuScreen m_menuScreen;
     public CardController card;
     private ScreenDirector _scrDirector;
-
-    private WebSocket websocket;
-
+    public AdminPabel adminPabel;
     public Room m_room;
     public RoomRow m_roomRow;
     public GameObject RoomPrefab;
 
+    //Сбор статистики в админскую панель. Соответствующие объекты интерфейса
+    public GameObject text_to_upd;
+    public GameObject btn_for_upd;
+    public TMP_Text server_debug_text;
+
+    //"Истинный" сокет
+    private WebSocket websocket;
+
     public int _type;
 
+    //События. Можно добавить к ним свой обработчик, только не забыть убрать, чтобы сервер автоматически дообрабатывал, как вам надо
+    //Используя функции из вашего класса
     #region events
     public delegate void RoomChangeEvent(uint[] FreeRoomsID);
     public static event RoomChangeEvent roomChange;
@@ -113,11 +122,10 @@ public class SocketNetwork : MonoBehaviour
     public static event chat got_message;
     #endregion
 
-    public TMP_Text server_debug_text;
-
+    //Сюда лучше не лезть, умные люди уже заранее всё прописали
     void Start()
     {
-        // Server initiolization
+        // Server initialization
         Debug.Log("Enter SocketNetwork start");
 
         string url = "ws://" + URL + ":" + connection_number;
@@ -144,26 +152,28 @@ public class SocketNetwork : MonoBehaviour
         };
         websocket.OnError += (sender, e) =>
         {
-            //----------------------------------------------
             Debug.LogError("WebSocket: " + websocket.Url.ToString() + ", error: " + e.Exception + " : " + e.Message + " : " + sender);
-            //----------------------------------------------
         };
         websocket.OnClose += (sender, e) =>
         {
-            //----------------------------------------------
             Debug.LogError("WebSocket connection closed, Url: " + websocket.Url.ToString());
             Debug.LogError(e.Reason + ", code: " + e.Code + ", was clean: " + e.WasClean);
-            //----------------------------------------------
         };
 
         Debug.Log("Connecting");
-        websocket.Connect(); //-----------------------------------------
+        websocket.Connect();
         Debug.Log("Connected");
+
+        //Обработчик событий для кнопки, которая запрашивает отчёт для админской панели сервера
+        btn_for_upd.GetComponent<Button>().onClick.AddListener(() => {
+            if (Session.Token == null) { Debug.LogError("No token"); return; }
+            SendMessageToServer("getstats", new json_stats_out { token = Session.Token });
+        });
     }
 
     #region  Server comunication
 
-    //Getting request from server
+    //Получение ответа ПОСЛЕ ЗАПРОСА на сервер. Он СРАЗУ обработает в зависимости от типа события и указанных выше обработчиков
     void HandleMessageFromServer(string message)
     {
         JSON_client.MessageData data = JsonConvert.DeserializeObject<JSON_client.MessageData>(message);
@@ -495,7 +505,8 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
-            case "playerWon":
+            case "playerWon": //Нужно доделать
+
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     var _data = JsonConvert.DeserializeObject<JSON_client.playerWon>(data.data);
@@ -503,6 +514,22 @@ public class SocketNetwork : MonoBehaviour
                     player_Win?.Invoke(_data.UserID);
                 });
                 break;
+
+            case "getstats":
+                MainThreadDispatcher.RunOnMainThread(() =>
+                {
+                    Debug.Log("getting stats");
+
+                    var _data = JsonConvert.DeserializeObject <string>(data.data);
+
+                    Debug.Log("setting stats");
+                    string fef = _data/*.text*/;
+
+                    text_to_upd.GetComponent<TextMeshProUGUI>().text = fef;
+
+                    Debug.Log("stats success");
+                });
+                break;               
 
             case "error":
                 error?.Invoke(data.data);
@@ -515,8 +542,10 @@ public class SocketNetwork : MonoBehaviour
     }
 
     //Sends request
-    private void SendMessageToServer(string eventType, object data)
+    public void SendMessageToServer(string eventType, object data)
     {
+        Debug.Log("Send message to server");
+
         JSON_client.MessageData messageData = new JSON_client.MessageData()
         {
             eventType = eventType,
@@ -536,6 +565,7 @@ public class SocketNetwork : MonoBehaviour
     }
     #endregion
 
+    //Методы для обработки событий, связанных с комнатами. Отправка сообщений на сервер
     #region room emit functions 
 
     public void EmitCreateRoom(string token, int isPrivate, string key, uint bet, uint cards, int maxPlayers, ETypeGame type)
@@ -608,6 +638,7 @@ public class SocketNetwork : MonoBehaviour
 
     #endregion
 
+    //Методы для обработки событий, связанных с ходами игроков. Отправка сообщений на сервер
     #region playing emit functions 
 
     public void EmitThrow(Card throw_Card)
@@ -681,6 +712,7 @@ public class SocketNetwork : MonoBehaviour
 
     #endregion
 
+    //Методы для обработки событий, связанных с регистрацией и авторизацией. Отправка сообщений на сервер
     #region registration emit functions
     public void Emit_login(string _name, string _password)
     {
@@ -718,6 +750,7 @@ public class SocketNetwork : MonoBehaviour
     }
     #endregion
 
+    //Прочие запросы, связанные с получением некоторых данных
     #region get-emit functions
 
     public void GetFreeRooms()
@@ -804,6 +837,7 @@ public class SocketNetwork : MonoBehaviour
     }
     #endregion
 
+    //Если приложение закрыли, отправляем, что мы вышли из комнаты
     private void OnApplicationQuit()
     {
         if(Session.RoomID != 0)

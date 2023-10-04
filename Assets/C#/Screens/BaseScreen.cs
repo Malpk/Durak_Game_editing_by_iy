@@ -1,5 +1,6 @@
 using UnityEngine;
 
+//Изначальный (стартовый) экран. В нём ничего, связанного с программированием, нет.
 public class BaseScreen : MonoBehaviour
 {
     protected ScreenDirector m_screenDirector;

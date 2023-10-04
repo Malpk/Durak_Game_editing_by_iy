@@ -2,12 +2,14 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
+//Управляет экранами в лобби
 public class ScreenDirector : BaseScreen
 {
+    //О пользователе
     public TMP_Text ID_text;
-
     public AvatarScr avatar;
 
+    //Экраны/окна
     public GameObject StartScreen;
     public GameObject SignInScreen;
     public GameObject LoginScreenl;
@@ -19,11 +21,10 @@ public class ScreenDirector : BaseScreen
     public GameObject CollectionsScreen;
     public GameObject RewardsScreen;
     public GameObject SkinsScreen;
-
     public GameObject AdminPanel;
 
+    //Список всех экранов. Заполняется при инициализации
     List<GameObject> screens = new List<GameObject>();
-
     void Start()
     {
         screens.Add(StartScreen);
@@ -39,10 +40,13 @@ public class ScreenDirector : BaseScreen
         screens.Add(SkinsScreen);
 
         ActiveScreen(EScreens.StartScreen);
+        //Устанавливаем новй активный экран
 
         Session.changeUId += UpdateID;
+        //Обновленный айди сессии - надо учесть и тут!
     }
 
+    //Установка нового активного экрана (админ. панель не в счёт)
     public void ActiveScreen(EScreens _screenToActive = EScreens.MenuScreen)
     {
         foreach (GameObject _screen in screens)
@@ -104,6 +108,7 @@ public class ScreenDirector : BaseScreen
         }
     }
 
+    //Обновлён айди сессии? Тут тоже обновим!
     public void UpdateID(uint ID)
     {
         if(ID != 0) ID_text.text = "ID: " + ID.ToString();
@@ -112,6 +117,7 @@ public class ScreenDirector : BaseScreen
         m_socketNetwork.getAvatar(ID);
     }
 
+    //Активация админской панели со статистикой
     public void activeAdminPanel()
     {
         AdminPanel.SetActive(true);
