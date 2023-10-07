@@ -661,8 +661,8 @@ public class SocketNetwork : MonoBehaviour
             RoomID = Session.RoomID,
             UserID = Session.UId,
 
-            attakingCard = beating,
-            attakedCard = beat
+            attackingCard = beating,
+            attackedCard = beat
         };
 
         SendMessageToServer("srv_battle", data);
