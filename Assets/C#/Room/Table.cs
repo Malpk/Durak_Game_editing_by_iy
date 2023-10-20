@@ -147,7 +147,7 @@ public class Table : BaseScreen
         }
 
         Debug.Log("Table: instantinate prefab card");
-        GameObject pref_card = Instantiate(_room.PREFAB_CARD);
+        var pref_card = Instantiate(_room.PREFAB_CARD).GetComponent<SpriteRenderer>();
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableBeatingCard";
@@ -160,25 +160,12 @@ public class Table : BaseScreen
         cardData.isDraggble = false;
 
         Debug.Log("Table: card data suit");
-        switch (cardData.math.Suit)
-        {
-            case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.math.Nominal);
-                break;
-            case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.math.Nominal);
-                break;
-            case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.math.Nominal);
-                break;
-            default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.math.Nominal);
-                break;
-        }
+        pref_card.sprite = GetCards(cardData.math);
+
 
         Debug.Log("Table: card pairs");
         CardPair cardPair = new CardPair();
-        cardPair.FirstCard = pref_card;
+        cardPair.FirstCard = pref_card.gameObject;
 
         TableCardPairs.Add(cardPair);
 
@@ -195,6 +182,8 @@ public class Table : BaseScreen
 
         Debug.Log("}");
     }
+
+
     public void placeCard_(uint UserID, string suit, string nominal)
     {
         Debug.Log("Table: placeCard_");
@@ -209,7 +198,7 @@ public class Table : BaseScreen
         }
 
         Debug.Log("Table: pref card instantinate");
-        GameObject pref_card = Instantiate(_room.PREFAB_CARD);
+        var pref_card = Instantiate(_room.PREFAB_CARD).GetComponent<SpriteRenderer>();
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableBeatingCard";
@@ -219,24 +208,10 @@ public class Table : BaseScreen
         cardData.Init(suit, nominal);
         cardData.isDraggble = false;
 
-        switch (cardData.math.Suit)
-        {
-            case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.math.Nominal);
-                break;
-            case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.math.Nominal);
-                break;
-            case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.math.Nominal);
-                break;
-            default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.math.Nominal);
-                break;
-        }
+        pref_card.sprite = GetCards(cardData.math);
 
         CardPair cardPair = new CardPair();
-        cardPair.FirstCard = pref_card;
+        cardPair.FirstCard = pref_card.gameObject;
 
         TableCardPairs.Add(cardPair);
 
@@ -255,7 +230,7 @@ public class Table : BaseScreen
         Debug.Log("Table: beat card {");
 
         Debug.Log("Table: instantinate new card");
-        GameObject pref_card = Instantiate(_room.PREFAB_CARD);
+        var pref_card = Instantiate(_room.PREFAB_CARD).GetComponent<SpriteRenderer>();
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableNotBeatingCard";
@@ -268,29 +243,14 @@ public class Table : BaseScreen
         cardData.isDraggble = false;
 
         Debug.Log("Table: cardData suit setting");
-        switch (cardData.math.Suit)
-        {
-            case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsClubsTexturies, cardData.math.Nominal);
-                break;
-            case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsDiamondsTexturies, cardData.math.Nominal);
-                break;
-            case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsSpadesTexturies, cardData.math.Nominal);
-                break;
-            default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.BaseCardsHeartsTexturies, cardData.math.Nominal);
-                break;
-        }
-
+        pref_card.sprite = GetCards(cardData.math);
         Debug.Log("Table: for (table card pairs)");
         for (int i = 0; i < TableCardPairs.Count; i++)
         {
             if(TableCardPairs[i].FirstCard.GetComponent<GameCard>().math.strimg_Suit == beatCard.suit && TableCardPairs[i].FirstCard.GetComponent<GameCard>().math.str_Nnominal == beatCard.nominal)
             {
                 TableCardPairs[i].FirstCard.tag = "tableNotBeatingCard";
-                TableCardPairs[i].SecondCard = pref_card;
+                TableCardPairs[i].SecondCard = pref_card.gameObject;
                 TableCardPairs[i].isFull = true;
             }
         }
@@ -364,6 +324,21 @@ public class Table : BaseScreen
         }
 
         Debug.Log("}");
+    }
+
+    private Sprite GetCards(CardMath math)
+    {
+        switch (math.Suit)
+        {
+            case ESuit.CLOVERS:
+                return _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, math.Nominal);
+            case ESuit.TILE:
+                return _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, math.Nominal);
+            case ESuit.PIKES:
+                return _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, math.Nominal);
+            default:
+                return _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, math.Nominal);
+        }
     }
     #endregion
 

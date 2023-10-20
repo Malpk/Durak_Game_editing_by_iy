@@ -21,58 +21,58 @@ public class CardController: MonoBehaviour
     [Space, Space, Header("Styleshes"), Space]
 
     [Header("base")]
-    public List<Sprite> BaseCardsHeartsTexturies;
-    public List<Sprite> BaseCardsDiamondsTexturies;
-    public List<Sprite> BaseCardsClubsTexturies;
-    public List<Sprite> BaseCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> BaseCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> BaseCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> BaseCardsClubsTexturies;
+    [SerializeField] private List<Sprite> BaseCardsSpadesTexturies;
     
     [Header("russisn")]
-    public List<Sprite> RussisnCardsHeartsTexturies;
-    public List<Sprite> RussisnCardsDiamondsTexturies;
-    public List<Sprite> RussisnCardsClubsTexturies;
-    public List<Sprite> RussisnCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> RussisnCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> RussisnCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> RussisnCardsClubsTexturies;
+    [SerializeField] private List<Sprite> RussisnCardsSpadesTexturies;
 
     [Header("natureMiddleLine")]
-    public List<Sprite> natureMiddleLineCardsHeartsTexturies;
-    public List<Sprite> natureMiddleLineCardsDiamondsTexturies;
-    public List<Sprite> natureMiddleLineCardsClubsTexturies;
-    public List<Sprite> natureMiddleLineCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> natureMiddleLineCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> natureMiddleLineCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> natureMiddleLineCardsClubsTexturies;
+    [SerializeField] private List<Sprite> natureMiddleLineCardsSpadesTexturies;
 
     [Header("fallout")]
-    public List<Sprite> falloutCardsHeartsTexturies;
-    public List<Sprite> falloutCardsDiamondsTexturies;
-    public List<Sprite> falloutCardsClubsTexturies;
-    public List<Sprite> falloutCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> falloutCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> falloutCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> falloutCardsClubsTexturies;
+    [SerializeField] private List<Sprite> falloutCardsSpadesTexturies;
 
     [Header("natureTropicks")]
-    public List<Sprite> natureTropicksCardsHeartsTexturies;
-    public List<Sprite> natureTropicksCardsDiamondsTexturies;
-    public List<Sprite> natureTropicksCardsClubsTexturies;
-    public List<Sprite> natureTropicksCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> natureTropicksCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> natureTropicksCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> natureTropicksCardsClubsTexturies;
+    [SerializeField] private List<Sprite> natureTropicksCardsSpadesTexturies;
 
     [Header("herouse")]
-    public List<Sprite> herouseCardsHeartsTexturies;
-    public List<Sprite> herouseCardsDiamondsTexturies;
-    public List<Sprite> herouseCardsClubsTexturies;
-    public List<Sprite> herouseCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> herouseCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> herouseCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> herouseCardsClubsTexturies;
+    [SerializeField] private List<Sprite> herouseCardsSpadesTexturies;
 
     [Header("cars")]
-    public List<Sprite> carsCardsHeartsTexturies;
-    public List<Sprite> carsCardsDiamondsTexturies;
-    public List<Sprite> carsCardsClubsTexturies;
-    public List<Sprite> carsCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> carsCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> carsCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> carsCardsClubsTexturies;
+    [SerializeField] private List<Sprite> carsCardsSpadesTexturies;
     
     [Header("horror")]
-    public List<Sprite> horrorCardsHeartsTexturies;
-    public List<Sprite> horrorCardsDiamondsTexturies;
-    public List<Sprite> horrorCardsClubsTexturies;
-    public List<Sprite> horrorCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> horrorCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> horrorCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> horrorCardsClubsTexturies;
+    [SerializeField] private List<Sprite> horrorCardsSpadesTexturies;
 
     [Header("erotick")]
-    public List<Sprite> erotickCardsHeartsTexturies;
-    public List<Sprite> erotickCardsDiamondsTexturies;
-    public List<Sprite> erotickCardsClubsTexturies;
-    public List<Sprite> erotickCardsSpadesTexturies;
+    [SerializeField] private List<Sprite> erotickCardsHeartsTexturies;
+    [SerializeField] private List<Sprite> erotickCardsDiamondsTexturies;
+    [SerializeField] private List<Sprite> erotickCardsClubsTexturies;
+    [SerializeField] private List<Sprite> erotickCardsSpadesTexturies;
 
     [Space, Space]
     // storage card-gameobjects
