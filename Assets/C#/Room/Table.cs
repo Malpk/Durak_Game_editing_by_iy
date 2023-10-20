@@ -147,7 +147,7 @@ public class Table : BaseScreen
         }
 
         Debug.Log("Table: instantinate prefab card");
-        GameObject pref_card = Instantiate(CardController.m_prefabCard);
+        GameObject pref_card = Instantiate(_room.PREFAB_CARD);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableBeatingCard";
@@ -209,7 +209,7 @@ public class Table : BaseScreen
         }
 
         Debug.Log("Table: pref card instantinate");
-        GameObject pref_card = Instantiate(CardController.m_prefabCard);
+        GameObject pref_card = Instantiate(_room.PREFAB_CARD);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableBeatingCard";
@@ -255,7 +255,7 @@ public class Table : BaseScreen
         Debug.Log("Table: beat card {");
 
         Debug.Log("Table: instantinate new card");
-        GameObject pref_card = Instantiate(CardController.m_prefabCard);
+        GameObject pref_card = Instantiate(_room.PREFAB_CARD);
         pref_card.transform.localScale = _cardController.StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableNotBeatingCard";

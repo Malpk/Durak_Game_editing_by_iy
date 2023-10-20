@@ -115,10 +115,13 @@ public class Room : MonoBehaviour
 
         //Отображение текущего козыря
         GameObject g = GameObject.FindWithTag("TrumpTXT");
-        TextMesh text = g.GetComponent<TextMesh>();
+        if (g)
+        {
+            TextMesh text = g.GetComponent<TextMesh>();
 
-        text.text = "No game";
-        g.SetActive(true);
+            text.text = "No game";
+            g.SetActive(true);
+        }
     }
 
 
@@ -163,9 +166,6 @@ public class Room : MonoBehaviour
         Debug.Log("Room: StartGame {");
 
         m_socketNetwork.EmitReady(_roomRow.RoomID);
-
-        CardController.m_prefabCard = PREFAB_CARD;
-        CardController.m_prefabBackCard = PREFAB_BACK;
 
         Debug.Log("}");
     }

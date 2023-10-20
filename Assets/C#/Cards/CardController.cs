@@ -14,8 +14,6 @@ public class CardController: MonoBehaviour
     public Room m_room; //Указатель на текущую игровую комнату
 
     //Префабы для создания карт на основе указанных стилей
-    public static GameObject m_prefabCard;
-    public static GameObject m_prefabBackCard;
     public static GameObject m_prefabEmpty;
 
     //Стили и спрайты карт, т.е. их внешний вид
@@ -184,7 +182,7 @@ public class CardController: MonoBehaviour
         Debug.Log("CardController: GetCards {");
 
         Debug.Log("CardController: Instantinate pref card");
-        GameObject pref_card = Instantiate(m_prefabCard, StartOfCards.position, StartOfCards.rotation);
+        GameObject pref_card = Instantiate(m_room.PREFAB_CARD, StartOfCards.position, StartOfCards.rotation);
         pref_card.transform.localScale = StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableNotBeatingCard";
@@ -260,7 +258,7 @@ public class CardController: MonoBehaviour
             {
                 Debug.Log("Try instinate");
 
-                GameObject card = Instantiate(m_prefabBackCard);
+                GameObject card = Instantiate(m_room.PREFAB_BACK);
 
                 Debug.Log("After instinate");
 
