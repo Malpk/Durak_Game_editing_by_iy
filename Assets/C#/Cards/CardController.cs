@@ -13,6 +13,7 @@ public class CardController: MonoBehaviour
 
     public Room m_room; //Указатель на текущую игровую комнату
 
+    
     //Префабы для создания карт на основе указанных стилей
     public static GameObject m_prefabEmpty;
 

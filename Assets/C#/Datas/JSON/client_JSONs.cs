@@ -1,6 +1,7 @@
 ﻿using JSON_card;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 
 //Тут заспамлено: "Толко для работы с JSON файлами!"
 //Это для того, чтобы сама IDE предостерегала вас от того, чтобы наломать здесь дров
@@ -127,8 +128,10 @@ namespace JSON_client
     {
         public uint UserID;
         public uint RoomID;
-
+        
+        [JsonProperty("attackingCard")]
         public Card attacingCard;
+        [JsonProperty("attackedCard")]
         public Card attacedCard;
     }
     //Толко для работы с JSON файлами!
