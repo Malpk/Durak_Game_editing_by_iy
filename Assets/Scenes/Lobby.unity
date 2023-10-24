@@ -1573,6 +1573,554 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 680279858}
   m_CullTransparentMesh: 1
+--- !u!1 &712617837
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 712617840}
+  - component: {fileID: 712617839}
+  m_Layer: 0
+  m_Name: CardStryleSheet
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &712617839
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712617837}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9458b599beda96e4094bd41e823776fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseCardsHeartsTexturies:
+  - {fileID: 21300000, guid: 9a53e7c3610078f4c9e2d489674bbe7f, type: 3}
+  - {fileID: 21300000, guid: 47f82790d0fec42409e059fcf1d3486b, type: 3}
+  - {fileID: 21300000, guid: 9f0b7eb9ac0149843bb699e8e1622ec9, type: 3}
+  - {fileID: 21300000, guid: 4be7753ecbc31444fbbe4d8e640429db, type: 3}
+  - {fileID: 21300000, guid: bed4b2fd5af582846a1db92c30e45564, type: 3}
+  - {fileID: 21300000, guid: 8586444dbd817ab448657fb24304bdee, type: 3}
+  - {fileID: 21300000, guid: 51235621c1871d5408aa16ddfe75b4aa, type: 3}
+  - {fileID: 21300000, guid: 53a98041c43d4ab44a0616e8d0f9e7cc, type: 3}
+  - {fileID: 21300000, guid: 2543f941930c62442a9f270191510a7f, type: 3}
+  - {fileID: 21300000, guid: 77a8173e57fd03644a43bed813ed5bef, type: 3}
+  - {fileID: 21300000, guid: 58d4f082411553b49882c83ccd87bfe1, type: 3}
+  - {fileID: 21300000, guid: 02fab21ef9d6a0742ad6f578e8be6734, type: 3}
+  - {fileID: 21300000, guid: d78d9b0fb03e5dc4e8e3c8871bf85fc2, type: 3}
+  BaseCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: bb09b63d2a9922c4da8f5590920a9125, type: 3}
+  - {fileID: 21300000, guid: f4c1fa96a2ed09940adfb2fa4ccddb13, type: 3}
+  - {fileID: 21300000, guid: 335f64b3901e34849a2e0e712ec09b93, type: 3}
+  - {fileID: 21300000, guid: a9ad03be739ac6747b6e63226e7e0d32, type: 3}
+  - {fileID: 21300000, guid: 7d670a442ba1a324ead183289049ae39, type: 3}
+  - {fileID: 21300000, guid: 8e2fc6fac81d11e4ba824475d4adc4f2, type: 3}
+  - {fileID: 21300000, guid: 7438a97802988274ebef59b1131facb6, type: 3}
+  - {fileID: 21300000, guid: 1acc5aa4d709a3b49acae67e2a64da23, type: 3}
+  - {fileID: 21300000, guid: cdeb98cb0e131a646b89614242ec1d0f, type: 3}
+  - {fileID: 21300000, guid: 074669373b076fb4188036de8dd6058c, type: 3}
+  - {fileID: 21300000, guid: 7b385db36dee2fa4ab64e562ae00aff9, type: 3}
+  - {fileID: 21300000, guid: 32851feb7b571db4bbc853384ccaf26e, type: 3}
+  - {fileID: 21300000, guid: 7ea078fc95d3f344ea374ac98d4181f3, type: 3}
+  BaseCardsClubsTexturies:
+  - {fileID: 21300000, guid: 25a16c4056cf88244a3d9e01e52db632, type: 3}
+  - {fileID: 21300000, guid: 941234473f3f1dc4d973eedd3e16b1a0, type: 3}
+  - {fileID: 21300000, guid: 8efe7a3c16a6ee345a59dd95021051ec, type: 3}
+  - {fileID: 21300000, guid: 19a4be2a5193a4d43a5c7c784a4d9df9, type: 3}
+  - {fileID: 21300000, guid: e87f9a3c55ed2dc4fa83d2a16c385b40, type: 3}
+  - {fileID: 21300000, guid: 48fbcb41137ca644ca1af4aa663288d4, type: 3}
+  - {fileID: 21300000, guid: 5f30470be57ba004b87899f9744334cc, type: 3}
+  - {fileID: 21300000, guid: f2331c496fa720848b9bccc2e65d067f, type: 3}
+  - {fileID: 21300000, guid: 5bb231d7e056e4c47a2a1f1cdf28cbcb, type: 3}
+  - {fileID: 21300000, guid: 38454a27d224e0840b109c9f986cca5d, type: 3}
+  - {fileID: 21300000, guid: 84aefcdba6d505143b887f5e23c36f84, type: 3}
+  - {fileID: 21300000, guid: 5697ebc3c85093c4bbd610c31f5cef82, type: 3}
+  - {fileID: 21300000, guid: 470b147cc0b06c84bae7f591773e67f2, type: 3}
+  BaseCardsSpadesTexturies:
+  - {fileID: 21300000, guid: d6b253a0ddc5aba4f927033a92d3ef53, type: 3}
+  - {fileID: 21300000, guid: 1925f5b8bd639764fae8d3237139e67e, type: 3}
+  - {fileID: 21300000, guid: 06f98d730b6bbdd488eae3c0e517c428, type: 3}
+  - {fileID: 21300000, guid: feb2052c6a1ffb549a51f4154642f99a, type: 3}
+  - {fileID: 21300000, guid: 9298b03c88313ac4996513f51ab36e21, type: 3}
+  - {fileID: 21300000, guid: fec347d54754c014e891f8b6883c0a58, type: 3}
+  - {fileID: 21300000, guid: b64d8107689ea374c90d0115426da51c, type: 3}
+  - {fileID: 21300000, guid: f46c5e69ab9fe8c43ba183704884dba2, type: 3}
+  - {fileID: 21300000, guid: dabb4c443a1d33941bc070ddebeebd06, type: 3}
+  - {fileID: 21300000, guid: da826dbc4322e584b97126acd50bb841, type: 3}
+  - {fileID: 21300000, guid: c46dc828d7343244f86e581e4df86df5, type: 3}
+  - {fileID: 21300000, guid: b0f76b4c2a454a348a96b6ecbee07397, type: 3}
+  - {fileID: 21300000, guid: ed7ffb813e87b7641b43f5b38729e824, type: 3}
+  RussisnCardsHeartsTexturies:
+  - {fileID: 21300000, guid: 9ec81973eaa39af4eadeaf262fdee2ca, type: 3}
+  - {fileID: 21300000, guid: b6f87f3598e220044959c5499497e66b, type: 3}
+  - {fileID: 21300000, guid: d5529734edf7f2d478cee44363320636, type: 3}
+  - {fileID: 21300000, guid: 98d2b754601274c49a790b081cb2ece9, type: 3}
+  - {fileID: 21300000, guid: 32b347d9af5f3f344a9034ad986fdeab, type: 3}
+  - {fileID: 21300000, guid: c157f9c962836aa4489654ab3f586400, type: 3}
+  - {fileID: 21300000, guid: 72cf898e8f1eaa646ac8441bd3bedd1a, type: 3}
+  - {fileID: 21300000, guid: 67664d4552174fd47af255838baf8ab0, type: 3}
+  - {fileID: 21300000, guid: 5778383b0e9ebac4787ef15f752d6125, type: 3}
+  - {fileID: 21300000, guid: ab0871db7e4cef54aaecd6c287a6f971, type: 3}
+  - {fileID: 21300000, guid: 91354b878ef44dd48a197906cb8481db, type: 3}
+  - {fileID: 21300000, guid: 39d7d2ed1fdc8ba4aa0e07daa5624043, type: 3}
+  - {fileID: 21300000, guid: ff5f6cae74810cd478fd5c03e77b07a9, type: 3}
+  RussisnCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: 019907791ce379749b20ba0edbbccfe6, type: 3}
+  - {fileID: 21300000, guid: f8606be6c47ad7e4f84f9b0aa29e3064, type: 3}
+  - {fileID: 21300000, guid: 21c0bad6303cd8040ae26c1e1d957667, type: 3}
+  - {fileID: 21300000, guid: 17db65e69a76ba646a8fd74a0f42e781, type: 3}
+  - {fileID: 21300000, guid: 68eed7507b8fd4c4b9dadc79b70a96b1, type: 3}
+  - {fileID: 21300000, guid: 593beadfc08118844b93e0f1cbb345d4, type: 3}
+  - {fileID: 21300000, guid: 35cd91a6969d87349bf7a88cf5f7fd9f, type: 3}
+  - {fileID: 21300000, guid: b633e39d5fa578549ba74a09f0012cff, type: 3}
+  - {fileID: 21300000, guid: 9290f4aac820b5e42a294094f7562904, type: 3}
+  - {fileID: 21300000, guid: 36264cce19323ac498a6a4d7f2fe00d3, type: 3}
+  - {fileID: 21300000, guid: 7ade169649c894e4a9ca0c6f8f9be3ed, type: 3}
+  - {fileID: 21300000, guid: c5cf6291a4845cb4e94119ac628c8163, type: 3}
+  - {fileID: 21300000, guid: bacc4c50c264c7e47a43822df77e8b71, type: 3}
+  RussisnCardsClubsTexturies:
+  - {fileID: 21300000, guid: acecc43f43a3ae9428db6c0aa145d664, type: 3}
+  - {fileID: 21300000, guid: 94d03ad12605c294f96833cdf8daa03a, type: 3}
+  - {fileID: 21300000, guid: 24d824b36252fa44f942bb8669193ecf, type: 3}
+  - {fileID: 21300000, guid: 21511e68b933c3e4cbd632a5b358f608, type: 3}
+  - {fileID: 21300000, guid: 710e96668480ea74c9bf027beee63add, type: 3}
+  - {fileID: 21300000, guid: 3cea663b086baff47901d3975c242041, type: 3}
+  - {fileID: 21300000, guid: e3567a04728df12488296d66cea50557, type: 3}
+  - {fileID: 21300000, guid: 26faf4eee77855747aeab627edef4b72, type: 3}
+  - {fileID: 21300000, guid: 82f7034c5038e3841918bfbd32f14998, type: 3}
+  - {fileID: 21300000, guid: 37719ff9d02765b46884a94a981b1579, type: 3}
+  - {fileID: 21300000, guid: 1a27e77d060167e4a91809e7c97a1f75, type: 3}
+  - {fileID: 21300000, guid: 5a656c1935b0ca949bd11cb216230d0d, type: 3}
+  - {fileID: 21300000, guid: 912d44e5a2ba9b54ba60236def768c08, type: 3}
+  RussisnCardsSpadesTexturies:
+  - {fileID: 21300000, guid: 63ad83b10f9eb564aabdb9fc29555f2a, type: 3}
+  - {fileID: 21300000, guid: a07998585bea8374ebfa51af68b55e1b, type: 3}
+  - {fileID: 21300000, guid: f061548bbc8d5454893769ff4229d7d6, type: 3}
+  - {fileID: 21300000, guid: d6e2ea653b4ff74458798061c81913df, type: 3}
+  - {fileID: 21300000, guid: 7bcf124b7a71e53459fce8a4d883ad07, type: 3}
+  - {fileID: 21300000, guid: c45d64883248a1b4bb35fcda22010c7a, type: 3}
+  - {fileID: 21300000, guid: 64f6812695aae8c48a51c295040d40e3, type: 3}
+  - {fileID: 21300000, guid: 03a818aa37841fa4bb21d64e9d466677, type: 3}
+  - {fileID: 21300000, guid: b0bd20ed7ce954d489e9134add05b748, type: 3}
+  - {fileID: 21300000, guid: 55d1c272361c86c4e9734f3fc11dddbe, type: 3}
+  - {fileID: 21300000, guid: 532eea82311b12840b52b19e72a15de4, type: 3}
+  - {fileID: 21300000, guid: 4be12cce5312ae644860933e54261eef, type: 3}
+  - {fileID: 21300000, guid: db2f6c50ec4972c4dbd14c5278f82a17, type: 3}
+  natureMiddleLineCardsHeartsTexturies:
+  - {fileID: 21300000, guid: e2de17d2e607563489200917d9930dd2, type: 3}
+  - {fileID: 21300000, guid: a62b48f7c55dbd946b5decb53c9f50d0, type: 3}
+  - {fileID: 21300000, guid: 3e6ec2e10852b984facab3b739e726c1, type: 3}
+  - {fileID: 21300000, guid: d860d77f6079af342a958f82bbc3f567, type: 3}
+  - {fileID: 21300000, guid: a6a94174bf45abe42b68b0fcc0739b6f, type: 3}
+  - {fileID: 21300000, guid: 6938a662dc731474a8eeb98c222faaaf, type: 3}
+  - {fileID: 21300000, guid: 20248c6570901ea47a58e28e22a9ad85, type: 3}
+  - {fileID: 21300000, guid: fcbb5571efabb5045a3eaeb4cc0491cd, type: 3}
+  - {fileID: 21300000, guid: e22d1f24c7235864a8ffcffeb1c329cf, type: 3}
+  - {fileID: 21300000, guid: 4b40f494de0b4da4c89f90b9011db610, type: 3}
+  - {fileID: 21300000, guid: 3af0a1fd3f153494c85de8e15f8a8d8c, type: 3}
+  - {fileID: 21300000, guid: fce92d0ad53560843981275444e9479c, type: 3}
+  - {fileID: 21300000, guid: 39d71bff6289c9747857fd85ad6f1217, type: 3}
+  natureMiddleLineCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: 984e1d221f3e011498fc2b8d25758066, type: 3}
+  - {fileID: 21300000, guid: ea66ebbd68a9947438fcbc4e87042957, type: 3}
+  - {fileID: 21300000, guid: d7aad9bec8e184c48b478cb6eeec5518, type: 3}
+  - {fileID: 21300000, guid: efa11a12dd135e84c8d3a98e1cf19018, type: 3}
+  - {fileID: 21300000, guid: af914cac3025bbc46a035b1de4240a62, type: 3}
+  - {fileID: 21300000, guid: 66bf7659ba5d9be42acf6e9fac2fc5fc, type: 3}
+  - {fileID: 21300000, guid: dd297f8c87d937347bb95a87116541bc, type: 3}
+  - {fileID: 21300000, guid: d91d07603a681434c8987c603096c865, type: 3}
+  - {fileID: 21300000, guid: 63660130be73a8c45bac50bfba57dc10, type: 3}
+  - {fileID: 21300000, guid: a032cb89f4a1d0e4097e2c9cd4b28221, type: 3}
+  - {fileID: 21300000, guid: cf0df7044461a5949acb0624f32e947f, type: 3}
+  - {fileID: 21300000, guid: ecd4202efc00ed143bc151c12eb1ea76, type: 3}
+  - {fileID: 21300000, guid: b46eae9d37fd68b41b3cd19c7c4f1a9d, type: 3}
+  natureMiddleLineCardsClubsTexturies:
+  - {fileID: 21300000, guid: 67dc2f1f6bf53c24489d48f8b04b2154, type: 3}
+  - {fileID: 21300000, guid: 8ec0041cb02a1b542a674c77cfb83128, type: 3}
+  - {fileID: 21300000, guid: 0e47134b86e016b46adef4a6111280a6, type: 3}
+  - {fileID: 21300000, guid: 0506fbaae9658ca4894b31be850af408, type: 3}
+  - {fileID: 21300000, guid: d2fb73294ee035846af72573349b6133, type: 3}
+  - {fileID: 21300000, guid: d84380b7f1d5b944993144df3d8b04b9, type: 3}
+  - {fileID: 21300000, guid: f0bd982072896594ab27a7ff87614766, type: 3}
+  - {fileID: 21300000, guid: 255bd85c4fe1ac2438d23e4752bee0d3, type: 3}
+  - {fileID: 21300000, guid: 56f303435515a8e45afa2b249efbeb17, type: 3}
+  - {fileID: 21300000, guid: 0c400e3e2d5c2e5439808e2528006c7a, type: 3}
+  - {fileID: 21300000, guid: 4393f4912c149254f8dbe968505c8ded, type: 3}
+  - {fileID: 21300000, guid: 5583ae754f0fe35419cd7222b8eaf8c4, type: 3}
+  - {fileID: 21300000, guid: 537d2e50add99664cbfa20fd6fa53fe0, type: 3}
+  natureMiddleLineCardsSpadesTexturies:
+  - {fileID: 21300000, guid: 4d8ceaa2e033c5e4386fdf24fa6ab722, type: 3}
+  - {fileID: 21300000, guid: bf228b128c707ef44ae91719f6ab869b, type: 3}
+  - {fileID: 21300000, guid: 2d8da0a01c1c4914fb51ec5686d62f64, type: 3}
+  - {fileID: 21300000, guid: f252a077f7a35b74c9b2e4d736ca4934, type: 3}
+  - {fileID: 21300000, guid: b3f362dadf655db4380e86cd54c339f7, type: 3}
+  - {fileID: 21300000, guid: a66f4a8a68ad49b44b0f7bfa65290d6b, type: 3}
+  - {fileID: 21300000, guid: f56b69cf1020dd84d93b8f52bd45dceb, type: 3}
+  - {fileID: 21300000, guid: 9b1123b03ccd227418a0854966fdef16, type: 3}
+  - {fileID: 21300000, guid: 540309653b650e342ab4b0154780b504, type: 3}
+  - {fileID: 21300000, guid: f9afbf82c9c1bfb43ab06a2bb5fda8f3, type: 3}
+  - {fileID: 21300000, guid: a20cdce3622cec845848d8bcb9817b7b, type: 3}
+  - {fileID: 21300000, guid: 53cbe60a45f3c8b4a9f4ac51b93d6e0a, type: 3}
+  - {fileID: 21300000, guid: 83607fc4aeddcbb4d9db81175505b525, type: 3}
+  falloutCardsHeartsTexturies:
+  - {fileID: 21300000, guid: 1a9b67dec0cdd2947a83e0d82d8873f2, type: 3}
+  - {fileID: 21300000, guid: 1646a714a67638b4c84358b57299b82f, type: 3}
+  - {fileID: 21300000, guid: 6aeb9369d4cafb94e9e913ff270e8f8b, type: 3}
+  - {fileID: 21300000, guid: 955b914d3e0190d4d940cb82edb55b2a, type: 3}
+  - {fileID: 21300000, guid: 961319da391241f4cbbc7446b9a1c8d5, type: 3}
+  - {fileID: 21300000, guid: 0809a643c7dbaee468e99119e5690657, type: 3}
+  - {fileID: 21300000, guid: 90c7c071559b1d745ae01e8f2005a05b, type: 3}
+  - {fileID: 21300000, guid: 9747be79ee4b6a74081708eb46dad080, type: 3}
+  - {fileID: 21300000, guid: 3f4eb20ce34f4064ba9976e35d21ebd4, type: 3}
+  - {fileID: 21300000, guid: 90c8cfe2ac8d3bd459f0e57a251c9ec1, type: 3}
+  - {fileID: 21300000, guid: f0fd7d62f9cbb6f449cbc31e4cfccebe, type: 3}
+  - {fileID: 21300000, guid: f5fd1807076b114428c1659da70ae120, type: 3}
+  - {fileID: 21300000, guid: bc3cbf6000ffd9d4ab359fe184606247, type: 3}
+  falloutCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: 93b52b5a39e2b584b8ad31a1f504546a, type: 3}
+  - {fileID: 21300000, guid: b03be634fa868c04d8b42bcf207995ef, type: 3}
+  - {fileID: 21300000, guid: 45d9110f3722d214ca76b38497812712, type: 3}
+  - {fileID: 21300000, guid: ad575fb01ed252749bd902458d901c53, type: 3}
+  - {fileID: 21300000, guid: 08cf93ca5ddabd04193deac767fb43f5, type: 3}
+  - {fileID: 21300000, guid: 8ffc8f9ab15d37f4e9dc5a73a997867c, type: 3}
+  - {fileID: 21300000, guid: 582910ec456b5714291a90a351e8a9aa, type: 3}
+  - {fileID: 21300000, guid: d136daf93b71a7746819f01e729455e4, type: 3}
+  - {fileID: 21300000, guid: d20e6177b5215624a8bbb61b54d0fe2f, type: 3}
+  - {fileID: 21300000, guid: 2243c054a132d2248805607be6aa313a, type: 3}
+  - {fileID: 21300000, guid: 84c2f1667b4eb804783b18cc0dd0fdb4, type: 3}
+  - {fileID: 21300000, guid: b39ae290ee139174a92c809b10cbcfbf, type: 3}
+  - {fileID: 21300000, guid: f2c432f4591903f4b852753ef0db3d4b, type: 3}
+  falloutCardsClubsTexturies:
+  - {fileID: 21300000, guid: 141175aa39130dd48b38e045a1f9c492, type: 3}
+  - {fileID: 21300000, guid: f1393a322d4a441498c3fb46e9f59b51, type: 3}
+  - {fileID: 21300000, guid: 5be969765dd945548b562297ad05d514, type: 3}
+  - {fileID: 21300000, guid: c575832a4ec953c4fba0ab3b9d9dffcd, type: 3}
+  - {fileID: 21300000, guid: 294fa971d73544b42bee9cc97742f993, type: 3}
+  - {fileID: 21300000, guid: 34c6d85c91e7f4f47bcefffeeaa4a04f, type: 3}
+  - {fileID: 21300000, guid: ef1acddc8fbed1b48885d5e85d810b4f, type: 3}
+  - {fileID: 21300000, guid: d049a8c64fed64441bc925a6474e70fc, type: 3}
+  - {fileID: 21300000, guid: 8822567593188cf48a52269fd01ddce0, type: 3}
+  - {fileID: 21300000, guid: cbd395f8d6c2f19409d68b82c44cd7b1, type: 3}
+  - {fileID: 21300000, guid: fcbad9490ba15ad4083cfd962242e02b, type: 3}
+  - {fileID: 21300000, guid: 40c446dcce52c9644b3e3193ac969aa3, type: 3}
+  - {fileID: 21300000, guid: 37e6cbe466007e142bd66921802b5bfb, type: 3}
+  falloutCardsSpadesTexturies:
+  - {fileID: 21300000, guid: ef3564a08bd22aa4a929c57dd3eb549f, type: 3}
+  - {fileID: 21300000, guid: 9569b7c549c5b654e868fdad09ebe0ce, type: 3}
+  - {fileID: 21300000, guid: d5d9ed92ee37bc740aea8d27f2e086f6, type: 3}
+  - {fileID: 21300000, guid: e328eef7e7f00b24b86d8eb3ecf403f0, type: 3}
+  - {fileID: 21300000, guid: dccb5e9addb1b104fa52d04f2e294509, type: 3}
+  - {fileID: 21300000, guid: 2146bc68d57acc3458a1c5373b4d74e4, type: 3}
+  - {fileID: 21300000, guid: e2d2f260e6e0c6e458f58f68efaaa816, type: 3}
+  - {fileID: 21300000, guid: ab32f21c2befdc040bd4d0727cb6349b, type: 3}
+  - {fileID: 21300000, guid: 055acd284a8efdf40a7a4cb5c03a210c, type: 3}
+  - {fileID: 21300000, guid: 2e0dd79fc9fd9cf498055e77779c3ece, type: 3}
+  - {fileID: 21300000, guid: 1f2abd47890c94f45a7b63f215edfd0c, type: 3}
+  - {fileID: 21300000, guid: 32ed21e395d861a45918093044bbdc46, type: 3}
+  - {fileID: 21300000, guid: 44cc563d22a0bc14ea7949f701afa65a, type: 3}
+  natureTropicksCardsHeartsTexturies:
+  - {fileID: 21300000, guid: e2de17d2e607563489200917d9930dd2, type: 3}
+  - {fileID: 21300000, guid: a62b48f7c55dbd946b5decb53c9f50d0, type: 3}
+  - {fileID: 21300000, guid: 3e6ec2e10852b984facab3b739e726c1, type: 3}
+  - {fileID: 21300000, guid: d860d77f6079af342a958f82bbc3f567, type: 3}
+  - {fileID: 21300000, guid: a6a94174bf45abe42b68b0fcc0739b6f, type: 3}
+  - {fileID: 21300000, guid: 6938a662dc731474a8eeb98c222faaaf, type: 3}
+  - {fileID: 21300000, guid: 20248c6570901ea47a58e28e22a9ad85, type: 3}
+  - {fileID: 21300000, guid: fcbb5571efabb5045a3eaeb4cc0491cd, type: 3}
+  - {fileID: 21300000, guid: e22d1f24c7235864a8ffcffeb1c329cf, type: 3}
+  - {fileID: 21300000, guid: 4b40f494de0b4da4c89f90b9011db610, type: 3}
+  - {fileID: 21300000, guid: 3af0a1fd3f153494c85de8e15f8a8d8c, type: 3}
+  - {fileID: 21300000, guid: fce92d0ad53560843981275444e9479c, type: 3}
+  - {fileID: 21300000, guid: 39d71bff6289c9747857fd85ad6f1217, type: 3}
+  natureTropicksCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: 984e1d221f3e011498fc2b8d25758066, type: 3}
+  - {fileID: 21300000, guid: ea66ebbd68a9947438fcbc4e87042957, type: 3}
+  - {fileID: 21300000, guid: d7aad9bec8e184c48b478cb6eeec5518, type: 3}
+  - {fileID: 21300000, guid: efa11a12dd135e84c8d3a98e1cf19018, type: 3}
+  - {fileID: 21300000, guid: af914cac3025bbc46a035b1de4240a62, type: 3}
+  - {fileID: 21300000, guid: 66bf7659ba5d9be42acf6e9fac2fc5fc, type: 3}
+  - {fileID: 21300000, guid: dd297f8c87d937347bb95a87116541bc, type: 3}
+  - {fileID: 21300000, guid: d91d07603a681434c8987c603096c865, type: 3}
+  - {fileID: 21300000, guid: 63660130be73a8c45bac50bfba57dc10, type: 3}
+  - {fileID: 21300000, guid: a032cb89f4a1d0e4097e2c9cd4b28221, type: 3}
+  - {fileID: 21300000, guid: cf0df7044461a5949acb0624f32e947f, type: 3}
+  - {fileID: 21300000, guid: ecd4202efc00ed143bc151c12eb1ea76, type: 3}
+  - {fileID: 21300000, guid: b46eae9d37fd68b41b3cd19c7c4f1a9d, type: 3}
+  natureTropicksCardsClubsTexturies:
+  - {fileID: 21300000, guid: 67dc2f1f6bf53c24489d48f8b04b2154, type: 3}
+  - {fileID: 21300000, guid: 8ec0041cb02a1b542a674c77cfb83128, type: 3}
+  - {fileID: 21300000, guid: 0e47134b86e016b46adef4a6111280a6, type: 3}
+  - {fileID: 21300000, guid: 0506fbaae9658ca4894b31be850af408, type: 3}
+  - {fileID: 21300000, guid: d2fb73294ee035846af72573349b6133, type: 3}
+  - {fileID: 21300000, guid: d84380b7f1d5b944993144df3d8b04b9, type: 3}
+  - {fileID: 21300000, guid: f0bd982072896594ab27a7ff87614766, type: 3}
+  - {fileID: 21300000, guid: 255bd85c4fe1ac2438d23e4752bee0d3, type: 3}
+  - {fileID: 21300000, guid: 56f303435515a8e45afa2b249efbeb17, type: 3}
+  - {fileID: 21300000, guid: 0c400e3e2d5c2e5439808e2528006c7a, type: 3}
+  - {fileID: 21300000, guid: 4393f4912c149254f8dbe968505c8ded, type: 3}
+  - {fileID: 21300000, guid: 5583ae754f0fe35419cd7222b8eaf8c4, type: 3}
+  - {fileID: 21300000, guid: 537d2e50add99664cbfa20fd6fa53fe0, type: 3}
+  natureTropicksCardsSpadesTexturies:
+  - {fileID: 21300000, guid: 4d8ceaa2e033c5e4386fdf24fa6ab722, type: 3}
+  - {fileID: 21300000, guid: bf228b128c707ef44ae91719f6ab869b, type: 3}
+  - {fileID: 21300000, guid: 2d8da0a01c1c4914fb51ec5686d62f64, type: 3}
+  - {fileID: 21300000, guid: f252a077f7a35b74c9b2e4d736ca4934, type: 3}
+  - {fileID: 21300000, guid: b3f362dadf655db4380e86cd54c339f7, type: 3}
+  - {fileID: 21300000, guid: a66f4a8a68ad49b44b0f7bfa65290d6b, type: 3}
+  - {fileID: 21300000, guid: f56b69cf1020dd84d93b8f52bd45dceb, type: 3}
+  - {fileID: 21300000, guid: 9b1123b03ccd227418a0854966fdef16, type: 3}
+  - {fileID: 21300000, guid: 540309653b650e342ab4b0154780b504, type: 3}
+  - {fileID: 21300000, guid: f9afbf82c9c1bfb43ab06a2bb5fda8f3, type: 3}
+  - {fileID: 21300000, guid: a20cdce3622cec845848d8bcb9817b7b, type: 3}
+  - {fileID: 21300000, guid: 53cbe60a45f3c8b4a9f4ac51b93d6e0a, type: 3}
+  - {fileID: 21300000, guid: 83607fc4aeddcbb4d9db81175505b525, type: 3}
+  herouseCardsHeartsTexturies:
+  - {fileID: 21300000, guid: e3840caafb3dd7c498421ec9650fa4ef, type: 3}
+  - {fileID: 21300000, guid: 065f586e591a7074aaffd2c92433d82b, type: 3}
+  - {fileID: 21300000, guid: dd3b32ca5e19a494a902d83c48b1d90d, type: 3}
+  - {fileID: 21300000, guid: 984a8f05a3e83174b923794f56b56a04, type: 3}
+  - {fileID: 21300000, guid: d7da8c0a43490e24dba43bbca413371f, type: 3}
+  - {fileID: 21300000, guid: cbb1090b8a1cdaf4cb84ef738345a1b9, type: 3}
+  - {fileID: 21300000, guid: 7480b7550ac6f85449cacfd271b694c2, type: 3}
+  - {fileID: 21300000, guid: 6f6698777cebc2f45ba04a812a2f7829, type: 3}
+  - {fileID: 21300000, guid: 0ce9256d49c1b27478f6cf8eadbf76a2, type: 3}
+  - {fileID: 21300000, guid: b2a6edadde40f434abf8edc77c2aa3e5, type: 3}
+  - {fileID: 21300000, guid: cf9df03e96e3fc849be0e98639cddafb, type: 3}
+  - {fileID: 21300000, guid: 9e082fba24aed3f4185ca6b9f935b5e4, type: 3}
+  - {fileID: 21300000, guid: 859961c5bec513e43910e2528a727c74, type: 3}
+  herouseCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: a542df020283cf94ca3d84ec00fadc91, type: 3}
+  - {fileID: 21300000, guid: d0e0a493d2c40dd41add3be2ce2e2b84, type: 3}
+  - {fileID: 21300000, guid: d61c3cf4f3be4d3488147c4653cd429e, type: 3}
+  - {fileID: 21300000, guid: 23b745eccc3b31147a4b01af3889f23b, type: 3}
+  - {fileID: 21300000, guid: b6b7985176c600c42a279cb70ab89855, type: 3}
+  - {fileID: 21300000, guid: 85b5f9fc23286be4799824f34ce56f7f, type: 3}
+  - {fileID: 21300000, guid: 41b7d13bca21f7d4b9665b8552f31495, type: 3}
+  - {fileID: 21300000, guid: 01788a49ecfdcfa458acb7d95e2096c1, type: 3}
+  - {fileID: 21300000, guid: baea407663c7c58458015782ee4a174b, type: 3}
+  - {fileID: 21300000, guid: 533760a9fed6e4149973b08e39863d21, type: 3}
+  - {fileID: 21300000, guid: 8e796ec212ce2104abef6130c1d89092, type: 3}
+  - {fileID: 21300000, guid: 854b5377edaf5cd49b48f97e801a01e6, type: 3}
+  - {fileID: 21300000, guid: 05a90fd02adacac49b5c8aa0fc7c8738, type: 3}
+  herouseCardsClubsTexturies:
+  - {fileID: 21300000, guid: e439648bcd8a456439daf35792b7a406, type: 3}
+  - {fileID: 21300000, guid: 4bad0c7756aa7cb4fb9a65226d129db1, type: 3}
+  - {fileID: 21300000, guid: cdf4d60f8a9a3944dabbb688e0dfea34, type: 3}
+  - {fileID: 21300000, guid: 4ffa740a0c44da24faeb3696da223b03, type: 3}
+  - {fileID: 21300000, guid: b13a931e82114794bbdcc0c6ee73970a, type: 3}
+  - {fileID: 21300000, guid: d9c83d043bb79de4b9b943b95ec7cc8a, type: 3}
+  - {fileID: 21300000, guid: db8e2234cdcf0c14b9ccc36686c8f66b, type: 3}
+  - {fileID: 21300000, guid: 0999bfc64919bf94da6c8a79e8cedadd, type: 3}
+  - {fileID: 21300000, guid: b1a1b55c51c748b4e90bce11f31fd63f, type: 3}
+  - {fileID: 21300000, guid: 293b44462cfc90140aefe02c9818cb65, type: 3}
+  - {fileID: 21300000, guid: 78061f7142d71e24191d7890da3daccf, type: 3}
+  - {fileID: 21300000, guid: f851f027d629db94daf594b8a4b9438a, type: 3}
+  - {fileID: 21300000, guid: 0e29f96c5044db440b78ea72ffec467c, type: 3}
+  herouseCardsSpadesTexturies:
+  - {fileID: 21300000, guid: b6b58daba0d747a418a592deac1b60a1, type: 3}
+  - {fileID: 21300000, guid: 246b1cb18d4d5a7449da3cd446c30c11, type: 3}
+  - {fileID: 21300000, guid: 30c52b50bf7078d4b9cc98cf8f85a909, type: 3}
+  - {fileID: 21300000, guid: 1225713773d1a17488e828180a251a45, type: 3}
+  - {fileID: 21300000, guid: 403fabf0df9f43442ac4eff2d3ae15ce, type: 3}
+  - {fileID: 21300000, guid: da6029eb2ee696a44a91a51a2d4b2038, type: 3}
+  - {fileID: 21300000, guid: f63d4b7497c3a1e46a57f081efc37fb6, type: 3}
+  - {fileID: 21300000, guid: 7d1dced2549e3154e98d2a4bc68daa32, type: 3}
+  - {fileID: 21300000, guid: a1b60a5074a43c94497ecc7ea759af33, type: 3}
+  - {fileID: 21300000, guid: 145a64c9912bfa547baa534b5c3011ee, type: 3}
+  - {fileID: 21300000, guid: 72f57df4632d8374fa8f2686465e11c0, type: 3}
+  - {fileID: 21300000, guid: c743bea47442f3542a353f689737626b, type: 3}
+  - {fileID: 21300000, guid: bb9722162e336be4090d9144c0e43082, type: 3}
+  carsCardsHeartsTexturies:
+  - {fileID: 21300000, guid: 8297f8c485726f6499984d4a63e9e420, type: 3}
+  - {fileID: 21300000, guid: c818babc9697ac5418113ea1a1af6f23, type: 3}
+  - {fileID: 21300000, guid: c3f908896159ef54493d9340a7474bd8, type: 3}
+  - {fileID: 21300000, guid: 03f48f176b984f343994a097e3aca2e8, type: 3}
+  - {fileID: 21300000, guid: 54d0c34bc63c88340801f40e62f5d764, type: 3}
+  - {fileID: 21300000, guid: a308e541718d61142ae82b97e0ee629d, type: 3}
+  - {fileID: 21300000, guid: f96575ca047c69f438ca999c7b54d725, type: 3}
+  - {fileID: 21300000, guid: f0c8312fe82c6b74dada4af3cade57af, type: 3}
+  - {fileID: 21300000, guid: 7dea596d6e1b85b4e8f77f4a48425b67, type: 3}
+  - {fileID: 21300000, guid: 377a249afb444a142bf022441011bf48, type: 3}
+  - {fileID: 21300000, guid: 72e3e9db03f226f41a69d6dc8356ae32, type: 3}
+  - {fileID: 21300000, guid: a973660db6c7e4d49834578f8ee007bc, type: 3}
+  - {fileID: 21300000, guid: 2ebb170a618ca7b41bb6aa4d16329e4a, type: 3}
+  carsCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: d3b4fcf81922c1740a7f394802c4a517, type: 3}
+  - {fileID: 21300000, guid: e8841d1ee747b554d8557044f736f26e, type: 3}
+  - {fileID: 21300000, guid: 54bf85c7957f91940849acca3899ba29, type: 3}
+  - {fileID: 21300000, guid: c164b1ecff48e9641baecc1df3e4fff9, type: 3}
+  - {fileID: 21300000, guid: cd569a8494d268d4f96715dc54cbdccf, type: 3}
+  - {fileID: 21300000, guid: de09644c04d022740a9e453658e81296, type: 3}
+  - {fileID: 21300000, guid: 32cef28337685f44a9d0ab1e88ee41cc, type: 3}
+  - {fileID: 21300000, guid: 07fe7a7e0e5ba164eb7608b856dde9e9, type: 3}
+  - {fileID: 21300000, guid: 19b4f5268db107d48962d149ad53ad9a, type: 3}
+  - {fileID: 21300000, guid: 3171b7adfa58c27408642640f9d6c38e, type: 3}
+  - {fileID: 21300000, guid: 07b0b6d1a6e098646a06746e1b0d532f, type: 3}
+  - {fileID: 21300000, guid: 413b61a6d5e8ab84baf4fe0cc448bca5, type: 3}
+  - {fileID: 21300000, guid: 265e1f776ca25a84f850ba9fe46c5cf4, type: 3}
+  carsCardsClubsTexturies:
+  - {fileID: 21300000, guid: 0c7880c20cce1ff4189b9dcc382980e3, type: 3}
+  - {fileID: 21300000, guid: c960d46b7ffd8934eb3ba103bcae15f7, type: 3}
+  - {fileID: 21300000, guid: 26b1431a54947134597e49ef7b21bb41, type: 3}
+  - {fileID: 21300000, guid: e11d60bd56c26e34f8bfc7a7679f77f9, type: 3}
+  - {fileID: 21300000, guid: 00299e67fac20a042894b82a36b024c0, type: 3}
+  - {fileID: 21300000, guid: ff0e4e672361b8a41baa62bc3217a966, type: 3}
+  - {fileID: 21300000, guid: fee69218e3e6b744d9424223087fbe53, type: 3}
+  - {fileID: 21300000, guid: 09aad4fa4d769d54184ef0879f8829ea, type: 3}
+  - {fileID: 21300000, guid: 6bfcbd5b4bb4f444494dfd92b89a4565, type: 3}
+  - {fileID: 21300000, guid: bd80f3078756edf4aba7bab680d1ac5a, type: 3}
+  - {fileID: 21300000, guid: d04f7f91c6aec5445bf76f0bc0e5ee3a, type: 3}
+  - {fileID: 21300000, guid: 977f42be2e6ca1442a7dde18907d62c4, type: 3}
+  - {fileID: 21300000, guid: 51d3aaedcba68c74a94a321c73a351a2, type: 3}
+  carsCardsSpadesTexturies:
+  - {fileID: 21300000, guid: c7ce362276beb664fac36cf13f96c54f, type: 3}
+  - {fileID: 21300000, guid: 08228a39166bf9d449678e76f9d935ef, type: 3}
+  - {fileID: 21300000, guid: 029a159fb58ffcf49b1c2a3711cf9536, type: 3}
+  - {fileID: 21300000, guid: f155b3158d38d0248aebb12e1c06e107, type: 3}
+  - {fileID: 21300000, guid: b9520f10486f917408b6527e2d635a1b, type: 3}
+  - {fileID: 21300000, guid: d78ac3df072cb344e90ea9a945e9eaca, type: 3}
+  - {fileID: 21300000, guid: a332c469bc9dfd64aada9deee742d4c8, type: 3}
+  - {fileID: 21300000, guid: 6cc8edc739d63ef4da8e0ebc44898662, type: 3}
+  - {fileID: 21300000, guid: 040e01ec110c75b4285c11843cbadccd, type: 3}
+  - {fileID: 21300000, guid: c66fd5e0a56fb244dab1a5bff8767486, type: 3}
+  - {fileID: 21300000, guid: 2a932b226bfd0f04aaca70e17df6493e, type: 3}
+  - {fileID: 21300000, guid: 25a15d1e8a1601c4d9d940325a130cee, type: 3}
+  - {fileID: 21300000, guid: 46b01a3e10d894541ab782e4c9d9a8ab, type: 3}
+  horrorCardsHeartsTexturies:
+  - {fileID: 21300000, guid: 333c8c73a35bb874c952d6ace0a5f5e6, type: 3}
+  - {fileID: 21300000, guid: 4b27736e2c0b594449dd53c66704ad54, type: 3}
+  - {fileID: 21300000, guid: eb6cd589580d7684a876a48ec22063fd, type: 3}
+  - {fileID: 21300000, guid: b73e08f43fc752843b55cbca8ddfae91, type: 3}
+  - {fileID: 21300000, guid: 0d1d04e2d3abc6e4f97bb14d77d6d794, type: 3}
+  - {fileID: 21300000, guid: 81f3bfa52cdf5d34e9d60ef97cf62d72, type: 3}
+  - {fileID: 21300000, guid: 3d49910178903374da8332294fafaa9a, type: 3}
+  - {fileID: 21300000, guid: e9af4f111b075b94b9e963792fa6eb9c, type: 3}
+  - {fileID: 21300000, guid: 8d7bf4b303f1a2545ac0a1d89cc88147, type: 3}
+  - {fileID: 21300000, guid: 082ca222a3fae224aa3f73b9dcc84a6f, type: 3}
+  - {fileID: 21300000, guid: 5aae1ec0a439ead4bb27a20825e165ee, type: 3}
+  - {fileID: 21300000, guid: 7cccd1d56c395494f94ac9e1e2502ea1, type: 3}
+  - {fileID: 21300000, guid: 4d872b4b8391cd94b876a06d0a56d85f, type: 3}
+  horrorCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: 2f941a79ffb51a74ca108360d7874074, type: 3}
+  - {fileID: 21300000, guid: a70d50de7a2941248943c552ee9dab0c, type: 3}
+  - {fileID: 21300000, guid: c750462e72c21d549ba0448538dcaf9b, type: 3}
+  - {fileID: 21300000, guid: 0ba1895ad7e6b5c4aa1bba843e25695a, type: 3}
+  - {fileID: 21300000, guid: 6f748985d01279d4b8619a553e108ae5, type: 3}
+  - {fileID: 21300000, guid: 0fa10bbd62842934299ebb8476bb942e, type: 3}
+  - {fileID: 21300000, guid: a871d278e7324de48991572ac6b80465, type: 3}
+  - {fileID: 21300000, guid: fa35930f2171f6443a71373ae72f0667, type: 3}
+  - {fileID: 21300000, guid: 6e80ba35279eafd43aca3a1f988e4889, type: 3}
+  - {fileID: 21300000, guid: 21ce4497cdf09dd4287ef379028fd4a3, type: 3}
+  - {fileID: 21300000, guid: db4ab7356c4744a429caac4da4ff0fbc, type: 3}
+  - {fileID: 21300000, guid: 2cf211864ac19ed418121f3640a74c82, type: 3}
+  - {fileID: 21300000, guid: 9d855b5fa28214f459f6209ef48a8649, type: 3}
+  horrorCardsClubsTexturies:
+  - {fileID: 21300000, guid: 3cd1b42e5a1001747b0350170c591ff4, type: 3}
+  - {fileID: 21300000, guid: 3bd24607648e9bb4797dd95b49dba0be, type: 3}
+  - {fileID: 21300000, guid: 34d2ab7a1bfa6dd4fb0816c207b5b989, type: 3}
+  - {fileID: 21300000, guid: c53e653044583d946b90de1e6f7497e6, type: 3}
+  - {fileID: 21300000, guid: 18c61c8a1def2ed47b0b86718b47de37, type: 3}
+  - {fileID: 21300000, guid: 28c79efb246f87245b11dd0e512f27eb, type: 3}
+  - {fileID: 21300000, guid: 3ed8be42e35e41f468f5617a02f224ac, type: 3}
+  - {fileID: 21300000, guid: fe769253c286da14784762626a0a82ff, type: 3}
+  - {fileID: 21300000, guid: 8d7e1b75d51648a4999e881ccdaaa90c, type: 3}
+  - {fileID: 21300000, guid: f2ca35d5044001045aa92e67a4700c9b, type: 3}
+  - {fileID: 21300000, guid: 9920a7628fb3e4d4a99536a73adc694b, type: 3}
+  - {fileID: 21300000, guid: 0ac66659e743643479999803643cd6f1, type: 3}
+  - {fileID: 21300000, guid: f1de3d0deb01b5d45900d384731d8f30, type: 3}
+  horrorCardsSpadesTexturies:
+  - {fileID: 21300000, guid: 629d1d066c7e90c468d575f5f1258381, type: 3}
+  - {fileID: 21300000, guid: 1066692757ec1f340bf7d7429c89138f, type: 3}
+  - {fileID: 21300000, guid: f6e76115acaf818439adcb2b9d387f7f, type: 3}
+  - {fileID: 21300000, guid: 016c6e62f7d6ad044931b45a86e1e3b0, type: 3}
+  - {fileID: 21300000, guid: d00d6b22ea5e6de4f804ed04139a4361, type: 3}
+  - {fileID: 21300000, guid: b15bd887e65e5c94aaee75967f4db289, type: 3}
+  - {fileID: 21300000, guid: f73ff92777ec5da42aea9d3641790b93, type: 3}
+  - {fileID: 21300000, guid: 5498310333a984f47808a032695bca87, type: 3}
+  - {fileID: 21300000, guid: eaab5b5617f1b7e42a6402ce824cf758, type: 3}
+  - {fileID: 21300000, guid: 7d37ea5ccc480a240b90e26812f94a97, type: 3}
+  - {fileID: 21300000, guid: 877bfc5032f2adb49b68cb8f9bd207ac, type: 3}
+  - {fileID: 21300000, guid: ede0343bdc196b048a3a77760d7a4f7b, type: 3}
+  - {fileID: 21300000, guid: fd764e25d0e54b541b25b31347537835, type: 3}
+  erotickCardsHeartsTexturies:
+  - {fileID: 21300000, guid: e603402b1f3c76e4999377465df23cde, type: 3}
+  - {fileID: 21300000, guid: 5b40bc2867af92a4fa9250f3962756b6, type: 3}
+  - {fileID: 21300000, guid: 4495af4806434af40bf20ddda7b3c279, type: 3}
+  - {fileID: 21300000, guid: 96b80f4372d470347965c8031f892917, type: 3}
+  - {fileID: 21300000, guid: 6c9a7df7716f3a440b30110314c920cd, type: 3}
+  - {fileID: 21300000, guid: a71e5c99664e8764f8cfbcc4aa79cebe, type: 3}
+  - {fileID: 21300000, guid: 6885d613a2040fb4681179bae7b22219, type: 3}
+  - {fileID: 21300000, guid: f1f2a0ed9d0b7c840a70b3716a8b752f, type: 3}
+  - {fileID: 21300000, guid: 3ba10dd912e5efe4da87c130ddb47673, type: 3}
+  - {fileID: 21300000, guid: eb531626fbe580c4fa0d6d44eb6aeddb, type: 3}
+  - {fileID: 21300000, guid: e5a56ca542d27fa41ab7961bc0cdf238, type: 3}
+  - {fileID: 21300000, guid: 618fe2ca471ce4c46a898e0bafe76b71, type: 3}
+  - {fileID: 21300000, guid: 06e162d121d5c7240be2faafeb724451, type: 3}
+  erotickCardsDiamondsTexturies:
+  - {fileID: 21300000, guid: 1e8e9f141f69e8841b824dd6c7268513, type: 3}
+  - {fileID: 21300000, guid: 5eb690619b7ed124583eaa7549622aa9, type: 3}
+  - {fileID: 21300000, guid: 584b7fe410c95c048b727b39a0ecdb02, type: 3}
+  - {fileID: 21300000, guid: 7fb73acf75ac71c4aa2d9a62b861674d, type: 3}
+  - {fileID: 21300000, guid: c5f0199d7797db84686db4fe7de3f88a, type: 3}
+  - {fileID: 21300000, guid: 999455791b0c20e45b371d46016bf491, type: 3}
+  - {fileID: 21300000, guid: 24fea06f610a75e47a792177168d210e, type: 3}
+  - {fileID: 21300000, guid: d1013a58bdef9694a84cd5347f92e184, type: 3}
+  - {fileID: 21300000, guid: 6021dbd1502ddab409b1cdae4857bec6, type: 3}
+  - {fileID: 21300000, guid: 2df70de6120f69640898687d682dae75, type: 3}
+  - {fileID: 21300000, guid: 56ec4d07247c53146b297b4e5aca5bac, type: 3}
+  - {fileID: 21300000, guid: c90267a867030a94fbfb85c22bf5234d, type: 3}
+  - {fileID: 21300000, guid: d2f7e09c72b6c944c8fe23f358dc6a18, type: 3}
+  erotickCardsClubsTexturies:
+  - {fileID: 21300000, guid: c04d7638eb652514882eec03c4a22493, type: 3}
+  - {fileID: 21300000, guid: 41b608e6cc2507745ac5621c72043d00, type: 3}
+  - {fileID: 21300000, guid: d7ac686a157a1084389951136e527676, type: 3}
+  - {fileID: 21300000, guid: 3cf4507fd531e0541b0031f911f277ed, type: 3}
+  - {fileID: 21300000, guid: d5773b2a5eafa2c4a8dad37f35fffd98, type: 3}
+  - {fileID: 21300000, guid: bd53bc3941a0a0b46b7cddcd8e4ae148, type: 3}
+  - {fileID: 21300000, guid: e704308eec7d3c54fbfe7bd6f2e77810, type: 3}
+  - {fileID: 21300000, guid: 872cbf6a45e0c62488721dfa43c86d0c, type: 3}
+  - {fileID: 21300000, guid: ec805686a85a0ef47967bf1ec51997eb, type: 3}
+  - {fileID: 21300000, guid: ebcfb4596cd4a4446a62735369244c28, type: 3}
+  - {fileID: 21300000, guid: ee6d0bce25c3e8040aed824d7bbbfa9f, type: 3}
+  - {fileID: 21300000, guid: 269bf0ca5ab5f904e8439d2f7595869c, type: 3}
+  - {fileID: 21300000, guid: d0bbdf3e2aacae64590e44e315635d50, type: 3}
+  erotickCardsSpadesTexturies:
+  - {fileID: 21300000, guid: 4d55f2f6056260e4ca8b903bc4fbf0e0, type: 3}
+  - {fileID: 21300000, guid: 0348d7538d7c5984d8217172b3c7ac9e, type: 3}
+  - {fileID: 21300000, guid: 22231b16230780449928a7f18867eca4, type: 3}
+  - {fileID: 21300000, guid: 8da689cba04203c4faad4c7d41f65d59, type: 3}
+  - {fileID: 21300000, guid: 88ac8d48a4d043645b68823b3425ce09, type: 3}
+  - {fileID: 21300000, guid: 3d346f0dd7ef62849a12063339a3f4f4, type: 3}
+  - {fileID: 21300000, guid: adb96b4f503a83848b39dd06afeaa399, type: 3}
+  - {fileID: 21300000, guid: 6956bde233bbdc54688bcb2fc656190c, type: 3}
+  - {fileID: 21300000, guid: c800cdf666ed1e149ab28a765e7a1d83, type: 3}
+  - {fileID: 21300000, guid: 5d87f7e102f02944eb2531299e7cd545, type: 3}
+  - {fileID: 21300000, guid: 91b1d172771a2ea46a56262cd5c0c004, type: 3}
+  - {fileID: 21300000, guid: 9e3d7b007acba934ca4bf0f111eb0850, type: 3}
+  - {fileID: 21300000, guid: 53dbe8fbf99704f4ebef60d39627fbbc, type: 3}
+--- !u!4 &712617840
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 712617837}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.00000023841858, z: 90}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &761960194
 GameObject:
   m_ObjectHideFlags: 0
@@ -17861,7 +18409,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -14.9887085}
+  m_AnchoredPosition: {x: 0, y: -14.98877}
   m_SizeDelta: {x: -520, y: -152.4149}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4225990604852351723
@@ -56167,3 +56715,4 @@ SceneRoots:
   - {fileID: 1945302014}
   - {fileID: 1056476335}
   - {fileID: 1131942370}
+  - {fileID: 712617840}

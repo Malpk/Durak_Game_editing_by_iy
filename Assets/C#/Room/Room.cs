@@ -230,8 +230,10 @@ public class Room : MonoBehaviour
 
         _coloda_Obj = Instantiate(ColodaObject, Coloda.transform);
 
-        _trump_Obj = Instantiate(card, TrumpCardPos.transform);
+
+        _trump_Obj = _cardHolder.CreateCard(trump).gameObject;
         _trump_Obj.transform.localScale = TrumpCardPos.localScale;
+        _trump_Obj.transform.position = TrumpCardPos.position;
         _trump_Obj.transform.SetParent(gameObject.transform);
 
         //Берём карту, обозначающую козыря и ставим куда надо

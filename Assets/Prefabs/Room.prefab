@@ -5171,15 +5171,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1a5b3d950b95a024ba8bd6a05cf64e31, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  cardBack: {fileID: 21300000, guid: dd078c922de74584b899dd15300ec915, type: 3}
+  _cardHolder: {fileID: 6388265454889865209}
   Cooficent: 4
   ScreenWith: 1980
   PlaceMultiplyer: 20
   RotationMultiplyer: 5
-  PREFAB_BACK: {fileID: 3537448625647158221, guid: 1353ad46603438243b6b0cbf7d70c53a,
-    type: 3}
-  PREFAB_CARD: {fileID: 5098536998660792207, guid: f83665b83bc48e249987c990649714cc,
-    type: 3}
   StartScreen: {fileID: 8442458601424853607}
   OwnerStartGameButton: {fileID: 6564345373818982283}
   PlayerCard: {fileID: 0}

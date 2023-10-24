@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CardStyleHub : MonoBehaviour
 {
+    public static CardStyleHub Instance;
+
     [Header("base")]
     [SerializeField] private List<Sprite> BaseCardsHeartsTexturies;
     [SerializeField] private List<Sprite> BaseCardsDiamondsTexturies;
@@ -62,6 +64,19 @@ public class CardStyleHub : MonoBehaviour
     private List<Sprite> cards_texturies_Diamonds = new List<Sprite>();
     private List<Sprite> cards_texturies_Clubs = new List<Sprite>();
     private List<Sprite> cards_texturies_Spades = new List<Sprite>();
+
+    private void Awake()
+    {
+        if (Instance == null)
+        {
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            Debug.LogWarning("Destroy cardStyle");
+        }
+    }
 
     public void Load(string style)
     {

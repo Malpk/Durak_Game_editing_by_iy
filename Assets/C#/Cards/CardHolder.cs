@@ -7,28 +7,30 @@ public class CardHolder : MonoBehaviour
     [SerializeField] private Sprite _cardBack;
     [SerializeField] private GameCard _cardPrefab;
     [SerializeField] private GameObject _backPrefab;
-    [Header("Reference")]
-    [SerializeField] private CardStyleHub _styles;
 
     private List<GameCard> _cards = new List<GameCard>();
     private List<GameObject> _backs = new List<GameObject>();
 
-    public CardStyleHub Style => _styles;
 
     //Создание новых карт (из колоды) на основе префабов
     #region Card
     public GameCard CreateCard(Card data)
     {
+        var card = GetCard();
+        Debug.Log("CardController: cardData init");
+        card.Init(data);
+        Debug.Log("Table: card data suit");
+        card.SetSprite(CardStyleHub.Instance.GetCardSprite(card.math));
+        card.gameObject.SetActive(true);
+        return card;
+    }
+
+    private GameCard GetCard()
+    {
         if (_cards.Count > 0)
         {
             var card = _cards[0];
-            Debug.Log("CardController: cardData init");
-            card.Init(data);
-            Debug.Log("Table: card data suit");
-            card.SetSprite(_styles.GetCardSprite(card.math));
-            card.gameObject.SetActive(true);
             _cards.Remove(card);
-            return card;
         }
         return Instantiate(_cardPrefab.gameObject).GetComponent<GameCard>();
     }
