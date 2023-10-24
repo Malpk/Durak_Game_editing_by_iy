@@ -5,16 +5,14 @@ using UnityEngine;
 //Карта в игре, содержит все указатели на GameObject, сама им и является
 public class GameCard : MonoBehaviour
 {
-    public Table _table; //pointer to current game table
-
     private bool isDragging = false;
-    private Vector3 offset;
-
     public bool isDraggble = true;
-
+    private Vector3 offset;
+    [Header("Reference")]
+    public Table _table; //pointer to current game table
     public CardMath math; //характеристики игровой карты (масть, достоинство)
-
     public GameCard nowChoosedCard = null; //????
+    [SerializeField] private SpriteRenderer _body;
 
     //Для обработки того, как игрок походил картой (что чем отбил)
     private void OnTriggerEnter2D(Collider2D collision)
@@ -58,6 +56,12 @@ public class GameCard : MonoBehaviour
         Debug.Log("GameCard: Init()");
         math = new CardMath(card.suit, card.nominal);
     }
+
+    public void SetSprite(Sprite sprite)
+    {
+        _body.sprite = sprite;
+    }
+
     //Инициализация по масти и номиналу
     public void Init(string suit, string nominal)
     {

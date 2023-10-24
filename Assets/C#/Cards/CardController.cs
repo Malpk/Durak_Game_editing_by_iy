@@ -184,39 +184,23 @@ public class CardController: MonoBehaviour
         Debug.Log("CardController: GetCards {");
 
         Debug.Log("CardController: Instantinate pref card");
-        GameObject pref_card = Instantiate(m_prefabCard, StartOfCards.position, StartOfCards.rotation);
+
+        var pref_card = m_room.Card.CreateCard(cardbytes);
+        pref_card.transform.position = StartOfCards.position;
+        pref_card.transform.rotation = StartOfCards.rotation;
         pref_card.transform.localScale = StartOfCards.localScale;
         pref_card.transform.SetParent(gameObject.transform);
         pref_card.tag = "tableNotBeatingCard";
 
-        GameCard cardData = pref_card.GetComponent<GameCard>();
-
-        Debug.Log("CardController: cardData init");
-        cardData.Init(cardbytes);
-
-        Debug.Log("CardController: card_data_math_suit");
-        switch (cardData.math.Suit)
-        {
-            case ESuit.CLOVERS:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Clubs, cardData.math.Nominal);
-                break;
-            case ESuit.TILE:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Diamonds, cardData.math.Nominal);
-                break;
-            case ESuit.PIKES:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Spades, cardData.math.Nominal);
-                break;
-            default:
-                pref_card.GetComponent<SpriteRenderer>().sprite = chooseCardNumber(cards_texturies_Hearts, cardData.math.Nominal);
-                break;
-        }
-
-        PlayerCards.Add(pref_card.GetComponent<GameCard>());
+        PlayerCards.Add(pref_card);
         Debug.Log("CardController: finishing");
         SetAllCardsPos();
 
         Debug.Log("}");
     }
+
+
+
     public void DestroyCard(Card cardbytes)
     {
         Debug.Log("CardController: destroy card (foreach)");
@@ -260,17 +244,14 @@ public class CardController: MonoBehaviour
             {
                 Debug.Log("Try instinate");
 
-                GameObject card = Instantiate(m_prefabBackCard);
+                var card = m_room.Card.CreateBack().GetComponent<SpriteRenderer>();
+
 
                 Debug.Log("After instinate");
 
-                Sprite s = card.GetComponent<Sprite>();
-                s = Sprite.Create(m_room._roomRow.GameUI.back_card_image, new Rect(0, 0, m_room._roomRow.GameUI.back_card_image.width, m_room._roomRow.GameUI.back_card_image.height), Vector2.zero);           
-                //card.AddComponent<SpriteRenderer>().sprite = s; //? 
-                
-                card.GetComponent<SpriteRenderer>().sortingLayerName = "Cards";
+                card.sortingLayerName = "Cards";
 
-                m_room._roomRow.roomPlayers[i].UserCards.Add(card);
+                m_room._roomRow.roomPlayers[i].UserCards.Add(card.gameObject);
 
                 Debug.Log("After sprite");
             }
@@ -278,29 +259,14 @@ public class CardController: MonoBehaviour
 
         m_room.SetPositionsForAllUserCards();
     }
-    public void AtherUserDestroyCard(uint UserID)
+    public void AtherUserDestroyCard(uint userID)
     {
         Debug.Log("CardController: Ather user destroy card {");
-
         if (m_room != null && m_room._roomRow != null)
         {
-            Debug.Log("CardController: room and row not null... foreach:");
-
-            for (int i = 1; i < m_room._roomRow.roomPlayers.Count; i++)
-            {
-                Debug.Log(">-----<");
-                if (m_room._roomRow.roomPlayers[i].UserID == UserID)
-                {
-                    Debug.Log("CardController: destroy card");
-                    Destroy(m_room._roomRow.roomPlayers[i].UserCards[0]);
-                    m_room._roomRow.roomPlayers[i].UserCards.RemoveAt(0);
-                }
-            }
-
-            Debug.Log("CardController: settall user cards");
+            m_room._roomRow.DeleteCards((int)userID, m_room.Card);
             m_room.SetPositionsForAllUserCards();
         }
-
         Debug.Log("}");
     }
     #endregion
@@ -331,39 +297,7 @@ public class CardController: MonoBehaviour
 
         Debug.Log("}");
     }
-    public Sprite chooseCardNumber(List<Sprite> Cards, ENominal nominal)
-    {
-        Debug.Log("CardController: choose card number;");
-        switch (nominal)
-        {
-            case ENominal.TWO:
-                return Cards[1];
-            case ENominal.THREE:
-                return Cards[2];
-            case ENominal.FOUR:
-                return Cards[3];
-            case ENominal.FIVE:
-                return Cards[4];
-            case ENominal.SIX:
-                return Cards[5];
-            case ENominal.SEVEN:
-                return Cards[6];
-            case ENominal.EIGHT:
-                return Cards[7];
-            case ENominal.NINE:
-                return Cards[8];
-            case ENominal.TEN:
-                return Cards[9];
-            case ENominal.JACK:
-                return Cards[10];
-            case ENominal.QUEEN:
-                return Cards[11];
-            case ENominal.KING:
-                return Cards[12];
-            default:
-                return Cards[0];
-        }
-    }
+
     public void Sort(IComparer<GameCard> comparer) => PlayerCards.Sort(comparer);
     #endregion
 }

@@ -134,4 +134,36 @@ public class RoomRow : BaseScreen
 
         Debug.Log("}");
     }
+
+    public void DeleteCards(int userId, CardHolder card)
+    {
+        Debug.Log("CardController: room and row not null... foreach:");
+        for (int i = 1; i < roomPlayers.Count; i++)
+        {
+            Debug.Log(">-----<");
+            if (roomPlayers[i].UserID == userId)
+            {
+                Debug.Log("CardController: destroy card");
+                card.CardDelete(roomPlayers[i].UserCards[0]);
+                roomPlayers[i].UserCards.RemoveAt(0);
+            }
+        }
+        Debug.Log("CardController: settall user cards");
+    }
+
+    public User RemovePlayer(int id)
+    {
+        for (int i = 1; i < roomPlayers.Count; i++)
+        {
+            Debug.Log(">--<");
+            if ((int)roomPlayers[i].UserID == id)
+            {
+                Debug.Log("Room: destroy player");
+                var user = roomPlayers[i];
+                roomPlayers.RemoveAt(i);
+                return user;
+            }
+        }
+        return null;
+    }
 }

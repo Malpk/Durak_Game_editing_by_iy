@@ -14,7 +14,7 @@ public class Room : MonoBehaviour
     public static string CurrentPlayers = "Error: no players defined";
     public static string CurrentTableID = "Table: local (with bot)";
 
-    public Sprite cardBack;
+    public CardHolder _cardHolder;
 
     public float Cooficent;
     public float ScreenWith = 1980;
@@ -22,9 +22,6 @@ public class Room : MonoBehaviour
     public float PlaceMultiplyer;
     public float RotationMultiplyer;
 
-    //Создание новых карт (из колоды) на основе префабов
-    public GameObject PREFAB_BACK;
-    public GameObject PREFAB_CARD;
 
     //Работа с интерфейсом и окнами
     public GameObject StartScreen;
@@ -58,6 +55,10 @@ public class Room : MonoBehaviour
     [Space, Header("win panel")]
     public GameObject win_panel; //Окно, открывающееся после окончания игры
 
+    [SerializeField] private Transform _ui;
+
+    private List<User> _userPool = new List<User>();
+
     #region events
     public delegate void Events();
     public static event Events foldEvent;
@@ -65,6 +66,8 @@ public class Room : MonoBehaviour
     public static event Events passEvent;
     public static event Events grabbing;
     #endregion
+
+    public CardHolder Card => _cardHolder;
 
     private void Start()
     {
@@ -164,9 +167,6 @@ public class Room : MonoBehaviour
 
         m_socketNetwork.EmitReady(_roomRow.RoomID);
 
-        CardController.m_prefabCard = PREFAB_CARD;
-        CardController.m_prefabBackCard = PREFAB_BACK;
-
         Debug.Log("}");
     }
     public void startGameAlone()
@@ -235,24 +235,6 @@ public class Room : MonoBehaviour
 
         Debug.Log("Room: card data init (trump)");
         GameCard cardData = _trump_Obj.GetComponent<GameCard>();
-        cardData.Init(trump);
-
-        switch (cardData.math.Suit)
-        {
-            case ESuit.CLOVERS:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Clubs, cardData.math.Nominal);
-                break;
-            case ESuit.TILE:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Diamonds, cardData.math.Nominal);
-                break;
-            case ESuit.PIKES:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Spades, cardData.math.Nominal);
-                break;
-            default:
-                _trump_Obj.GetComponent<SpriteRenderer>().sprite = _cardController.chooseCardNumber(_cardController.cards_texturies_Hearts, cardData.math.Nominal);
-                break;
-        }
-
         _roomRow.Trump = cardData.math.Suit; //Передаём символ козырей
 
         Debug.Log("}");
@@ -325,14 +307,15 @@ public class Room : MonoBehaviour
         Debug.Log("Room: new player join {");
 
         Debug.Log("Room: user instantinate");
-        User _user = Instantiate(NewPlayer, NewPlayerSpawnPoint.position, NewPlayerSpawnPoint.rotation).GetComponent<User>();
-
+        User user = GetUser();
+        user.transform.position = NewPlayerSpawnPoint.position;
+        user.transform.rotation = NewPlayerSpawnPoint.rotation;
+        user.gameObject.transform.localScale = NewPlayerSpawnPoint.localScale;
         //Установка спрайта пользователя и его инициализация
         Debug.Log("Room: user sprite loading");
-        _user.gameObject.transform.localScale = NewPlayerSpawnPoint.localScale;
-        _user.transform.SetParent(GameObject.Find("UI").transform);
-        _roomRow.roomPlayers.Add(_user);
-        _user.Init(UId);
+        user.transform.SetParent(_ui.transform);
+        user.Init(UId);
+        _roomRow.roomPlayers.Add(user);
 
         Debug.Log("Room: set pos for all users");
         SetPositionsForAllUsers(_roomRow.roomPlayers);
@@ -341,29 +324,42 @@ public class Room : MonoBehaviour
 
         Debug.Log("}");
 
-        return _user;
+        return user;
     }
 
     //Игрок вышел / его выкинуло
     public void DeletePlayer(uint UId)
     {
         Debug.Log("Room: Delete player {");
+        DeleteUser(_roomRow.
+            RemovePlayer((int)UId));
 
-        for (int i = 1; i < _roomRow.roomPlayers.Count; i++)
-        {
-            Debug.Log(">--<");
-            if ((int)_roomRow.roomPlayers[i].UserID == (int)UId)
-            {
-                Debug.Log("Room: destroy player");
-                Destroy(_roomRow.roomPlayers[i].gameObject);
-                _roomRow.roomPlayers.RemoveAt(i);
-            }      
-        } 
         SetPositionsForAllUsers(_roomRow.roomPlayers);
 
         upd_rules(); //обновление окошка с количеством игроков и правилами
 
         Debug.Log("}");
+    }
+
+    private User GetUser()
+    {
+        if (_userPool.Count > 0)
+        {
+            var user = _userPool[0];
+            user.gameObject.SetActive(true);
+            _userPool.Remove(user);
+            return user;
+        }
+        return Instantiate(NewPlayer).GetComponent<User>();
+    }
+
+    private void DeleteUser(User user)
+    {
+        user.gameObject.SetActive(false);
+        if (!_userPool.Contains(user))
+        {
+            _userPool.Add(user);
+        }
     }
 
     //Устанавливаем позиции для спрайтов карт
