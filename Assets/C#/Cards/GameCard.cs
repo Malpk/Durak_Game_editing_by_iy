@@ -53,7 +53,7 @@ public class GameCard : MonoBehaviour
     //Инициализация из JSON
     public void Init(Card card)
     {
-        Debug.Log("GameCard: Init()");
+        Debug.Log($"GameCard: Init({card})");
         math = new CardMath(card.suit, card.nominal);
     }
 

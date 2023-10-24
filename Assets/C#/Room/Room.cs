@@ -118,10 +118,13 @@ public class Room : MonoBehaviour
 
         //Отображение текущего козыря
         GameObject g = GameObject.FindWithTag("TrumpTXT");
-        TextMesh text = g.GetComponent<TextMesh>();
+        if (g)
+        {
+            TextMesh text = g.GetComponent<TextMesh>();
 
-        text.text = "No game";
-        g.SetActive(true);
+            text.text = "No game";
+            g.SetActive(true);
+        }
     }
 
 
