@@ -99,37 +99,31 @@ public class CardController: MonoBehaviour
     #region other users cards
     public void AtherUserGotCard(uint UserID)
     {
-
         Debug.Log("CardController: Ather user got card"); //Кто писал эти запросы плохо знает английский, тут всё верно с точки зрения кода. НЕ ПРАВИТЬ!
 
-        for(int i = 1; i< m_room._roomRow.roomPlayers.Count; i++)
+        foreach (var player in m_room._roomRow.roomPlayers)
         {
-            if (m_room._roomRow.roomPlayers[i].UserID == UserID)
+            if (player.UserID == UserID)
             {
                 Debug.Log("Try instinate");
-
                 var card = m_room.Card.CreateBack().GetComponent<SpriteRenderer>();
-
-
                 Debug.Log("After instinate");
-
                 card.sortingLayerName = "Cards";
-
-                m_room._roomRow.roomPlayers[i].UserCards.Add(card.gameObject);
-
+                player.UserCards.Add(card.gameObject);
                 Debug.Log("After sprite");
             }
         }
-
-        m_room.SetPositionsForAllUserCards();
+        m_room._roomRow.SetPositionsForAllUserCards();
     }
+    
+
     public void AtherUserDestroyCard(uint userID)
     {
         Debug.Log("CardController: Ather user destroy card {");
         if (m_room != null && m_room._roomRow != null)
         {
             m_room._roomRow.DeleteCards((int)userID, m_room.Card);
-            m_room.SetPositionsForAllUserCards();
+            m_room._roomRow.SetPositionsForAllUserCards();
         }
         Debug.Log("}");
     }

@@ -1,21 +1,25 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 
 //Ќепосредственно св€зан с Room. ќтвечает за обработку общих данных о комнате (игроки, ставки и т.п.)
 public class RoomRow : BaseScreen
 {
     public bool isAlone = false; //“олько 1 живой игрок?
+    public EStatus status;
+    public float Cooficent;
+    public float PlaceMultiplyer;
+    [Header("Reference")]
+    public GameUIs GameUI;
+    public Transform NewPlayerSpawnPoint; //ћесто по€влени€ нового игрока
 
     private Room _room;
-
-    public GameUIs GameUI;
+    private uint _roomID;
+    private float ScreenWith = 1980;
 
     [Header("RoomDATA")]
 
     public uint _roomOwnerID;
-    private uint _roomID;
     public ESuit Trump;
     public ETypeGame GameType;
     public int maxCards_number;
@@ -44,7 +48,6 @@ public class RoomRow : BaseScreen
     [Header("Players")]
     public List<User> roomPlayers;
 
-    public EStatus status;
 
     //ќтображение ставок
     [Header("bet's")]
@@ -53,11 +56,12 @@ public class RoomRow : BaseScreen
 
     public void Start()
     {
-        GameUI = GetComponent<GameUIs>();
+        ScreenWith = Screen.width;
         SocketNetwork.changePlayers += UpdateRoomPlayers;
 
         Debug.Log("RoomRow: Start");
     }
+
     private void OnDestroy()
     {
         SocketNetwork.changePlayers -= UpdateRoomPlayers;
@@ -91,47 +95,13 @@ public class RoomRow : BaseScreen
         Debug.Log("}");
     }
 
-    //ќбновл€ем список игроков, согласно новому массиву
-    private void UpdateRoomPlayers(uint[] PlayersID)
-    {
-        Debug.Log("RoomRow: Update RoomPlayers {");
-
-        Debug.Log("RoomRow: users foreach");
-        List<uint> usersID = new List<uint>();
-        foreach (User _user in roomPlayers)
-        {
-            Debug.Log(">---<");
-            usersID.Add(_user.UserID);
-        }
-
-        Debug.Log("RoomRow: for id's in PlayersIDS");
-        foreach (uint ID in PlayersID)
-        {
-            Debug.Log(">---<");
-            if (ID == Session.UId)
-            {
-                Debug.Log("RoomRow: ID == Session UID");
-                break;
-            }
-            else
-            {
-                Debug.Log("RoomRow: player join");
-                _room.NewPlayerJoin(ID);
-            }
-        }
-
-        Debug.Log("}");
-    }
-
     //Ќужно не просто закрыть комнату, но и указать это в соответствующих пол€х и удалить комнату, созданную ранее из prefab
     public void ExitClickHandler()
     {
         Debug.Log("RoomRow: ExitClick Handler {");
-
         m_socketNetwork.EmitExitRoom(_roomID);
         Destroy(gameObject); //я не знаю, почему нельз€ сделать переход между сценами, тут уже поздно это исправл€ть
         m_screenDirector.ActiveScreen();
-
         Debug.Log("}");
     }
 
@@ -166,4 +136,63 @@ public class RoomRow : BaseScreen
         }
         return null;
     }
+
+    //”станавливаем позиции дл€ спрайтов (~аватарок) игроков
+    public void SetPositionsForAllUsers()
+    {
+        Debug.Log("Room: SetPositionsForAllUsers {");
+        for (int i = 1; i < roomPlayers.Count; i++)
+        {
+            Vector3 position = Vector3.zero;
+            position.x = (float)((ScreenWith * i / roomPlayers.Count) - ScreenWith * 0.5);
+            position.y = NewPlayerSpawnPoint.localPosition.y + (float)(Mathf.Abs(position.x) / Cooficent) * -1;
+            StartCoroutine(roomPlayers[i].MoveTo(position));
+        }
+        Debug.Log("}");
+    }
+
+
+    //”станавливаем позиции дл€ спрайтов карт
+    public void SetPositionsForAllUserCards()
+    {
+        Debug.Log("Room: set positio nfor all user cards {");
+        foreach (var player in roomPlayers)
+        {
+            player?.UpdateCardPosition();
+            Debug.Log("<player pos />");
+        }
+        Debug.Log("}");
+    }
+
+
+    //ќбновл€ем список игроков, согласно новому массиву
+    private void UpdateRoomPlayers(uint[] PlayersID)
+    {
+        Debug.Log("RoomRow: Update RoomPlayers {");
+        Debug.Log("RoomRow: users foreach");
+        List<uint> usersID = new List<uint>();
+        foreach (User _user in roomPlayers)
+        {
+            Debug.Log(">---<");
+            usersID.Add(_user.UserID);
+        }
+        Debug.Log("RoomRow: for id's in PlayersIDS");
+        foreach (uint ID in PlayersID)
+        {
+            Debug.Log(">---<");
+            if (ID == Session.UId)
+            {
+                Debug.Log("RoomRow: ID == Session UID");
+                break;
+            }
+            else
+            {
+                Debug.Log("RoomRow: player join");
+                _room.NewPlayerJoin(ID);
+            }
+        }
+
+        Debug.Log("}");
+    }
+
 }

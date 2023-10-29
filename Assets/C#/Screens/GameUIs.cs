@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -8,7 +6,6 @@ using UnityEngine.UI;
 public class GameUIs : BaseScreen
 {
     //указатели на соответствующую игре комнату
-    public RoomRow _roomRow;
     public Room _room;
 
     //Внутриигровые таймеры (тоже для отображения)
@@ -118,9 +115,6 @@ public class GameUIs : BaseScreen
     //Инициализация всех текстур в зависимости от стиля + элементов интерфейса
     private void Start()
     {
-        _roomRow = GetComponent<RoomRow>();
-        _room = GetComponent<Room>();
-
         Session.roleChanged += onRoleChange;
 
         string style = PlayerPrefs.GetString("Style");
@@ -190,13 +184,11 @@ public class GameUIs : BaseScreen
                 coloda_image = bace_coloda_image;
                 break;
         }
-
-
-        Sprite background_sprite = Sprite.Create(backGround_image, new Rect(0, 0, backGround_image.width, backGround_image.height), Vector2.zero);
-        background_screen_obj.sprite = background_sprite;
+        background_screen_obj.sprite = Sprite.Create(backGround_image,
+            new Rect(0, 0, backGround_image.width, backGround_image.height), Vector2.zero); ;
         //Установка спрайтов для фона с соответствующей стилю текстурой
-        Sprite table_sprite = Sprite.Create(table_image, new Rect(0, 0, table_image.width, table_image.height), Vector2.zero);
-        table_screen_obj.sprite = table_sprite;
+        table_screen_obj.sprite = Sprite.Create(table_image,
+            new Rect(0, 0, table_image.width, table_image.height), Vector2.zero); ;
     }
 
     private void OnDestroy()
@@ -257,7 +249,6 @@ public class GameUIs : BaseScreen
         if (timer < 0)
         {
             hide_all_buttons();
-
             if (Session.role == ERole.main)
             {
                 _room.Grab();
@@ -266,10 +257,6 @@ public class GameUIs : BaseScreen
             {
                 _room.Fold();
             }
-        }
-        else
-        {
-
         }
     }
 

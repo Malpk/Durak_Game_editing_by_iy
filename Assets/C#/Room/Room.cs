@@ -1,61 +1,39 @@
 ﻿using JSON_card;
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using static Table;
 
 //Текущая игровая комната, создаётся из prefab'а и на основе данных из сокета
 public class Room : MonoBehaviour
 {
-    //Отображение текущих правил игры, количества игроков и т.п.
-    public static string CurrentRules = "Error: no rules defined";
-    public static string CurrentPlayers = "Error: no players defined";
-    public static string CurrentTableID = "Table: local (with bot)";
+    public GameObject PlayerPrefab; //Игрок
+    [Header("Reference")]
+    [SerializeField] private RulePanel _rule;
+    [SerializeField] private Transform _ui;
+    [SerializeField] private TrumpHolder _trump;
+    [SerializeField] private CardHolder _cardHolder;
+    public CardController _cardController;
 
-    public CardHolder _cardHolder;
-
-    public float Cooficent;
-    public float ScreenWith = 1980;
-
-    public float PlaceMultiplyer;
-    public float RotationMultiplyer;
+    public Table _table;
+    public RoomRow _roomRow;
 
 
     //Работа с интерфейсом и окнами
     public GameObject StartScreen;
     public GameObject OwnerStartGameButton;
     public GameObject PlayerCard;
-    public GameObject WinScreen;
 
     //Управление картами (частично вынесено в отдельный класс)
-    public CardController _cardController;
-
-    //Текущий стол
-    public Table _table;
-    public RoomRow _roomRow;
 
     //Текущий сокет для работы с сервером
     private SocketNetwork m_socketNetwork;
-
-    [Header("coloda")] //Колода как отображаемый спрайт
-    public Transform Coloda;
-    public Transform TrumpCardPos;
-
-    public GameObject card;
-    public GameObject ColodaObject;
-
-    public GameObject _coloda_Obj;
-    public GameObject _trump_Obj;
 
     [Header("alone game bots")]
     public GameObject alone_Game_BOT; //Скрипт бота
 
     [Space, Header("win panel")]
     public GameObject win_panel; //Окно, открывающееся после окончания игры
-
-    [SerializeField] private Transform _ui;
 
     private List<User> _userPool = new List<User>();
 
@@ -72,8 +50,6 @@ public class Room : MonoBehaviour
     private void Start()
     {
         Debug.Log("Room: Start {");
-
-        ScreenWith = Screen.width;
 
         m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
         m_socketNetwork.GetAllRoomPlayersID();
@@ -94,9 +70,6 @@ public class Room : MonoBehaviour
 
         GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         //После этого UI (фон) находится на фоне, а не перед всем остальным. В редакторе просто отключайте на время, но не забывайте включить
-
-        rulesUI = GameObject.FindWithTag("RulesScreen");
-        rulesUI.SetActive(false);
 
         Debug.Log("}");
     }
@@ -127,123 +100,46 @@ public class Room : MonoBehaviour
         }
     }
 
-
-    //UI Rules update
-    private GameObject rulesUI;
-    public void upd_rules()
-    {
-        Debug.Log("Room: upd_rules {");
-
-        bool screen_active = rulesUI.activeInHierarchy;
-        rulesUI.SetActive(true);
-
-        try
-        {
-            CurrentRules = $"Rules: {_roomRow.GameType}";
-            CurrentPlayers = $"Players: {_roomRow.maxPlayers_number} / {_roomRow.roomPlayers.Count}";
-            CurrentTableID = $"ID Room: {_roomRow.RoomID}";
-
-            GameObject.FindWithTag("PlayersTXT").GetComponent<TextMeshProUGUI>().text =
-            CurrentPlayers;
-
-            GameObject.FindWithTag("RulesTXT").GetComponent<TextMeshProUGUI>().text =
-            CurrentRules;
-
-            GameObject.FindWithTag("TableNumberTXT").GetComponent<TextMeshProUGUI>().text =
-            CurrentTableID;
-        }
-        catch (Exception ex)
-        {
-            Debug.LogError("Can't update rules' UI");
-            Debug.Log(ex.Message);
-        }
-
-        rulesUI.SetActive(screen_active);
-
-        Debug.Log("}");
-    }
-
     //Обращение к сокету текущей комнаты и подготовка к началу игры
     public void StartGame()
     {
         Debug.Log("Room: StartGame {");
-
         m_socketNetwork.EmitReady(_roomRow.RoomID);
-
+       
         Debug.Log("}");
     }
+
     public void startGameAlone()
     {
         Debug.Log("Room: startGameAlone {");
         _roomRow.isAlone = true;
-
         Debug.Log("Room: bot init");
-        alone_Game_BOT game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
-
-        game_BOT.Init(this, _roomRow, _table);
-
-        OnReady(game_BOT._trump);
+        var game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
+        game_BOT.Init(this);
         Debug.Log("Room: bot omready finished");
-
+        OnReady(game_BOT._trump);
         Debug.Log("}");
     }
 
-    //Мы готовы и задаём КОЗЫРЬ
-    public void OnReady(Card trump)
+    public void OnReady(Card trump) //Берём карту, обозначающую козыря и ставим куда надо
     {
-        Debug.Log("Room: OnReady {");
-
-        upd_rules();
-
-        //Trump display
-
-        Debug.Log("Trump init start");
-
-        GameObject g = GameObject.FindWithTag("TrumpTXT");
-        TextMeshProUGUI text = g.GetComponent<TextMeshProUGUI>();
-
-        Debug.Log("Trump init get");
-        Debug.Log("Trump is null? " + trump == null);
-
-        text.text = trump.suit;
-        //Задаём символ козыря и цвет масти
-        if (trump.suit.Contains('♥') || trump.suit.Contains('♦'))
-        {
-            text.color = Color.red;
-        }
-        else
-        {
-            text.color = Color.black;
-        }
-
-        Debug.Log(text.text);
-
-        Debug.Log("Trump init end");
-
-        //Из данных о комнате составляем саму комнату, определяем и инициализируем спрайты
+        Debug.Log("     Room: OnReady {");
+        _rule.UpdateData();
         Debug.Log("Room: intantinating objects");
-        _roomRow = GetComponent<RoomRow>();
-
         StartScreen.SetActive(false);
-
         _roomRow.isGameStarted = true;
-
-        _coloda_Obj = Instantiate(ColodaObject, Coloda.transform);
-
-
-        _trump_Obj = _cardHolder.CreateCard(trump).gameObject;
-        _trump_Obj.transform.localScale = TrumpCardPos.localScale;
-        _trump_Obj.transform.position = TrumpCardPos.position;
-        _trump_Obj.transform.SetParent(gameObject.transform);
-
-        //Берём карту, обозначающую козыря и ставим куда надо
-
-        Debug.Log("Room: card data init (trump)");
-        GameCard cardData = _trump_Obj.GetComponent<GameCard>();
-        _roomRow.Trump = cardData.math.Suit; //Передаём символ козырей
-
+        SetRoom(trump);
         Debug.Log("}");
     }
+
+    private void SetRoom(Card trump)
+    {
+        var card = _cardHolder.CreateCard(trump);
+        _trump.SetTrump(card);
+        Debug.Log("Room: card data init (trump)");
+        _roomRow.Trump = card.math.Suit;
+    }
+
 
     //Вызывается по окночанию игры. Выводит, кто победил, кто проиграл и сколько фишек.
     public void OnWinning(uint UserID)
@@ -252,8 +148,7 @@ public class Room : MonoBehaviour
         //string game_result_for_current_player = "You WIN! You've earned 0 points"; //Change in future
 
         //Получаем экран победы и запускаем его
-        WinScreen = GameObject.FindWithTag("WinScreen");
-        WinScreen.SetActive(true);
+        win_panel.SetActive(true);
 
         //Здесь должна быть прописана обработка из json'a, который приходит с сервера
 
@@ -289,46 +184,25 @@ public class Room : MonoBehaviour
     //Прячем справйт колоды и карты козыря, когда они заканчиваются
     public void OnColodaEmpty()
     {
-        Debug.Log("Room: OnColodaEmpty");
-        _coloda_Obj.SetActive(false);
+        _trump.HideColode();
     }
+
     public void OnTrumpIsDone()
     {
-        Debug.Log("Room: OnTrumpIsDone");
-        _trump_Obj.SetActive(false);
+        _trump.HideTrump();
     }
 
-    ///////\\\\\\\
-    //NewPlayers\\
-    ///////\\\\\\\
-    public GameObject NewPlayer; //Игрок, вошедший в комнату
-    public Transform NewPlayerSpawnPoint; //Место появления нового игрока
-
-    /////////////\\\\\\\\\\\\
-    /// players functions \\\
-    /////////////\\\\\\\\\\\\
     public User NewPlayerJoin(uint UId = 0)
     {
         Debug.Log("Room: new player join {");
-
-        Debug.Log("Room: user instantinate");
         User user = GetUser();
-        user.transform.position = NewPlayerSpawnPoint.position;
-        user.transform.rotation = NewPlayerSpawnPoint.rotation;
-        user.gameObject.transform.localScale = NewPlayerSpawnPoint.localScale;
-        //Установка спрайта пользователя и его инициализация
-        Debug.Log("Room: user sprite loading");
         user.transform.SetParent(_ui.transform);
+        Debug.Log("Room: user sprite loading");
         user.Init(UId);
         _roomRow.roomPlayers.Add(user);
-
-        Debug.Log("Room: set pos for all users");
-        SetPositionsForAllUsers(_roomRow.roomPlayers);
-
-        upd_rules(); //обновление окошка с количеством игроков и правилами
-
+        _roomRow.SetPositionsForAllUsers();
+        _rule.UpdateData(); //обновление окошка с количеством игроков и правилами
         Debug.Log("}");
-
         return user;
     }
 
@@ -336,13 +210,14 @@ public class Room : MonoBehaviour
     public void DeletePlayer(uint UId)
     {
         Debug.Log("Room: Delete player {");
-        DeleteUser(_roomRow.
-            RemovePlayer((int)UId));
+        var player = _roomRow.RemovePlayer((int)UId);
+        if (player)
+        {
+            DeleteUser(player);
+            _roomRow.SetPositionsForAllUsers();
+            _rule.UpdateData(); //обновление окошка с количеством игроков и правилами
 
-        SetPositionsForAllUsers(_roomRow.roomPlayers);
-
-        upd_rules(); //обновление окошка с количеством игроков и правилами
-
+        }
         Debug.Log("}");
     }
 
@@ -355,7 +230,7 @@ public class Room : MonoBehaviour
             _userPool.Remove(user);
             return user;
         }
-        return Instantiate(NewPlayer).GetComponent<User>();
+        return Instantiate(PlayerPrefab).GetComponent<User>();
     }
 
     private void DeleteUser(User user)
@@ -365,66 +240,6 @@ public class Room : MonoBehaviour
         {
             _userPool.Add(user);
         }
-    }
-
-    //Устанавливаем позиции для спрайтов карт
-    public void SetPositionsForAllUserCards()
-    {
-        Debug.Log("Room: set positio nfor all user cards {");
-
-        for (int j = 1; j < _roomRow.roomPlayers.Count; j++)
-        {
-            Debug.Log("<player pos>");
-            Vector3 playerPos = _roomRow.roomPlayers[j].gameObject.transform.position;
-            playerPos.y -= 1;
-
-
-            for (int i = 0; i < _roomRow.roomPlayers[j].UserCards.Count; i++)
-            {
-                Debug.Log(">---<");
-
-                _roomRow.roomPlayers[j].UserCards[i].transform.SetParent(_roomRow.roomPlayers[j].gameObject.transform);
-                _roomRow.roomPlayers[j].UserCards[i].gameObject.GetComponent<SpriteRenderer>().sortingOrder = i;
-
-                Debug.Log("Room: vectors move");
-                Vector3 pos = new Vector3((Screen.height / PlaceMultiplyer) * (i - ((_roomRow.roomPlayers[j].UserCards.Count) / 2)), gameObject.transform.position.y - 1.2f, 0);
-                Vector3 rotate = new Vector3(0, 0, 0);
-
-                _roomRow.roomPlayers[j].UserCards[i].transform.localScale = new Vector3(20,20,20);
-
-                Debug.Log("Room: start courutine");
-                StartCoroutine(MoveCard(_roomRow.roomPlayers[j].UserCards[i], pos, rotate));
-            }
-            Debug.Log("<player pos />");
-        }
-
-        Debug.Log("}");
-    }
-   
-    //Устанавливаем позиции для спрайтов (~аватарок) игроков
-    public void SetPositionsForAllUsers(List<User> users)
-    {
-        Debug.Log("Room: SetPositionsForAllUsers {");
-
-        int i = 1;
-
-        while (i < users.Count)
-        {
-            Debug.Log(">---<");
-
-            float x = (float)((ScreenWith * i / users.Count) - ScreenWith * 0.5);
-            float y = (float)(Math.Abs(x) / Cooficent) * -1;
-
-            Debug.Log(y);
-
-            Vector3 coords = new Vector3(x, y, 0);
-
-            StartCoroutine(users[i].MoveTo(coords));
-
-            i++;
-        }
-
-        Debug.Log("}");
     }
 
     //Игровые действия (ходы)
@@ -541,17 +356,5 @@ public class Room : MonoBehaviour
         }
     }
     #endregion
-
-    //////////////\\\\\\\\\\\\\
-    /// lean twin functions \\\
-    //////////////\\\\\\\\\\\\\
-    public IEnumerator MoveCard(GameObject card, Vector3 newCardPos, Vector3 rotate)
-    {
-        Debug.Log("Room: MoveCard (LeanTween)");
-
-        LeanTween.moveLocal(card, newCardPos, 2);
-        LeanTween.rotate(card, rotate, 2);
-        yield return null;
-    }
 }
 

@@ -37,12 +37,12 @@ public class SigninNameAvatarScreen : BaseScreen
     {
         if (!data_validator.CheckEmail(m_email.text))
         {
-            PrintMaessage("incorrect email type");
+            PrintMaessage("Некорекная почта");
             return;
         }
         if (!data_validator.CheckPassword(m_password.text))
         {
-            PrintMaessage("incorrect password type");
+            PrintMaessage("Некорекный пороль");
             return;
         }
 

@@ -135,7 +135,6 @@ public class Table : BaseScreen
     public void placeCard(uint UserID, Card card)
     {
         Debug.Log("Table: place card");
-
         if (Session.role == ERole.main)
         {
             Debug.Log("Table: role main");
@@ -145,23 +144,19 @@ public class Table : BaseScreen
                 _gameUI.showGrabButton();
             }
         }
-
         Debug.Log("Table: instantinate prefab card");
-        var pref_card = _room.Card.CreateCard(card).GetComponent<SpriteRenderer>();
-        pref_card.transform.localScale = _cardController.StartOfCards.localScale;
-        pref_card.transform.SetParent(gameObject.transform);
-        pref_card.tag = "tableBeatingCard";
-
-        Debug.Log("Table: game card data = pref's component");
-        GameCard cardData = pref_card.GetComponent<GameCard>();
+        var cardItem = _room.Card.CreateCard(card).GetComponent<GameCard>();
+        cardItem.transform.localScale = _cardController.StartOfCards.localScale;
+        cardItem.transform.SetParent(gameObject.transform);
+        cardItem.tag = "tableBeatingCard";
 
         Debug.Log("Table: card data init");
-        cardData.Init(card);
-        cardData.isDraggble = false;
+        cardItem.Init(card);
+        cardItem.isDraggble = false;
 
         Debug.Log("Table: card pairs");
         CardPair cardPair = new CardPair();
-        cardPair.FirstCard = pref_card.gameObject;
+        cardPair.FirstCard = cardItem.gameObject;
 
         TableCardPairs.Add(cardPair);
 
@@ -178,6 +173,7 @@ public class Table : BaseScreen
 
         Debug.Log("}");
     }
+
     public void placeCard_(uint UserID, string suit, string nominal)
     {
         Debug.Log("Table: placeCard_");
