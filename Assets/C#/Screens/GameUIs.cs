@@ -7,29 +7,16 @@ public class GameUIs : BaseScreen
 {
     //указатели на соответствующую игре комнату
     public Room _room;
-
     //Внутриигровые таймеры (тоже для отображения)
-    public float timer;
-    public float timeToEnd;
 
+    [Min(0)]
+    [SerializeField] private float _timeActive;
     //Элементы интерфейса (то, зачем вообще этот класс нужен)
     #region UI_room_elements
-    [Header("Fold timer")]
-    public Image BeatTimerLine;
-    public TMP_Text BeatTimerText;
-
-    [Header("Grab Timer")]
-    public Image TakeTimerLine;
-    public TMP_Text TakeTimerText;
-
-    [Header("Pass Timer")]
-    public Image PassTimerLine;
-    public TMP_Text PassTimerText;
-
     [Header("Buttons")]
-    public GameObject PassButton;
-    public GameObject GrabButton;
-    public GameObject FoldButton;
+    [SerializeField] private TimeButton PassButton;
+    [SerializeField] private TimeButton GrabButton;
+    [SerializeField] private TimeButton FoldButton;
 
     [Header("role")]
     public GameObject roleObj;
@@ -39,9 +26,10 @@ public class GameUIs : BaseScreen
     public GameObject chatObject;
     #endregion
 
+    private TimeButton _active;
+
     //События, связанные с тем, что игрок профукал время
-    public delegate void loseTime();
-    public static event loseTime Lose;
+    public static event System.Action Lose;
 
     //Стили и текстуры для отображения фона, стола и т.д.
     #region styles
@@ -112,11 +100,17 @@ public class GameUIs : BaseScreen
     public Texture2D coloda_image;
     #endregion
 
+    private float timer;
+
+    private void Reset()
+    {
+        _timeActive = 10;
+    }
+
     //Инициализация всех текстур в зависимости от стиля + элементов интерфейса
     private void Start()
     {
         Session.roleChanged += onRoleChange;
-
         string style = PlayerPrefs.GetString("Style");
         //Получаем стиль и загружаем нужные текстуры. ЕСЛИ ВЫЛЕТАЕТ НА ЭТОМ МОМЕНТЕ, значит, что=то неверно указано тут или в файлах игры проблемки
         switch (style)
@@ -196,59 +190,14 @@ public class GameUIs : BaseScreen
         Session.roleChanged -= onRoleChange; //Не забываем, комната не вечна, а этот объект пропадает вместе с комнатой
     }
 
-    //Появление кнопок, соответствующих ходу (беру, пас и т.п.)
-    #region Buttons_hide_show
-    public void hideGrabButton()
-    {
-        GrabButton.SetActive(false);
-        timer = 0;
-    }
-    public void showGrabButton()
-    {
-        hidePassButton();
-        hideFoldButton();
-
-        GrabButton.SetActive(true);
-        timer = timeToEnd;
-    }
-
-    public void hidePassButton()
-    {
-        PassButton.SetActive(false);
-        timer = 0;
-    }
-    public void showPassButton()
-    {
-        hideGrabButton();
-        hideFoldButton();
-
-        PassButton.SetActive(true);
-        timer = timeToEnd;
-    }
-
-    public void hideFoldButton()
-    {
-        FoldButton.SetActive(false);
-        timer = 0;
-    }
-    public void showFoldButton()
-    {
-        hidePassButton();
-        hideGrabButton();
-
-        FoldButton.SetActive(true);
-        timer = timeToEnd;
-    }
-    #endregion
-
     //Обновление таймера (чтобы игроки знали, сколько времени даётся на ход)
     private void FixedUpdate()
     {
-        timer += Time.deltaTime;
-
+        timer -= Time.deltaTime;
+        _active.UpdateTimer((int)timer, timer / _timeActive);
         if (timer < 0)
         {
-            hide_all_buttons();
+            HideActiveButton();
             if (Session.role == ERole.main)
             {
                 _room.Grab();
@@ -259,6 +208,48 @@ public class GameUIs : BaseScreen
             }
         }
     }
+
+    //Появление кнопок, соответствующих ходу (беру, пас и т.п.)
+    #region Buttons_hide_show
+    public void ShowGrabButton()
+    {
+        if (_active != GrabButton)
+            ShowButton(GrabButton);
+    }
+
+    public void ShowPassButton()
+    {
+        if(_active != PassButton)
+            ShowButton(PassButton);
+    }
+
+    public void ShowFoldButton()
+    {
+        if (_active != FoldButton)
+            ShowButton(FoldButton);
+    }
+
+    public void HideActiveButton()  //Прячем активную кнопку
+    {
+        timer = 0;
+        enabled = false;
+        if (_active)
+        {
+            _active.SetActive(false);
+            _active = null;
+        }
+    }
+
+    private void ShowButton(TimeButton button)
+    {
+        timer = _timeActive;
+        enabled = true;
+        if (_active)
+            _active.SetActive(false);
+        _active = button;
+        _active.SetActive(true);
+    }
+    #endregion
 
     //Когда роль изменилась (после завершения хода) пишем игроку, что ему нужно делать
     private void onRoleChange(ERole role)
@@ -289,11 +280,4 @@ public class GameUIs : BaseScreen
         chatObject.SetActive(!chatObject.activeSelf);
     }
 
-    //Прячем все кнопки
-    public void hide_all_buttons()
-    {
-        hideGrabButton();
-        hideFoldButton();
-        hidePassButton();
-    }
 }

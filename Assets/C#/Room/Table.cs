@@ -141,7 +141,7 @@ public class Table : BaseScreen
             if (TableCardPairs.Count == 0)
             {
                 Debug.Log("Show grab btn");
-                _gameUI.showGrabButton();
+                _gameUI.ShowGrabButton();
             }
         }
         Debug.Log("Table: instantinate prefab card");
@@ -167,7 +167,7 @@ public class Table : BaseScreen
         if (Session.role == ERole.main)
         {
             Debug.Log("Table: role main. Show grub btn");
-            _gameUI.showGrabButton();
+            _gameUI.ShowGrabButton();
             return;
         }
 
@@ -183,7 +183,7 @@ public class Table : BaseScreen
             if (TableCardPairs.Count == 0)
             {
                 Debug.Log("Table: shoe game UI");
-                _gameUI.showGrabButton();
+                _gameUI.ShowGrabButton();
             }
         }
 
@@ -212,7 +212,7 @@ public class Table : BaseScreen
 
         if (Session.role == ERole.main)
         {
-            _gameUI.showGrabButton();
+            _gameUI.ShowGrabButton();
             return;
         }
     }
@@ -257,12 +257,12 @@ public class Table : BaseScreen
                     Debug.Log("<-->");
                     if (!pair.isFull)
                     {
-                        _gameUI.showGrabButton();
+                        _gameUI.ShowGrabButton();
                         Debug.Log("no grab}");
                         return;
                     }
                 }
-                _gameUI.hideGrabButton();
+                _gameUI.HideActiveButton();
             }
         }
 
@@ -273,12 +273,12 @@ public class Table : BaseScreen
             {
                 if (!cardPair.isFull)
                 {
-                    _gameUI.hideFoldButton();
+                    _gameUI.HideActiveButton();
                     Debug.Log("no fold}");
                     return;
                 }
             }
-            _gameUI.showFoldButton();
+            _gameUI.ShowFoldButton();
         }
 
         Debug.Log("}");

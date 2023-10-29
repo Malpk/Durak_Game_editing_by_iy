@@ -250,7 +250,7 @@ public class Room : MonoBehaviour
 
         if (Session.role != ERole.main)
         {
-            _roomRow.GameUI.showPassButton();
+            _roomRow.GameUI.ShowPassButton();
         }
 
         for(int i = 1; i < _roomRow.roomPlayers.Count; i++)
@@ -318,7 +318,7 @@ public class Room : MonoBehaviour
     {
         Debug.Log("Room: Fold");
 
-        GetComponent<GameUIs>().hideFoldButton();
+        GetComponent<GameUIs>().HideActiveButton();
 
         _roomRow.status = EStatus.Fold;
 
@@ -331,7 +331,7 @@ public class Room : MonoBehaviour
     public void Pass()
     {
         Debug.Log("Room: Pass");
-        GetComponent<GameUIs>().hidePassButton();
+        GetComponent<GameUIs>().HideActiveButton();
 
         _roomRow.status = EStatus.Pass;
 
@@ -345,7 +345,7 @@ public class Room : MonoBehaviour
     public void Grab()
     {
         Debug.Log("Room: Grab");
-        GetComponent<GameUIs>().hideGrabButton();
+        GetComponent<GameUIs>().HideActiveButton();
 
         _roomRow.status = EStatus.Grab;
 

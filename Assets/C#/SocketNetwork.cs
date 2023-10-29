@@ -416,7 +416,7 @@ public class SocketNetwork : MonoBehaviour
 
                             if(Session.role == ERole.firstThrower || Session.role == ERole.thrower)
                             {
-                                m_roomRow.GameUI.showFoldButton();
+                                m_roomRow.GameUI.ShowFoldButton();
                             }
 
                             m_roomRow.status = EStatus.Null;
