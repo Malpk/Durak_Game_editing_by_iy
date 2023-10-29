@@ -1,5 +1,4 @@
 ﻿using JSON_card;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Table;
@@ -13,6 +12,7 @@ public class Room : MonoBehaviour
     [SerializeField] private Transform _ui;
     [SerializeField] private TrumpHolder _trump;
     [SerializeField] private CardHolder _cardHolder;
+
     public CardController _cardController;
 
     public Table _table;
@@ -199,7 +199,7 @@ public class Room : MonoBehaviour
         user.transform.SetParent(_ui.transform);
         Debug.Log("Room: user sprite loading");
         user.Init(UId);
-        _roomRow.roomPlayers.Add(user);
+        _roomRow.AddPlayer(user);
         _roomRow.SetPositionsForAllUsers();
         _rule.UpdateData(); //обновление окошка с количеством игроков и правилами
         Debug.Log("}");

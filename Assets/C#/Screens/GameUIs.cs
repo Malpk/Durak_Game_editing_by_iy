@@ -182,7 +182,8 @@ public class GameUIs : BaseScreen
             new Rect(0, 0, backGround_image.width, backGround_image.height), Vector2.zero); ;
         //Установка спрайтов для фона с соответствующей стилю текстурой
         table_screen_obj.sprite = Sprite.Create(table_image,
-            new Rect(0, 0, table_image.width, table_image.height), Vector2.zero); ;
+            new Rect(0, 0, table_image.width, table_image.height), Vector2.zero);
+        enabled = false;
     }
 
     private void OnDestroy()

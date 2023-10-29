@@ -13,18 +13,33 @@ public class RoomRow : BaseScreen
     public GameUIs GameUI;
     public Transform NewPlayerSpawnPoint; //Место появления нового игрока
 
-    private Room _room;
-    private uint _roomID;
-    private float ScreenWith = 1980;
-
     [Header("RoomDATA")]
 
     public uint _roomOwnerID;
+    public int Bet;
     public ESuit Trump;
     public ETypeGame GameType;
     public int maxCards_number;
     public int maxPlayers_number;
-    public int Bet;
+
+    public bool isGameStarted;
+
+    //Отоюражение аватарок, список игроков
+    [Header("Player Image")]
+    public AvatarScr PlayerAvatar;
+    [Header("Players")]
+    public List<User> roomPlayers;
+
+
+    //Отображение ставок
+    [Header("bet's")]
+    [SerializeField] private TMP_Text Users_Bet;
+    [SerializeField] private TMP_Text Rooms_Bet;
+
+
+    private Room _room;
+    private uint _roomID;
+    private float ScreenWith = 1980;
 
     //Добавление владельца комнаты и установка его айди
     public uint RoomOwner
@@ -39,20 +54,6 @@ public class RoomRow : BaseScreen
         get { return _roomID; }
         set { _roomID = value; Init(value); }
     }
-
-    public bool isGameStarted;
-
-    //Отоюражение аватарок, список игроков
-    [Header("Player Image")]
-    public AvatarScr PlayerAvatar;
-    [Header("Players")]
-    public List<User> roomPlayers;
-
-
-    //Отображение ставок
-    [Header("bet's")]
-    public TMP_Text Users_Bet;
-    public TMP_Text Rooms_Bet;
 
     public void Start()
     {
@@ -90,8 +91,7 @@ public class RoomRow : BaseScreen
 
         Debug.Log("RoomRow: setting text (cheaps)");
         Users_Bet.text = Session.Chips.ToString();
-        Rooms_Bet.text = Bet.ToString();
-
+        Debug.LogWarning(Session.Chips);
         Debug.Log("}");
     }
 
@@ -121,6 +121,15 @@ public class RoomRow : BaseScreen
         Debug.Log("CardController: settall user cards");
     }
 
+    public void AddPlayer(User user)
+    {
+        if (!roomPlayers.Contains(user))
+        {
+            roomPlayers.Add(user);
+            Rooms_Bet.text = (Bet * roomPlayers.Count).ToString();
+        }
+    }
+
     public User RemovePlayer(int id)
     {
         for (int i = 1; i < roomPlayers.Count; i++)
@@ -131,6 +140,7 @@ public class RoomRow : BaseScreen
                 Debug.Log("Room: destroy player");
                 var user = roomPlayers[i];
                 roomPlayers.RemoveAt(i);
+                Rooms_Bet.text = (Bet * roomPlayers.Count).ToString();
                 return user;
             }
         }
