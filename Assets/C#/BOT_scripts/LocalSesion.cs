@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class LocalSesion : MonoBehaviour
@@ -7,9 +8,10 @@ public class LocalSesion : MonoBehaviour
     [Header("Reference")]
     [SerializeField] private Caloda _caloda;
     [SerializeField] private SwitchPlayer _switcher;
+    [SerializeField] private AiPlayerCreater _playerHolder;
 
     private Player _attacked;
-    private Player[] _players;
+    private List<Player> _players = new List<Player>();
 
     private void Reset()
     {
@@ -24,6 +26,20 @@ public class LocalSesion : MonoBehaviour
     private void OnDisable()
     {
         _switcher.OnChooseStarted -= (Player attaked) => _attacked = attaked;
+    }
+
+    public void AddPlayer(User user)
+    {
+        var player = new Player();
+        player.user = user;
+        _players.Add(player);
+        _playerHolder.Create(player);
+        Debug.Log("new player: " + _players.Count);
+    }
+
+    public void RemovePlayer()
+    {
+        
     }
 
     public void Play()
@@ -56,7 +72,7 @@ public class LocalSesion : MonoBehaviour
         foreach (var player in _players)
         {
             player.AddCard(_caloda.GetCards(_maxCards));
-            player.SetMinTrump(_caloda.Trump.suit);
+            player.SetTrump(_caloda.Trump.suit);
         }
     }
 
