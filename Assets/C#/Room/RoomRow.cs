@@ -91,7 +91,6 @@ public class RoomRow : BaseScreen
 
         Debug.Log("RoomRow: setting text (cheaps)");
         Users_Bet.text = Session.Chips.ToString();
-        Debug.LogWarning(Session.Chips);
         Debug.Log("}");
     }
 

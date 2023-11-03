@@ -11,6 +11,7 @@ namespace JSON_card
     //Толко для работы с JSON файлами!
     public class Card
     {
+        public int force;
         public string suit;
         public string nominal;
     }

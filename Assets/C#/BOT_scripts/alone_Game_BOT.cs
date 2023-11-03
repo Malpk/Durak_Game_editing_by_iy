@@ -57,7 +57,7 @@ public class alone_Game_BOT : MonoBehaviour
 
         _players[0].user.role = ERole.main;
 
-        give_roles();
+        give_roles(LastMove.folding);
 
         handleTurn();
     }
@@ -170,16 +170,10 @@ public class alone_Game_BOT : MonoBehaviour
     }
 
     //Задание ролей (кто ходит, кто отбивается, кто подкидывает)
-    public void give_roles(LastMove lastMove = LastMove.folding)
+    public void give_roles(LastMove lastMove)
     {
-        List<ERole> roles = new List<ERole>();
-
-        for (int i = 0; i < _players.Count; i++)
-        {
-            roles.Add(_players[i].user.role);
-        }
+        List<ERole> roles = GetRoles();
         roles.Add(Session.role);
-
         for (int i = 0; i < roles.Count; i++)
         {
             if (roles[i] == ERole.main)
@@ -196,18 +190,27 @@ public class alone_Game_BOT : MonoBehaviour
                 }
             }
         }
+        SetRoles(roles);
+    }
 
-        for (int i = 0; i < roles.Count; i++)
+    private List<ERole> GetRoles()
+    {
+        List<ERole> roles = new List<ERole>();
+
+        for (int i = 0; i < _players.Count; i++)
         {
-            if(i == roles.Count - 1)
-            {
-                Session.role = roles[i];    
-            }
-            else
-            {
-                _players[i].user.role = roles[i];
-            }
+            roles.Add(_players[i].user.role);
         }
+        return roles;
+    }
+
+    private void SetRoles(List<ERole> roles)
+    {
+        for (int i = 0; i < roles.Count - 1; i++)
+        {
+            _players[i].user.role = roles[i];
+        }
+        Session.role = roles[roles.Count - 1];
     }
 
     //Выдача карт ИЗ КОЛОДЫ игроку
@@ -220,23 +223,23 @@ public class alone_Game_BOT : MonoBehaviour
                 break;
 
             case 1:
-                int minCards = Math.Min(B_room_Deck.Count, 6 - _player.cards.Count);
+                int minCards = Math.Min(B_room_Deck.Count, 6 - _player.cards_old.Count);
 
                 for (int i = 0; i < minCards; i++)
                 {
                     B_room._cardController.AtherUserGotCard(_player.user.UserID);
-                    _player.cards.Add(B_room_Deck[0]);
+                    _player.cards_old.Add(B_room_Deck[0]);
                     B_room_Deck.RemoveAt(0);
                 }
                 B_room.OnTrumpIsDone();
                 break;
 
             default:
-                int min_cards = Math.Min(B_room_Deck.Count, 6 - _player.cards.Count);
+                int min_cards = Math.Min(B_room_Deck.Count, 6 - _player.cards_old.Count);
                 for (int i = 0; i < min_cards; i++)
                 {
                     B_room._cardController.AtherUserGotCard(_player.user.UserID);
-                    _player.cards.Add(B_room_Deck[0]);
+                    _player.cards_old.Add(B_room_Deck[0]);
                     B_room_Deck.RemoveAt(0);
                 }
                 break;
@@ -259,17 +262,10 @@ public class alone_Game_BOT : MonoBehaviour
     public void setAllDefaultStatus(LastMove lastMove = LastMove.folding)
     {
         Debug.Log("set all default");
-
-        for(int i = 0; i < _players.Count; i++)
+        B_room._roomRow.status = EStatus.Null;
+        for (int i = 1; i < _players.Count; i++)
         {
-            if(i == 0)
-            {
-                B_room._roomRow.status = EStatus.Null;
-            }
-            else
-            {
-                _players[i].user.status = EStatus.Null;
-            }
+            _players[i].user.status = EStatus.Null;
         }
         give_roles(lastMove);
         giveCards();
@@ -314,6 +310,7 @@ public class alone_Game_BOT : MonoBehaviour
     #region event_handlers
     public void PassHandler()
     {
+        Debug.LogWarning("pass");
         if (getMain_stat() == EStatus.Grab)
         {
             B_room._cardController.m_room._roomRow.status = EStatus.Grab;
@@ -322,10 +319,10 @@ public class alone_Game_BOT : MonoBehaviour
             {
                 if (_players[i].user.role != ERole.main)
                 {
-                    if (_players[i].user.status != EStatus.Pass) return;
+                    if (_players[i].user.status != EStatus.Pass) 
+                        return;
                 }
             }
-
             Debug.Log("grabCards");
             B_room._cardController.m_room.GrabCards();
         }
@@ -333,13 +330,14 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void FoldHandler()
     {
-        B_room._cardController.m_room._roomRow.status = EStatus.Fold;
-
+        B_room._roomRow.status = EStatus.Fold;
+        Debug.LogWarning("fold");
         for (int i = 0; i < _players.Count; i++)
         {
             if (_players[i].user.role != ERole.main)
             {
-                if (_players[i].user.status != EStatus.Fold) return;
+                if (_players[i].user.status != EStatus.Fold) 
+                    return;
             }
         }
 
@@ -348,7 +346,7 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void GrabHandler()
     {
-
+        Debug.LogWarning("grab");
     }
 
     public void handle_main(Player _player)
@@ -358,7 +356,7 @@ public class alone_Game_BOT : MonoBehaviour
         {
             if (!B_room._table.TableCardPairs[i].isFull)
             {
-                foreach (Card playerCard in _player.cards)
+                foreach (Card playerCard in _player.cards_old)
                 {
                     var newGameCard = Instantiate(gameCardPrefab).GetComponent<GameCard>();
                     newGameCard.Init(playerCard);
@@ -370,7 +368,7 @@ public class alone_Game_BOT : MonoBehaviour
                                 FirstCard.GetComponent<GameCard>().math.strimg_Suit, nominal = B_room.
                                     _table.TableCardPairs[i].FirstCard.
                                         GetComponent<GameCard>().math.str_Nnominal }, playerCard);
-                        _player.cards.Remove(playerCard);
+                        _player.cards_old.Remove(playerCard);
                         handleTurn();
                         return;
                     }
@@ -393,8 +391,8 @@ public class alone_Game_BOT : MonoBehaviour
         Debug.Log("case ERole.firstThrower:");
         if (B_room._table.TableCardPairs.Count == 0)
         {
-            Card minCard = _player.cards[0];
-            foreach (Card _card in _player.cards)
+            Card minCard = _player.cards_old[0];
+            foreach (Card _card in _player.cards_old)
             {
                 if (toCompare(_card.suit) < toCompare(minCard.suit) && toCompare(_card.nominal) < toCompare(minCard.nominal))
                 {
@@ -403,20 +401,20 @@ public class alone_Game_BOT : MonoBehaviour
             }
             B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
             B_room._table.placeCard(_player.user.UserID, minCard);
-            _player.cards.Remove(minCard);
+            _player.cards_old.Remove(minCard);
             handleTurn();
             return;
         }
         else
         {
-            for (int i = 0; i < _player.cards.Count; i++)
+            for (int i = 0; i < _player.cards_old.Count; i++)
             {
-                var newCard = B_room.Card.CreateCard(_player.cards[i]);
+                var newCard = B_room.Card.CreateCard(_player.cards_old[i]);
                 if (B_room._table.isAbleToThrow(newCard))
                 {
-                    B_room._table.placeCard(_player.user.UserID, _player.cards[i]);
+                    B_room._table.placeCard(_player.user.UserID, _player.cards_old[i]);
                     B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
-                    _player.cards.RemoveAt(i);
+                    _player.cards_old.RemoveAt(i);
                     handleTurn();
                     return;
                 }
@@ -473,19 +471,19 @@ public class alone_Game_BOT : MonoBehaviour
         Debug.Log("case ERole.thrower:");
         if (B_room._table.TableCardPairs.Count > 0)
         {
-            for (int i = 0; i < _player.cards.Count; i++)
+            for (int i = 0; i < _player.cards_old.Count; i++)
             {
                 GameObject newGameCardObject = Instantiate(gameCardPrefab);
                 GameCard newCard = newGameCardObject.GetComponent<GameCard>();
 
-                newCard.Init(_player.cards[i]);
+                newCard.Init(_player.cards_old[i]);
 
                 if (B_room._table.isAbleToThrow(newCard))
                 {
-                    B_room._table.placeCard(_player.user.UserID, _player.cards[i]);
+                    B_room._table.placeCard(_player.user.UserID, _player.cards_old[i]);
                     B_room._cardController.AtherUserDestroyCard(_player.user.UserID);
 
-                    _player.cards.RemoveAt(i);
+                    _player.cards_old.RemoveAt(i);
 
                     handleTurn();
 
@@ -544,7 +542,7 @@ public class alone_Game_BOT : MonoBehaviour
 
     public void handlBot(CardController _cardController, Table _table, Player _player)
     {
-        if (_player.cards.Count <= 0)
+        if (_player.cards_old.Count <= 0)
         {
             Debug.Log("playerIsWon");
             return;
@@ -579,5 +577,60 @@ public class alone_Game_BOT : MonoBehaviour
 public class Player
 {
     public User user;
-    public List<Card> cards = new List<Card>();
+    public List<Card> cards_old = new List<Card>();
+
+    private List<CardItem> _cards = new List<CardItem>();
+
+    public event System.Action<bool> OnUpdateMode;
+    public event System.Action OnGrab;
+
+    public int CountCards => _cards.Count;
+    public CardItem Trump { get; private set; }
+    public Player Target { get; private set; }
+
+    public void SetTarget(Player player)
+    {
+        if (player != this)
+        {
+            Target = player;
+        }
+        else
+        {
+            Target = null;
+        }
+    }
+    #region Mode
+    public void SetMode(bool mode)
+    {
+        OnUpdateMode?.Invoke(mode);
+    }
+    #endregion
+    #region Card
+    public void SetCard(CardItem[] cards)
+    {
+        _cards.Clear();
+        _cards.AddRange(cards);
+    }
+
+    public void GrabCard(CardItem[] cards)
+    {
+        AddCard(cards);
+        OnGrab?.Invoke();
+    }
+
+    public void AddCard(CardItem[] item)
+    {
+        _cards.AddRange(item);
+    }
+
+    public void SetMinTrump(ESuit suit)
+    {
+        Trump = null;
+        foreach (var card in _cards)
+        {
+            if (Trump > card)
+                Trump = card;
+        }
+    }
+    #endregion
 }
