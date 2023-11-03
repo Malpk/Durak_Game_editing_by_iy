@@ -7,6 +7,7 @@ public class LocalSesion : MonoBehaviour
     [SerializeField] private int _maxCards = 6;
     [Header("Reference")]
     [SerializeField] private Caloda _caloda;
+    [SerializeField] private TableUI _table;
     [SerializeField] private SwitchPlayer _switcher;
     [SerializeField] private AiPlayerCreater _playerHolder;
 
@@ -31,13 +32,21 @@ public class LocalSesion : MonoBehaviour
         _switcher.OnChooseStarted -= (Player attaked) => _attacked = attaked;
     }
 
-    public void AddPlayer(User user)
+    public void AddEnemy(User user)
     {
         var player = new Player();
         player.user = user;
         _players.Add(player);
         _playerHolder.Create(player);
         Debug.Log("new player: " + _players.Count);
+    }
+
+    public void AddPlayer(User user)
+    {
+        var player = new Player();
+        player.user = user;
+        _players.Add(player);
+        _table.BindPlayer(player);
     }
 
     public void Play(Room room)
@@ -70,7 +79,12 @@ public class LocalSesion : MonoBehaviour
     {
         foreach (var player in _players)
         {
-            player.AddCard(_caloda.GetCards(_maxCards));
+            var cards = _caloda.GetCards(_maxCards);
+            foreach (var card in cards)
+            {
+                _room._table.placeCard(player.user.UserID, card);
+            }
+            player.AddCard(cards);
             player.SetTrump(_caloda.Trump.suit);
         }
     }

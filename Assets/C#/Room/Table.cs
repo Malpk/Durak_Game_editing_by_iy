@@ -174,47 +174,46 @@ public class Table : BaseScreen
         Debug.Log("}");
     }
 
-    public void placeCard_(uint UserID, string suit, string nominal)
+    public void placeCard(uint UserID, CardItem card)
     {
-        Debug.Log("Table: placeCard_");
-
+        Debug.Log("Table: place card");
         if (Session.role == ERole.main)
         {
+            Debug.Log("Table: role main");
             if (TableCardPairs.Count == 0)
             {
-                Debug.Log("Table: shoe game UI");
+                Debug.Log("Show grab btn");
                 _gameUI.ShowGrabButton();
             }
         }
+        Debug.Log("Table: instantinate prefab card");
+        var cardItem = _room.Card.CreateCard(card).GetComponent<GameCard>();
+        cardItem.transform.localScale = _cardController.StartOfCards.localScale;
+        cardItem.transform.SetParent(gameObject.transform);
+        cardItem.tag = "tableBeatingCard";
 
-        Debug.Log("Table: pref card instantinate");
+        Debug.Log("Table: card data init");
+        cardItem.Init(card);
+        cardItem.isDraggble = false;
 
-        var card = new Card();
-        card.suit = suit;
-        card.nominal = nominal;
-        var pref_card = _room.Card.CreateCard(card);
-        pref_card.transform.localScale = _cardController.StartOfCards.localScale;
-        pref_card.transform.SetParent(gameObject.transform);
-        pref_card.tag = "tableBeatingCard";
-
-;
-        pref_card.isDraggble = false;
-
-
-
+        Debug.Log("Table: card pairs");
         CardPair cardPair = new CardPair();
-        cardPair.FirstCard = pref_card.gameObject;
+        cardPair.FirstCard = cardItem.gameObject;
 
         TableCardPairs.Add(cardPair);
 
+        Debug.Log("Table: soft card pairs. set all table card pos");
         SortCardPairs();
         SetAllTableCardsPos();
 
         if (Session.role == ERole.main)
         {
+            Debug.Log("Table: role main. Show grub btn");
             _gameUI.ShowGrabButton();
             return;
         }
+
+        Debug.Log("}");
     }
 
     public void beatCard(uint UserID, Card beatCard, Card beatingCard)

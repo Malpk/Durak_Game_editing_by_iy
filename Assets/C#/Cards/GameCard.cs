@@ -15,7 +15,7 @@ public class GameCard : MonoBehaviour
 
     [SerializeField] private SpriteRenderer _body;
 
-    public CardItem CardData { get; private set; } // тип данных для работы бота
+    public CardItem Data { get; private set; } // тип данных для работы бота
 
 
     //Для обработки того, как игрок походил картой (что чем отбил)
@@ -63,7 +63,7 @@ public class GameCard : MonoBehaviour
     public void Init(CardItem card)
     {
         Debug.Log($"GameCard: Init()");
-        CardData = card;
+        Data = card;
     }
     public void SetSprite(Sprite sprite)
     {

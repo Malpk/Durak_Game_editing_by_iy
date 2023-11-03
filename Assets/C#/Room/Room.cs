@@ -117,7 +117,7 @@ public class Room : MonoBehaviour
         Debug.Log("Room: bot init");
         for (int i = 0; i < _roomRow.maxPlayers_number; i++)
         {
-            _localSession.AddPlayer(NewPlayerJoin());
+            _localSession.AddEnemy(NewPlayerJoin());
         }
         _localSession.Play(this);
         Debug.Log("Room: bot omready finished");

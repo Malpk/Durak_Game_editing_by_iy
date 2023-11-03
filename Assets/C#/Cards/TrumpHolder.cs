@@ -16,7 +16,7 @@ public class TrumpHolder : MonoBehaviour
     {
         Debug.Log("Trump init start");
         Debug.Log("Trump is null? " + card == null);
-        SetText(card.CardData != null ?card.CardData.suit : card.math.Suit);
+        SetText(card.Data != null ?card.Data.suit : card.math.Suit);
         Debug.Log("Trump init end");
         _coloda = Instantiate(_colodaPrefab, _colodaPosition);
 

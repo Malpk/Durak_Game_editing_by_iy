@@ -13,6 +13,8 @@ public class Player // используется для игры с ботом
     public event System.Action<bool> OnUpdateMode;
     public event System.Action OnGrab;
     public event System.Action OnAttack;
+    public event System.Action<CardItem> OnAddCard;
+    public event System.Action<CardItem> OnRemoveCard;
     public event System.Action<CardItem, CardItem> OnBeat;
 
     public int CountCards => _cards.Count;
@@ -126,6 +128,19 @@ public class Player // используется для игры с ботом
     }
 
     #region Card
+
+    public bool Contain(CardItem target)
+    {
+        foreach (var card in _cards)
+        {
+            if (card == target)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void SetCard(CardItem[] cards)
     {
         _cards.Clear();
@@ -137,9 +152,19 @@ public class Player // используется для игры с ботом
         OnGrab?.Invoke();
     }
 
-    public void AddCard(CardItem[] item)
+    public void AddCard(CardItem[] cards)
     {
-        _cards.AddRange(item);
+        _cards.AddRange(cards);
+        foreach (var card in cards)
+        {
+            OnAddCard?.Invoke(card);
+        }
+    }
+
+    public void RemoveCard(CardItem card)
+    {
+        _cards.Remove(card);
+        OnRemoveCard?.Invoke(card);
     }
 
     public void SetTrump(ESuit suit)
