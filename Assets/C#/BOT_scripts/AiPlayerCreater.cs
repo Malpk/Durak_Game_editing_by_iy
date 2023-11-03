@@ -5,7 +5,7 @@ public class AiPlayerCreater : MonoBehaviour
 {
     [SerializeField] private AIPlayer _prefab;
 
-    private List<AIPlayer> _pool;
+    private List<AIPlayer> _pool = new List<AIPlayer>();
 
     public AIPlayer Create(Player bind)
     {

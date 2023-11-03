@@ -1,7 +1,7 @@
 using UnityEngine;
 
 [System.Serializable]
-public class CardItem  // тип данных хранящий информацию о карте, используется в колоде
+public class CardItem  // тип данных хранящий информацию о карте, используется для игры с ботом
 {
     [SerializeField] private string _name;
 
@@ -10,14 +10,18 @@ public class CardItem  // тип данных хранящий информацию о карте, используется в
 
     public static bool operator >(CardItem first,CardItem second)
     {
-        if (first == null)
+        if (first == second)
+            return false;
+        else if (first == null)
             return true;
         else
             return first.data.Force > second.data.Force;
     }
     public static bool operator <(CardItem first, CardItem second)
     {
-        if (first == null)
+        if (first == second)
+            return false;
+        else if (first == null)
             return true;
         else
             return first.data.Force < second.data.Force;

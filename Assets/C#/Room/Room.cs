@@ -12,6 +12,7 @@ public class Room : MonoBehaviour
     [SerializeField] private Transform _ui;
     [SerializeField] private TrumpHolder _trump;
     [SerializeField] private CardHolder _cardHolder;
+    [SerializeField] private LocalSesion _localSession;
 
     public CardController _cardController;
 
@@ -114,10 +115,13 @@ public class Room : MonoBehaviour
         Debug.Log("Room: startGameAlone {");
         _roomRow.isAlone = true;
         Debug.Log("Room: bot init");
-        var game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
-        game_BOT.Init(this);
+        for (int i = 0; i < _roomRow.maxPlayers_number; i++)
+        {
+            _localSession.AddPlayer(NewPlayerJoin());
+        }
+        _localSession.Play(this);
         Debug.Log("Room: bot omready finished");
-        OnReady(game_BOT._trump);
+        OnReady(_localSession.Caloda.Trump);
         Debug.Log("}");
     }
 
@@ -131,7 +135,16 @@ public class Room : MonoBehaviour
         SetRoom(trump);
         Debug.Log("}");
     }
-
+    public void OnReady(CardItem trump) //Берём карту, обозначающую козыря и ставим куда надо
+    {
+        Debug.Log("     Room: OnReady {");
+        _rule.UpdateData();
+        Debug.Log("Room: intantinating objects");
+        StartScreen.SetActive(false);
+        _roomRow.isGameStarted = true;
+        SetRoom(trump);
+        Debug.Log("}");
+    }
     private void SetRoom(Card trump)
     {
         var card = _cardHolder.CreateCard(trump);
@@ -140,6 +153,13 @@ public class Room : MonoBehaviour
         _roomRow.Trump = card.math.Suit;
     }
 
+    private void SetRoom(CardItem trump)
+    {
+        var card = _cardHolder.CreateCard(trump);
+        _trump.SetTrump(card);
+        Debug.Log("Room: card data init (trump)");
+        _roomRow.Trump = trump.suit;
+    }
 
     //Вызывается по окночанию игры. Выводит, кто победил, кто проиграл и сколько фишек.
     public void OnWinning(uint UserID)

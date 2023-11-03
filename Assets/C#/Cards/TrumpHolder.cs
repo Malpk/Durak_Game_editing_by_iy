@@ -16,7 +16,7 @@ public class TrumpHolder : MonoBehaviour
     {
         Debug.Log("Trump init start");
         Debug.Log("Trump is null? " + card == null);
-        SetText(card.math.strimg_Suit);
+        SetText(card.CardData != null ?card.CardData.suit : card.math.Suit);
         Debug.Log("Trump init end");
         _coloda = Instantiate(_colodaPrefab, _colodaPosition);
 
@@ -38,11 +38,11 @@ public class TrumpHolder : MonoBehaviour
         _coloda.SetActive(false);
     }
 
-    private void SetText(string suit)
+    private void SetText(ESuit suit)
     {
-        _trumpText.SetText(suit);
+        _trumpText.SetText(suit.ToString());
         //Задаём символ козыря и цвет масти
-        if (suit.Contains('♥') || suit.Contains('♦'))
+        if (suit == ESuit.HEART || suit == ESuit.CLOVERS)
         {
             _trumpText.color = Color.red;
         }
@@ -50,6 +50,5 @@ public class TrumpHolder : MonoBehaviour
         {
             _trumpText.color = Color.black;
         }
-        Debug.Log(_trumpText.text);
     }
 }

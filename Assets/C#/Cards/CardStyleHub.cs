@@ -147,19 +147,19 @@ public class CardStyleHub : MonoBehaviour
         }
     }
 
-    public Sprite GetCardSprite(CardMath math)
+    public Sprite GetCardSprite(ESuit suit, ENominal nominal)
     {
         Debug.Log("CardController: card_data_math_suit");
-        switch (math.Suit)
+        switch (suit)
         {
             case ESuit.CLOVERS:
-                return chooseCardNumber(cards_texturies_Clubs, math.Nominal);
+                return chooseCardNumber(cards_texturies_Clubs, nominal);
             case ESuit.TILE:
-                return chooseCardNumber(cards_texturies_Diamonds, math.Nominal);
+                return chooseCardNumber(cards_texturies_Diamonds, nominal);
             case ESuit.PIKES:
-                return chooseCardNumber(cards_texturies_Spades, math.Nominal);
+                return chooseCardNumber(cards_texturies_Spades, nominal);
             default:
-                return chooseCardNumber(cards_texturies_Hearts, math.Nominal);
+                return chooseCardNumber(cards_texturies_Hearts, nominal);
         }
     }
 

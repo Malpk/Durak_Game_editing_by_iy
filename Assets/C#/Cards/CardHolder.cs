@@ -20,7 +20,24 @@ public class CardHolder : MonoBehaviour
         Debug.Log("CardController: cardData init");
         card.Init(data);
         Debug.Log("Table: card data suit");
-        card.SetSprite(CardStyleHub.Instance.GetCardSprite(card.math));
+        card.SetSprite(CardStyleHub.Instance.GetCardSprite(card.math.Suit, card.math.Nominal));
+        card.gameObject.SetActive(true);
+        return card;
+    }
+
+    public GameCard CreateCard(CardItem cardData) // карты для игры с ботом
+    {
+        var card = Create(cardData.suit, cardData.data.Nominal);
+        card.Init(cardData);
+        return card;
+    }
+
+    private GameCard Create(ESuit suit, ENominal nominal)
+    {
+        var card = GetCard();
+        Debug.Log("CardController: cardData init");
+        Debug.Log("Table: card data suit");
+        card.SetSprite(CardStyleHub.Instance.GetCardSprite(suit, nominal));
         card.gameObject.SetActive(true);
         return card;
     }

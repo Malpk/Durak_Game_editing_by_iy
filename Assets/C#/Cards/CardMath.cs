@@ -1,13 +1,20 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using JSON_card;
 
 //Содержит основные характеристики карты.
 public class CardMath {
 
+    public readonly ESuit suit;
+    public readonly ENominal nominal;
+
     private string _suit; //символ масти
     private string _nominal; //номинал карты
+
+    public CardMath(CardItem card)
+    {
+        suit = card.suit;
+        nominal = card.data.Nominal;
+    }
 
     //Конструктор (классический)
     public CardMath(string _suit, string _nominal) { 

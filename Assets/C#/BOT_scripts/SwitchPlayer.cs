@@ -12,12 +12,13 @@ public class SwitchPlayer : MonoBehaviour
     public void Play(Player[] players)
     {
         _players = players;
+        Debug.LogWarning(players.Length);
         foreach (var player in _players)
         {
             player.OnGrab += () => _list.Remove(player);
         }
         _list.AddRange(_players);
-        SetStartPlayer();
+        OnChooseStarted.Invoke(SetStartPlayer());
     }
 
     public void Stop()
@@ -30,15 +31,22 @@ public class SwitchPlayer : MonoBehaviour
         _players = null;
     }
 
-    private void SetStartPlayer()  // выбираем атакуещего
+    private Player SetStartPlayer()  // выбираем атакуещего
     {
         var attaked = GetAttakedPlayer();
-        while (_list[0] != attaked || _list.Count > 0)
+        while (_list.Count > 0)
         {
-            _list.Remove(_list[0]);
+            if (_list[0] == attaked)
+            {
+                _list.Remove(attaked);
+                return attaked;
+            }
+            else
+            {
+                _list.Remove(_list[0]);
+            }
         }
-        _list.Remove(attaked);
-        OnChooseStarted.Invoke(attaked);
+        return attaked;
     }
 
     private Player GetAttakedPlayer()
@@ -94,15 +102,5 @@ public class SwitchPlayer : MonoBehaviour
                     _list.Add(player);
             }
         }
-    }
-    private int CountActivePlayer() //подсчет количества игроков у которых есть карты
-    {
-        var count = 0;
-        foreach (var player in _players)
-        {
-            if (player.CountCards > 0)
-                count++;
-        }
-        return count;
     }
 }

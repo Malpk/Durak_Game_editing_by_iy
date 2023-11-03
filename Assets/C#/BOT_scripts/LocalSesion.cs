@@ -10,8 +10,11 @@ public class LocalSesion : MonoBehaviour
     [SerializeField] private SwitchPlayer _switcher;
     [SerializeField] private AiPlayerCreater _playerHolder;
 
+    private Room _room;
     private Player _attacked;
     private List<Player> _players = new List<Player>();
+
+    public Caloda Caloda => _caloda;
 
     private void Reset()
     {
@@ -37,16 +40,12 @@ public class LocalSesion : MonoBehaviour
         Debug.Log("new player: " + _players.Count);
     }
 
-    public void RemovePlayer()
+    public void Play(Room room)
     {
-        
-    }
-
-    public void Play()
-    {
+        _room = room;
         _caloda.MixColode(10);
         SetPlayerCards();
-        _switcher.Play(_players);
+        _switcher.Play(_players.ToArray());
     }
 
     public void Next()
@@ -59,7 +58,7 @@ public class LocalSesion : MonoBehaviour
 
     private void UpdatePlayerCards()  //Раздача карт
     {
-        for (int i = 0; i < _players.Length && _caloda.CountCards > 0; i++)
+        for (int i = 0; i < _players.Count && _caloda.CountCards > 0; i++)
         {
             var count = _maxCards - _players[i].CountCards;
             if (count > 0)

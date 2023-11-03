@@ -12,7 +12,11 @@ public class GameCard : MonoBehaviour
     public Table _table; //pointer to current game table
     public CardMath math; //характеристики игровой карты (масть, достоинство)
     public GameCard nowChoosedCard = null; //????
+
     [SerializeField] private SpriteRenderer _body;
+
+    public CardItem CardData { get; private set; } // тип данных для работы бота
+
 
     //Для обработки того, как игрок походил картой (что чем отбил)
     private void OnTriggerEnter2D(Collider2D collision)
@@ -56,7 +60,11 @@ public class GameCard : MonoBehaviour
         Debug.Log($"GameCard: Init({card})");
         math = new CardMath(card.suit, card.nominal);
     }
-
+    public void Init(CardItem card)
+    {
+        Debug.Log($"GameCard: Init()");
+        CardData = card;
+    }
     public void SetSprite(Sprite sprite)
     {
         _body.sprite = sprite;
