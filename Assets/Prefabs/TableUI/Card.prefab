@@ -110,7 +110,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 94, y: 143}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &4632396962148971617
 MonoBehaviour:
@@ -126,5 +126,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _smoothTime: 0.135
   _icon: {fileID: 8489597371310123551}
-  _canvas: {fileID: 0}
+  _table: {fileID: 0}
   _rect: {fileID: 9186363111749863848}

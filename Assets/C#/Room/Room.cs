@@ -115,11 +115,16 @@ public class Room : MonoBehaviour
         Debug.Log("Room: startGameAlone {");
         _roomRow.isAlone = true;
         Debug.Log("Room: bot init");
-        for (int i = 0; i < _roomRow.maxPlayers_number; i++)
+        for (int i = 0; i < _roomRow.maxPlayers_number - 1; i++)
         {
-            _localSession.AddEnemy(NewPlayerJoin());
+            var enemy = new Player();
+            enemy.user = NewPlayerJoin();
+            _localSession.AddEnemy(enemy);
         }
-        _localSession.Play(this);
+        var player = new Player();
+        player.user = NewPlayerJoin();
+        _localSession.AddPlayer(player);
+        _localSession.Play();
         Debug.Log("Room: bot omready finished");
         OnReady(_localSession.Caloda.Trump);
         Debug.Log("}");

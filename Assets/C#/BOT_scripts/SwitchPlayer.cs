@@ -12,13 +12,12 @@ public class SwitchPlayer : MonoBehaviour
     public void Play(Player[] players)
     {
         _players = players;
-        Debug.LogWarning(players.Length);
         foreach (var player in _players)
         {
             player.OnGrab += () => _list.Remove(player);
         }
         _list.AddRange(_players);
-        OnChooseStarted.Invoke(SetStartPlayer());
+        OnChooseStarted?.Invoke(SetStartPlayer());
     }
 
     public void Stop()

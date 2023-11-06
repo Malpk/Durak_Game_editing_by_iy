@@ -1,18 +1,25 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CalodPanel : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private Caloda _caloda;
+    [SerializeField] private Image _coloda;
+    [SerializeField] private Image _trump;
+
+    private void OnEnable()
     {
         
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDisable()
     {
         
     }
+
+    public void SetStyle(Sprite sprite)
+    {
+        
+    }
+
 }

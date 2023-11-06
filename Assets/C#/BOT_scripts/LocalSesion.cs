@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 
 public class LocalSesion : MonoBehaviour
@@ -24,36 +25,33 @@ public class LocalSesion : MonoBehaviour
 
     private void OnEnable()
     {
-        _switcher.OnChooseStarted += (Player attaked) => _attacked = attaked;
+        _switcher.OnChooseStarted += SetAttacket;
     }
 
     private void OnDisable()
     {
-        _switcher.OnChooseStarted -= (Player attaked) => _attacked = attaked;
+        _switcher.OnChooseStarted -= SetAttacket;
     }
 
-    public void AddEnemy(User user)
+    public void AddEnemy(Player player)
     {
-        var player = new Player();
-        player.user = user;
         _players.Add(player);
+        _table.BindEnemy(player);
         _playerHolder.Create(player);
         Debug.Log("new player: " + _players.Count);
     }
 
-    public void AddPlayer(User user)
+    public void AddPlayer(Player player)
     {
-        var player = new Player();
-        player.user = user;
         _players.Add(player);
         _table.BindPlayer(player);
+        Debug.Log("new player: " + _players.Count);
     }
 
-    public void Play(Room room)
+    public void Play()
     {
-        _room = room;
         _caloda.MixColode(10);
-        SetPlayerCards();
+        StartCoroutine(SetPlayerCards());
         _switcher.Play(_players.ToArray());
     }
 
@@ -75,18 +73,24 @@ public class LocalSesion : MonoBehaviour
         }
     }
 
-    private void SetPlayerCards()  // раздача карт
+    private IEnumerator SetPlayerCards()  // раздача карт
     {
         foreach (var player in _players)
         {
             var cards = _caloda.GetCards(_maxCards);
             foreach (var card in cards)
             {
-                _room._table.placeCard(player.user.UserID, card);
+                player.AddCard(card);
+                yield return new WaitForSeconds(0.2f);
             }
-            player.AddCard(cards);
             player.SetTrump(_caloda.Trump.suit);
         }
+    }
+
+    private void SetAttacket(Player player)
+    {
+        _attacked = player;
+        _table.SetAttacked(_attacked);
     }
 
 }

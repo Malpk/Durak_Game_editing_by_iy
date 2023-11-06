@@ -16,6 +16,24 @@ public class TableUI : MonoBehaviour, IDropHandler  //стол, который отображает х
         _player.BindPlayer(player);
     }
 
+    public bool BindEnemy(Player player)
+    {
+        foreach (var panel in _enemy)
+        {
+            if (panel.Bind == null)
+            {
+                panel.BindPlayer(player);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void SetAttacked(Player player)
+    {
+        _attaked = player;
+    }
+
     public void OnDrop(PointerEventData eventData)
     {
         if (eventData.pointerDrag.TryGetComponent(out CardUI card))

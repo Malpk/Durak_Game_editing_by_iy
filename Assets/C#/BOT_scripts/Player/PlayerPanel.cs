@@ -1,25 +1,41 @@
 using UnityEngine;
+using System.Collections.Generic;
 
 public class PlayerPanel : MonoBehaviour
 {
-    [SerializeField] private CardHolder _cards;
-    [SerializeField] private Transform _cardPoint;
+    [SerializeField] private bool _back;
+    [Header("Reference")]
+    [SerializeField] private CardCreater _caloda;
+    [SerializeField] private CardRowUI _cardHolder;
     [SerializeField] private Transform _userHolder;
-    [SerializeField] private Transform _cardHolder;
 
-    private Player _bind;
+    private Player _bind = null;
+    private List<CardUI> _cards = new List<CardUI>();
 
     public Player Bind => _bind;
 
     public void BindPlayer(Player player)
     {
+        if (_bind != null)
+            _bind.OnAddCard -= GetCard;
         _bind = player;
-        _bind.user.transform.parent = _userHolder;
+        if (_bind != null)
+        {
+            _bind.OnAddCard += GetCard;
+            gameObject.SetActive(true);
+            _bind.user.transform.parent = _userHolder;
+            _bind.user.transform.localPosition = Vector3.zero;
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
-    public void AddCard(CardUI card)
+    private void GetCard(CardItem data)
     {
-        card.Bind(Instantiate(_cardPoint.gameObject, _cardHolder).
-            GetComponent<RectTransform>());
+        var card = _caloda.CreateCard(data, transform ,_back);
+        card.Bind(_cardHolder.GetFollow());
+        _cards.Add(card);
     }
 }

@@ -8,8 +8,12 @@ public class BaseScreen : MonoBehaviour
 
     protected void Awake()
     {
-        m_screenDirector = GameObject.FindGameObjectWithTag("ScreenDirector").GetComponent<ScreenDirector>();
-        m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
+        var screeen = GameObject.FindGameObjectWithTag("ScreenDirector");
+        var socket = GameObject.FindGameObjectWithTag("SocketNetwork");
+        if (screeen)
+            m_screenDirector = screeen.GetComponent<ScreenDirector>();
+        if (socket)
+            m_socketNetwork = socket.GetComponent<SocketNetwork>();
     }
 
     public virtual void SetActiveHandler(bool active)

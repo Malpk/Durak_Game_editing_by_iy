@@ -10,6 +10,8 @@ public class Caloda : MonoBehaviour
 
     private List<CardItem> _pool = new List<CardItem>();
 
+    public event System.Action OnEmpety;  //событие срабатывает когда колода пустая
+
     public int CountCards => _colode.Count;
     public CardItem Trump { get; private set; }
 
@@ -30,6 +32,8 @@ public class Caloda : MonoBehaviour
         {
             var card = _colode[0];
             _colode.Remove(card);
+            if (_colode.Count <= 1)
+                OnEmpety?.Invoke();
             return card;
         }
         else
@@ -47,6 +51,8 @@ public class Caloda : MonoBehaviour
             cards[i] = _colode[0];
             _colode.Remove(cards[i]);
         }
+        if (_colode.Count <= 1)
+            OnEmpety?.Invoke();
         return cards;
     }
 

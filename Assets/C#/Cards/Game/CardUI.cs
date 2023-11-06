@@ -9,18 +9,20 @@ public class CardUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHa
     [SerializeField] private float _smoothTime;
     [Header("Referemce")]
     [SerializeField] private Image _icon;
-    [SerializeField] private Canvas _canvas;
+    [SerializeField] private Canvas _table;
     [SerializeField] private RectTransform _rect;
 
     private Vector2 _velocityMove;
     private Coroutine _move;
-    private Transform _player;
+    private Transform _parent;
+    private RectTransform _point;
 
     public CardItem Data { get; private set; }
 
-    public void Initializate(CardItem item ,Sprite icon)
+    public void Initializate(CardItem item ,Sprite icon, Canvas table)
     {
         Data = item;
+        _table = table;
         _icon.sprite = icon;
     }
 
@@ -28,6 +30,7 @@ public class CardUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHa
     {
         if (_move != null)
             StopCoroutine(_move);
+        _point = point;
         _move = StartCoroutine(MoveTo(point));
     }
 
@@ -45,19 +48,22 @@ public class CardUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHa
     {
         if (_move != null)
             StopCoroutine(_move);
-        _player = transform.parent;
-        transform.parent = _canvas.transform;
+        _parent = transform.parent;
+        transform.parent = _table.transform;
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rect.anchoredPosition += eventData.delta / _canvas.scaleFactor;
+        _rect.anchoredPosition += eventData.delta / _table.scaleFactor;
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (_move == null)
-            transform.parent = _player;
+        if (transform.parent == _table.transform)
+        {
+            transform.parent = _parent;
+            _move = StartCoroutine(MoveTo(_point));
+        }
     }
 
 }

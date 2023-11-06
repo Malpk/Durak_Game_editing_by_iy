@@ -152,6 +152,12 @@ public class Player // используется для игры с ботом
         OnGrab?.Invoke();
     }
 
+    public void AddCard(CardItem card)
+    {
+        _cards.Add(card);
+        OnAddCard?.Invoke(card);
+    }
+
     public void AddCard(CardItem[] cards)
     {
         _cards.AddRange(cards);

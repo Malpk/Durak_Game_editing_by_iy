@@ -70,6 +70,7 @@ public class CardStyleHub : MonoBehaviour
         if (Instance == null)
         {
             Instance = this;
+            Load("Base");
         }
         else
         {
