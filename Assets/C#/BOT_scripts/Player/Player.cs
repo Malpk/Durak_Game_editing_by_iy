@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using JSON_card;
 using UnityEngine;
 
+[System.Serializable]
 public class Player // используется для игры с ботом
 {
     public User user;
@@ -12,7 +13,7 @@ public class Player // используется для игры с ботом
 
     public event System.Action<bool> OnUpdateMode;
     public event System.Action OnGrab;
-    public event System.Action OnAttack;
+    public event System.Action<CardItem> OnAttack;
     public event System.Action<CardItem> OnAddCard;
     public event System.Action<CardItem> OnRemoveCard;
     public event System.Action<CardItem, CardItem> OnBeat;
@@ -45,10 +46,13 @@ public class Player // используется для игры с ботом
         if (attackSet.Count > 0)
         {
             var attack = attackSet[Random.Range(0, attackSet.Count)];
-            Target.TakeAttack(attack);
+            OnAttack?.Invoke(attack);
         }
-        var trump = GetMinTrump(_trumpSuit);
-        Target.TakeAttack(trump);
+        else
+        {
+            var trump = GetMinTrump(_trumpSuit);
+            OnAttack?.Invoke(trump);
+        }
     }
 
     public void Attack(CardItem attack)

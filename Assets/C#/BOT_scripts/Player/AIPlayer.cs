@@ -18,7 +18,9 @@ public class AIPlayer : MonoBehaviour
     public void BindPlayer(Player player)
     {
         if (_bind != null)
+        {
             _bind.OnUpdateMode -= SetMode;
+        }
         _bind = player;
         _bind.OnUpdateMode += SetMode;
     }

@@ -11,7 +11,7 @@ public class Caloda : MonoBehaviour
     private List<CardItem> _pool = new List<CardItem>();
 
     public event System.Action OnEmpety;  //событие срабатывает когда колода пустая
-
+    public event System.Action<CardItem> OnSetTrump;  //событие срабатывает когда устанавливается козырь
     public int CountCards => _colode.Count;
     public CardItem Trump { get; private set; }
 
@@ -23,6 +23,7 @@ public class Caloda : MonoBehaviour
             _colode = MixeColode(_colode);
         }
         Trump = _colode[_colode.Count - 1];
+        OnSetTrump?.Invoke(Trump);
         _colode.Remove(Trump);
     }
 

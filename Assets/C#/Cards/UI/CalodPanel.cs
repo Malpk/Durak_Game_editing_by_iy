@@ -9,17 +9,19 @@ public class CalodPanel : MonoBehaviour
 
     private void OnEnable()
     {
-        
+        _caloda.OnEmpety += () => _caloda.gameObject.SetActive(false);
+        _caloda.OnSetTrump += SetStyle;
     }
 
     private void OnDisable()
     {
-        
+        _caloda.OnEmpety -= () => _caloda.gameObject.SetActive(false);
+        _caloda.OnSetTrump -= SetStyle;
     }
 
-    public void SetStyle(Sprite sprite)
+    private void SetStyle(CardItem card)
     {
-        
+        _trump.sprite = CardStyleHub.Instance.GetCardSprite(card.suit, card.data.Nominal);
     }
 
 }

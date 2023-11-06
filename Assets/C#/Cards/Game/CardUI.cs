@@ -12,6 +12,7 @@ public class CardUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHa
     [SerializeField] private Canvas _table;
     [SerializeField] private RectTransform _rect;
 
+    private bool _block;
     private Vector2 _velocityMove;
     private Coroutine _move;
     private Transform _parent;
@@ -26,12 +27,22 @@ public class CardUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHa
         _icon.sprite = icon;
     }
 
+    public void SetBlock(bool mode)
+    {
+        _block = mode;
+    }
+
     public void Bind(RectTransform point)
+    {
+        UnBind();
+        _point = point;
+        _move = StartCoroutine(MoveTo(point));
+    }
+
+    public void UnBind()
     {
         if (_move != null)
             StopCoroutine(_move);
-        _point = point;
-        _move = StartCoroutine(MoveTo(point));
     }
 
     private IEnumerator MoveTo(RectTransform target)
@@ -46,23 +57,32 @@ public class CardUI : MonoBehaviour, IDragHandler, IBeginDragHandler, IEndDragHa
 
     public void OnBeginDrag(PointerEventData eventData)
     {
-        if (_move != null)
-            StopCoroutine(_move);
-        _parent = transform.parent;
-        transform.parent = _table.transform;
+        if (!_block)
+        {
+            if (_move != null)
+                StopCoroutine(_move);
+            _parent = transform.parent;
+            transform.parent = _table.transform;
+        }
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        _rect.anchoredPosition += eventData.delta / _table.scaleFactor;
+        if (!_block)
+        {
+            _rect.anchoredPosition += eventData.delta / _table.scaleFactor;
+        }
     }
 
     public void OnEndDrag(PointerEventData eventData)
     {
-        if (transform.parent == _table.transform)
+        if (!_block)
         {
-            transform.parent = _parent;
-            _move = StartCoroutine(MoveTo(_point));
+            if (transform.parent == _table.transform)
+            {
+                transform.parent = _parent;
+                _move = StartCoroutine(MoveTo(_point));
+            }
         }
     }
 

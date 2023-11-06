@@ -7,6 +7,12 @@ public class CardItem  // тип данных хранящий информацию о карте, используется д
 
     public readonly ESuit suit;
     public readonly CardData data;
+    public CardItem(ESuit suit, CardData data)
+    {
+        _name = suit.ToString() + "-" + data.Nominal.ToString();
+        this.suit = suit;
+        this.data = data;
+    }
 
     public static bool operator >(CardItem first,CardItem second)
     {
@@ -27,10 +33,5 @@ public class CardItem  // тип данных хранящий информацию о карте, используется д
             return first.data.Force < second.data.Force;
     }
 
-    public CardItem(ESuit suit, CardData data)
-    {
-        _name = suit.ToString() + "-" + data.Nominal.ToString();
-        this.suit = suit;
-        this.data = data;
-    }
+
 }

@@ -90,7 +90,7 @@ public class LocalSesion : MonoBehaviour
     private void SetAttacket(Player player)
     {
         _attacked = player;
-        _table.SetAttacked(_attacked);
+        _table.SetSteap(_attacked, player.Target);
     }
 
 }

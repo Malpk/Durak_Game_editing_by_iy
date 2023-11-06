@@ -17,7 +17,9 @@ public class SwitchPlayer : MonoBehaviour
             player.OnGrab += () => _list.Remove(player);
         }
         _list.AddRange(_players);
-        OnChooseStarted?.Invoke(SetStartPlayer());
+        var attacket = SetStartPlayer();
+        attacket.SetTarget(GetTarget());
+        OnChooseStarted?.Invoke(attacket);
     }
 
     public void Stop()
@@ -33,6 +35,7 @@ public class SwitchPlayer : MonoBehaviour
     private Player SetStartPlayer()  // выбираем атакуещего
     {
         var attaked = GetAttakedPlayer();
+        attaked.SetMode(true);
         while (_list.Count > 0)
         {
             if (_list[0] == attaked)
