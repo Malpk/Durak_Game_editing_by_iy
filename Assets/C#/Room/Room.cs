@@ -49,6 +49,7 @@ public class Room : MonoBehaviour
 
     private void Start()
     {
+
         Debug.Log("Room: Start {");
 
         m_socketNetwork = GameObject.FindGameObjectWithTag("SocketNetwork").GetComponent<SocketNetwork>();
@@ -106,18 +107,6 @@ public class Room : MonoBehaviour
         Debug.Log("Room: StartGame {");
         m_socketNetwork.EmitReady(_roomRow.RoomID);
        
-        Debug.Log("}");
-    }
-
-    public void startGameAlone()
-    {
-        Debug.Log("Room: startGameAlone {");
-        _roomRow.isAlone = true;
-        Debug.Log("Room: bot init");
-        var game_BOT = Instantiate(alone_Game_BOT, gameObject.transform).GetComponent<alone_Game_BOT>();
-        game_BOT.Init(this);
-        Debug.Log("Room: bot omready finished");
-        OnReady(game_BOT._trump);
         Debug.Log("}");
     }
 

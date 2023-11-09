@@ -240,13 +240,6 @@ public class SocketNetwork : MonoBehaviour
                 });
                 break;
 
-            case "cl_startGameAlong":
-                MainThreadDispatcher.RunOnMainThread(() =>
-                {
-                    m_room.startGameAlone();
-                });
-                break;
-
             case "cl_joinRoom":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {

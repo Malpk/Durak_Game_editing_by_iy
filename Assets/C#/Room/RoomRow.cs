@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Ќепосредственно св€зан с Room. ќтвечает за обработку общих данных о комнате (игроки, ставки и т.п.)
 public class RoomRow : BaseScreen
@@ -33,6 +34,7 @@ public class RoomRow : BaseScreen
 
     //ќтображение ставок
     [Header("bet's")]
+    [SerializeField] private GameObject _startButton;
     [SerializeField] private TMP_Text Users_Bet;
     [SerializeField] private TMP_Text Rooms_Bet;
 
@@ -59,7 +61,7 @@ public class RoomRow : BaseScreen
     {
         ScreenWith = Screen.width;
         SocketNetwork.changePlayers += UpdateRoomPlayers;
-
+        _startButton.SetActive(false);
         Debug.Log("RoomRow: Start");
     }
 
@@ -127,6 +129,7 @@ public class RoomRow : BaseScreen
         {
             roomPlayers.Add(user);
             Rooms_Bet.text = (Bet * roomPlayers.Count).ToString();
+            _startButton.SetActive(roomPlayers.Count == maxPlayers_number);
         }
     }
 
@@ -141,6 +144,7 @@ public class RoomRow : BaseScreen
                 var user = roomPlayers[i];
                 roomPlayers.RemoveAt(i);
                 Rooms_Bet.text = (Bet * roomPlayers.Count).ToString();
+                _startButton.SetActive(roomPlayers.Count == maxPlayers_number);
                 return user;
             }
         }
