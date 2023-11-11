@@ -5270,6 +5270,7 @@ MonoBehaviour:
   _startButton: {fileID: 6564345373818982283}
   Users_Bet: {fileID: 7331770195568493200}
   Rooms_Bet: {fileID: 7700087770187674911}
+  Room_ID: {fileID: 8930047921062016696}
 --- !u!114 &4830577197957817605
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5294,8 +5295,6 @@ MonoBehaviour:
   StartScreen: {fileID: 8442458601424853607}
   OwnerStartGameButton: {fileID: 6564345373818982283}
   PlayerCard: {fileID: 0}
-  alone_Game_BOT: {fileID: 2184042176421405502, guid: 48ed3c095e4acb5419791a8d3aca27b4,
-    type: 3}
   win_panel: {fileID: 4378295413792364943}
 --- !u!114 &4278524013874578173
 MonoBehaviour:
@@ -5327,7 +5326,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _room: {fileID: 4830577197957817605}
-  _timeActive: 10
+  _timeActive: 20
   PassButton: {fileID: 178930274111710016}
   GrabButton: {fileID: 1386500391922350908}
   FoldButton: {fileID: 7609070916939995359}

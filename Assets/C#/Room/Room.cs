@@ -29,9 +29,6 @@ public class Room : MonoBehaviour
     //Текущий сокет для работы с сервером
     private SocketNetwork m_socketNetwork;
 
-    [Header("alone game bots")]
-    public GameObject alone_Game_BOT; //Скрипт бота
-
     [Space, Header("win panel")]
     public GameObject win_panel; //Окно, открывающееся после окончания игры
 

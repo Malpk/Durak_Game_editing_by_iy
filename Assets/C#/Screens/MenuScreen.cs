@@ -26,7 +26,7 @@ public class MenuScreen : BaseScreen
 
     [Header("free rooms")] //список свободных комнат
     public VerticalLayoutGroup _listOfFreeRooms;
-    public GameObject FreeRoomPanel;
+    public RoomPanel FreeRoomPanel;
 
     [Header("Message")] //для вывода  сообщений (самописный аналог Toast в Android)
     public GameObject MessageScreen;
@@ -84,18 +84,12 @@ public class MenuScreen : BaseScreen
             {
                 Destroy(_listOfFreeRooms.transform.GetChild(i).gameObject);
             }
-
-            if (FreeRoomsID.Length <= 0) return;
-
-            foreach (uint RoomID in FreeRoomsID)
+            foreach (var RoomID in FreeRoomsID)
             {
-                GameObject _freeRoomPanel = Instantiate(FreeRoomPanel);
-                _freeRoomPanel.transform.SetParent(_listOfFreeRooms.transform);
-
-                _freeRoomPanel.transform.localScale = new Vector3(1, 1, 1);
-
-                _freeRoomPanel.transform.Find("RoomID").GetComponent<TMP_Text>().text = "ID: " + RoomID.ToString();
-                _freeRoomPanel.transform.Find("Button").GetComponent<Button>().onClick.AddListener(() => { m_socketNetwork.EmitJoinRoom(RoomID); });
+                var freeRoomPanel = Instantiate(FreeRoomPanel.gameObject,
+                    _listOfFreeRooms.transform).GetComponent<RoomPanel>();
+                freeRoomPanel.transform.localScale = new Vector3(1, 1, 1);
+                freeRoomPanel.Initializate(RoomID.ToString(), () => m_socketNetwork.EmitJoinRoom(RoomID));
             }
         });
     }

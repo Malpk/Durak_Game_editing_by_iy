@@ -37,7 +37,7 @@ public class RoomRow : BaseScreen
     [SerializeField] private GameObject _startButton;
     [SerializeField] private TMP_Text Users_Bet;
     [SerializeField] private TMP_Text Rooms_Bet;
-
+    [SerializeField] private TMP_Text Room_ID;
 
     private Room _room;
     private uint _roomID;
@@ -54,7 +54,11 @@ public class RoomRow : BaseScreen
     public uint RoomID
     {
         get { return _roomID; }
-        set { _roomID = value; Init(value); }
+        set { 
+            _roomID = value;
+            Init(value);
+            Room_ID.SetText("ID: " + _roomID.ToString());
+        }
     }
 
     public void Start()

@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7131236843436957597}
+  - component: {fileID: 7008158787391045096}
   - component: {fileID: 1524584819558695163}
   - component: {fileID: 8584865732407378344}
   m_Layer: 5
-  m_Name: Image
+  m_Name: RoomPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33,13 +34,27 @@ RectTransform:
   - {fileID: 4630309811393478069}
   - {fileID: 2405577348555967318}
   m_Father: {fileID: 0}
-  m_RootOrder: -1
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 440, y: 96}
   m_SizeDelta: {x: 350, y: 75}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &7008158787391045096
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2218199813451837152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8844edcfeef9e4488d851f295e5bf57, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _button: {fileID: 7361058124479479681}
+  _id: {fileID: 4647291606818582906}
 --- !u!222 &1524584819558695163
 CanvasRenderer:
   m_ObjectHideFlags: 0
