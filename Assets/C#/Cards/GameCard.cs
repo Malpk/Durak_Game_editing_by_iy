@@ -14,6 +14,8 @@ public class GameCard : MonoBehaviour
     public GameCard nowChoosedCard = null; //????
     [SerializeField] private SpriteRenderer _body;
 
+    public Sprite Sprite => _body.sprite;
+
     //Для обработки того, как игрок походил картой (что чем отбил)
     private void OnTriggerEnter2D(Collider2D collision)
     {

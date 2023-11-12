@@ -253,6 +253,7 @@ public class SocketNetwork : MonoBehaviour
                 {
                     var joinRoomData = JsonConvert.DeserializeObject<JSON_client.PlayerExit>(data.data);
                     m_room.DeletePlayer(joinRoomData.playerID);
+                    m_room.OnWinning(Session.UId);
                 });
                 break;
 
