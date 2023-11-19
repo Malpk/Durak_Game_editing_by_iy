@@ -284,8 +284,15 @@ public class SocketNetwork : MonoBehaviour
             case "FreeRooms":
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
-                    var freeRoomsID = JsonConvert.DeserializeObject<JSON_client.FreeRooms>(data.data);
-                    roomChange?.Invoke(freeRoomsID.FreeRoomsID);
+                    try
+                    {
+                        var freeRoomsID = JsonConvert.DeserializeObject<JSON_client.FreeRooms>(data.data);
+                        roomChange?.Invoke(freeRoomsID.FreeRoomsID);
+                    }
+                    catch 
+                    {
+                        Debug.LogError("is not freeRooms");
+                    }
                 });
                 break;
 
@@ -504,7 +511,6 @@ public class SocketNetwork : MonoBehaviour
                 MainThreadDispatcher.RunOnMainThread(() =>
                 {
                     var _data = JsonConvert.DeserializeObject<JSON_client.playerWon>(data.data);
-
                     player_Win?.Invoke(_data.UserID);
                 });
                 break;

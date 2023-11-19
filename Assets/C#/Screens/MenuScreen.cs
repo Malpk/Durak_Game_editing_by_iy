@@ -174,7 +174,8 @@ public class MenuScreen : BaseScreen
     }
     public void IsPrivateValueChangedHandler()
     {
-        m_isPrivate = m_isPrivateDropdown.value != 0 ? 0:1;
+        Debug.LogWarning(m_isPrivateDropdown.value);
+        m_isPrivate = m_isPrivateDropdown.value;
     }
 
 

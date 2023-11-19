@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-//Управляет картами. В основном, спрайтами и их внешним видом. Если игра вылетает при задании одного из стилей,
-//проблема либо здесь, либо стили не загружены/не указаны в ассетах
+//Управляет картами. В основном, спрайтами и их внешним видом. 
 public class CardController: MonoBehaviour
 {
     public int RotationMultiplyer;
@@ -47,9 +46,6 @@ public class CardController: MonoBehaviour
     public void GetCard(Card cardbytes)
     {
         Debug.Log("CardController: GetCards {");
-
-        Debug.Log("CardController: Instantinate pref card");
-
         var pref_card = m_room.Card.CreateCard(cardbytes);
         pref_card.transform.position = StartOfCards.position;
         pref_card.transform.rotation = StartOfCards.rotation;
