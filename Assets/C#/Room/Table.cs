@@ -1,8 +1,6 @@
 using JSON_card;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using WebSocketSharp;
 using static Table;
 
 //Текущий игровой стол. За ним сидят игроки, на нём лежат карты. Почти как в жизни
@@ -15,6 +13,10 @@ public class Table : BaseScreen
     public Room _room;
 
     public Transform FoldPlace; //Сюда складываются спрайты карт
+
+    [SerializeField] private TableGrid _grid;
+    [SerializeField] private Transform[] _cardPoint;
+
 
     public List<CardPair> TableCardPairs = new List<CardPair>(); //Пары для сортировки карт в руке
 
@@ -30,14 +32,10 @@ public class Table : BaseScreen
     public static event Events folding;
     #endregion
 
+    public TableGrid Grid => _grid;
+
     private void Start()
     {
-        //Инициализация того, что управляет картами и игроками
-        _cardController = GameObject.FindGameObjectWithTag("Hands").GetComponent<CardController>();
-        _gameUI = GetComponent<GameUIs>();
-        _roomRow = GetComponent<RoomRow>();
-        _room = GetComponent<Room>();
-
         //Говорим сокету, как нужно дополнительно обработать событие, используя методы из этого класса
         SocketNetwork.placeCard += placeCard;
         SocketNetwork.beatCard += beatCard;
@@ -56,31 +54,15 @@ public class Table : BaseScreen
         
         if (Session.role != ERole.main)
         {
-            Debug.Log("Table: throw not main");
+            Debug.LogWarning("Table: throw not main");
             if (_roomRow.status == EStatus.Fold || _roomRow.status == EStatus.Pass)
             {
-                Debug.Log("Table: throw return (fold or pass)");
+                Debug.LogWarning("Table: throw return (fold or pass)");
                 return;
             }
             if (isAbleToThrow(g_card))
             {
-                Debug.Log("Table: is able to throw");
-                if (!_roomRow.isAlone)
-                {
-                    m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-                    Debug.Log("Table: room is alone");
-                }
-                else
-                {
-                    Debug.Log("Table: place card (not alone)");
-
-                    placeCard(Session.UId, new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-                    _cardController.DestroyCard(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
-                    Debug.Log("Table: placed and destroyed");
-
-                    Debug.Log("Table: invoke throw card event");
-                    throwCard_event.Invoke();
-                }
+                m_socketNetwork.EmitThrow(new Card { suit = card.strimg_Suit, nominal = card.str_Nnominal });
             }
         }
 
@@ -134,10 +116,10 @@ public class Table : BaseScreen
 
     public void placeCard(uint UserID, Card card)
     {
-        Debug.Log("Table: place card");
+        Debug.LogWarning("Table: place card");
         if (Session.role == ERole.main)
         {
-            Debug.Log("Table: role main");
+            Debug.LogWarning("Table: role main");
             if (TableCardPairs.Count == 0)
             {
                 Debug.Log("Show grab btn");
@@ -162,7 +144,7 @@ public class Table : BaseScreen
 
         Debug.Log("Table: soft card pairs. set all table card pos");
         SortCardPairs();
-        SetAllTableCardsPos();
+        _grid.AddCard(cardItem);
 
         if (Session.role == ERole.main)
         {
@@ -208,7 +190,7 @@ public class Table : BaseScreen
         TableCardPairs.Add(cardPair);
 
         SortCardPairs();
-        SetAllTableCardsPos();
+        _grid.AddCard(pref_card);
 
         if (Session.role == ERole.main)
         {
@@ -244,7 +226,7 @@ public class Table : BaseScreen
 
         Debug.Log("Table: sorting and setting pairs and cards");
         SortCardPairs();
-        SetAllTableCardsPos();
+        _grid.AddCard(pref_card);
 
         if (Session.role == ERole.main)
         {
@@ -294,10 +276,14 @@ public class Table : BaseScreen
             Debug.Log("Table: tags");
             TableCardPairs[i].FirstCard.tag = "tableNotBeatingCard";
             if (TableCardPairs[i].SecondCard != null) TableCardPairs[i].SecondCard.tag = "tableNotBeatingCard";
-
             Debug.Log("Table: move_to, start courutine");
-            StartCoroutine(TableCardPairs[i].FirstCard.GetComponent<GameCard>().MoveTo(new Vector3(FoldPlace.position.x, (float)((float)(FoldPlace.position.y) - (float)(i / 10)), FoldPlace.position.z), new Vector3(0, 0, 0), TableCardPairs[i].FirstCard.transform.localScale, 1));
-            if (TableCardPairs[i].SecondCard != null) StartCoroutine(TableCardPairs[i].SecondCard.GetComponent<GameCard>().MoveTo(new Vector3(FoldPlace.position.x, (float)((float)(FoldPlace.position.y) - (float)(i / 15)), FoldPlace.position.z), new Vector3(0, 0, 0), TableCardPairs[i].SecondCard.transform.localScale, 1));
+            TableCardPairs[i].FirstCard.GetComponent<GameCard>().StartMoveTo(new Vector3(FoldPlace.position.x, 
+                (float)(FoldPlace.position.y) - (float)(i / 10), FoldPlace.position.z), 
+                     new Vector3(0, 0, 0), TableCardPairs[i].FirstCard.transform.localScale, 1);
+            if (TableCardPairs[i].SecondCard != null) 
+                TableCardPairs[i].SecondCard.GetComponent<GameCard>().StartMoveTo(new Vector3(FoldPlace.position.x, 
+                    (float)(FoldPlace.position.y) - (float)(i / 15), FoldPlace.position.z), 
+                         new Vector3(0, 0, 0), TableCardPairs[i].SecondCard.transform.localScale, 1);
         }
         Debug.Log("]... ");
 
@@ -339,7 +325,7 @@ public class Table : BaseScreen
     {
         Debug.Log("Table: Is able to throw?;");
 
-        if (TableCardPairs.Count == 0)
+        if (_grid.CountCard < 6)
         {
             if (Session.role == ERole.firstThrower)
             {
@@ -350,7 +336,8 @@ public class Table : BaseScreen
         {
             if (Session.role != ERole.main)
             {
-                if (isRightCard(card)) return true;
+                if (isRightCard(card))
+                    return true;
             }
         }
 
@@ -379,54 +366,6 @@ public class Table : BaseScreen
     Vector3 newPos;
     Vector3 newRotate = new Vector3(0, 0, 0);
 
-    public void SetAllTableCardsPos()
-    {
-        Debug.Log("Table: set all table card pos: {");
-
-        for (int i = 0; i < TableCardPairs.Count; i++)
-        {
-            Debug.Log("-pair-");
-            switch (i)
-            {
-                case 0:
-                    newPos.x = -3;
-                    newPos.y = -0.4f;
-                    break;
-                case 1:
-                    newPos.x = 0;
-                    newPos.y = -0.4f;
-                    break;
-                case 2:
-                    newPos.x = 3;
-                    newPos.y = -0.4f;
-                    break;
-                case 3:
-                    newPos.x = -3;
-                    newPos.y = -1.6f;
-                    break;
-                case 4:
-                    newPos.x = 0;
-                    newPos.y = -1.6f;
-                    break;
-                case 5:
-                    newPos.x = 3;
-                    newPos.y = -1.6f;
-                    break;
-
-                default:
-                    newPos.x = 5;
-
-                    newPos.y = (i-5)/ 2;
-                    break;
-            }
-
-            StartCoroutine(TableCardPairs[i].FirstCard.GetComponent<GameCard>().MoveTo(newPos, newRotate, new Vector3(0.7f, 0.7f, 0.7f), 0.5f));
-            newPos.y -= 0.5f;
-            if (TableCardPairs[i].SecondCard != null) StartCoroutine(TableCardPairs[i].SecondCard.GetComponent<GameCard>().MoveTo(newPos, newRotate, new Vector3(0.7f, 0.7f, 0.7f), 0.5f));
-        }
-
-        Debug.Log("}");
-    }
 
     void SortCardPairs()
     {

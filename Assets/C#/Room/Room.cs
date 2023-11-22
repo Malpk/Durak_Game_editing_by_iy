@@ -66,9 +66,6 @@ public class Room : MonoBehaviour
 
         Debug.Log("Room: UI init");
 
-        GameObject.Find("UI").GetComponent<Canvas>().worldCamera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
-        //После этого UI (фон) находится на фоне, а не перед всем остальным. В редакторе просто отключайте на время, но не забывайте включить
-
         Debug.Log("}");
     }
 
@@ -288,11 +285,9 @@ public class Room : MonoBehaviour
                         if (_card.isFull) Destroy(_card.SecondCard);
                     }
 
-                    GetComponent<Table>().TableCardPairs = new List<CardPair>();
+                    _table.TableCardPairs = new List<CardPair>();
                 }
             }
-
-            GetComponent<Table>().SetAllTableCardsPos();
         }
 
         if (_roomRow.isAlone)

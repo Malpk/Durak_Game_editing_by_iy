@@ -146,7 +146,6 @@ public class SocketNetwork : MonoBehaviour
         {
             string message = e.Data;
 
-            /*if (debugEnteringReqests)*/ Debug.Log("get: " + message);
 
             HandleMessageFromServer(message);
         };
@@ -555,7 +554,8 @@ public class SocketNetwork : MonoBehaviour
         string json = JsonConvert.SerializeObject(messageData);
         if (websocket != null && websocket.IsAlive)
         {
-            if (debugExitingRequests) Debug.Log("send: " + json);
+            if (debugExitingRequests) 
+                Debug.Log("send: " + json);
             websocket.Send(json);
         }
         else

@@ -137,16 +137,15 @@ public class CardController: MonoBehaviour
         for (int i = 0; i < PlayerCards.Count; i++)
         {
             Debug.Log(">---<");
-
             Debug.Log("CardController: new game object");
-            PlayerCards[i].gameObject.GetComponent<SpriteRenderer>().sortingOrder = i;
+            PlayerCards[i].SetLayer(10 + i);
 
             Debug.Log("CardController: new vectors");
             Vector3 pos = new Vector3((Screen.height/ PlaceMultiplyer) *(i-((PlayerCards.Count)/2)), gameObject.transform.position.y, 0);
             Vector3 rotate = new Vector3(0, 0, (RotationMultiplyer * (i - ((PlayerCards.Count) / 2))) * -1);
 
             Debug.Log("CardController: set courutine");
-            StartCoroutine(PlayerCards[i].GetComponent<GameCard>().MoveTo(pos, rotate, new Vector3(1.5f, 1.5f, 1.5f)));
+            PlayerCards[i].GetComponent<GameCard>().StartMoveTo(pos, rotate, new Vector3(1.5f, 1.5f, 1.5f));
         }
 
         Debug.Log("}");

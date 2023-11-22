@@ -267,7 +267,7 @@ public class MenuScreen : BaseScreen
             default:
                 break;
         }
-
+        gameObject.SetActive(false);
         m_socketNetwork.EmitCreateRoom(token, m_isPrivate, "", m_bet, m_numberOfCards, m_maxPlayers, m_typeOfGame);
     }
 

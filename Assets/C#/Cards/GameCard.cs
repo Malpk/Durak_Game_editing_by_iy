@@ -5,27 +5,35 @@ using UnityEngine;
 //Карта в игре, содержит все указатели на GameObject, сама им и является
 public class GameCard : MonoBehaviour
 {
-    private bool isDragging = false;
     public bool isDraggble = true;
+    [SerializeField] private float _smoothTime;
     private Vector3 offset;
     [Header("Reference")]
     public Table _table; //pointer to current game table
     public CardMath math; //характеристики игровой карты (масть, достоинство)
     public GameCard nowChoosedCard = null; //????
+
     [SerializeField] private SpriteRenderer _body;
+
+    private int _sortLayer;
+    private bool _isDragging = false;
+    private Coroutine _corotune;
 
     public Sprite Sprite => _body.sprite;
 
     //Для обработки того, как игрок походил картой (что чем отбил)
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.gameObject.tag == "tableBeatingCard")
+        if (collision.gameObject.tag == "tableBeatingCard")
         {
             Debug.Log("GameCard: trigger enter + collide");
-
             GameCard beatingCard = collision.gameObject.GetComponent<GameCard>();
-
-            if (beatingCard != null) nowChoosedCard = beatingCard;
+            if (beatingCard != null)
+                nowChoosedCard = beatingCard;
+        }
+        else if (collision.TryGetComponent(out Table table))
+        {
+            _table = table;
         }
     }
     private void OnTriggerExit2D(Collider2D collision)
@@ -38,7 +46,7 @@ public class GameCard : MonoBehaviour
 
             if (beatingCard != null)
             {
-                if(beatingCard == nowChoosedCard)
+                if (beatingCard == nowChoosedCard)
                 {
                     nowChoosedCard = null;
                 }
@@ -48,8 +56,8 @@ public class GameCard : MonoBehaviour
 
     public void Start()
     {
+        _sortLayer = _body.sortingOrder;
         Debug.Log("GameCard: Start();");
-        _table = GameObject.FindGameObjectWithTag("Room").GetComponent<Table>();
     }
 
     //Инициализация из JSON
@@ -59,17 +67,41 @@ public class GameCard : MonoBehaviour
         math = new CardMath(card.suit, card.nominal);
     }
 
+    public void SetLayer(int layer)
+    {
+        _body.sortingOrder = _sortLayer + layer;
+    }
+
     public void SetSprite(Sprite sprite)
     {
         _body.sprite = sprite;
     }
 
-    //Инициализация по масти и номиналу
+    public void BindPoint(Transform point)
+    {
+        StartMoveTo(point);
+    }
+
     public void Init(string suit, string nominal)
     {
         Debug.Log("GameCard: Init()");
         math = new CardMath(suit, nominal);
     }
+
+    public void StartMoveTo(Transform target)
+    {
+        if (_corotune != null)
+            StopCoroutine(_corotune);
+        _corotune = StartCoroutine(MoveTo(target));
+    }
+    public void StartMoveTo(Vector3 MoveToPoint, Vector3 rotate, Vector3 scale, float Time = 1)
+    {
+        if (_corotune != null)
+            StopCoroutine(_corotune);
+        _corotune = StartCoroutine(MoveTo(MoveToPoint, rotate, scale, Time));
+    }
+
+    //Инициализация по масти и номиналу
 
     #region Mouse Events
     private void OnMouseDown()
@@ -77,14 +109,14 @@ public class GameCard : MonoBehaviour
         if (isDraggble)
         {
             offset = transform.position - GetMouseWorldPosition();
-            isDragging = true;
+            _isDragging = true;
         }
     }
     private void OnMouseDrag()
     {
         if (isDraggble)
         {
-            if (isDragging)
+            if (_isDragging)
             {
                 transform.position = GetMouseWorldPosition() + offset;
             }
@@ -95,19 +127,17 @@ public class GameCard : MonoBehaviour
     {
         if (isDraggble)
         {
-            isDragging = false;
-
+            _isDragging = false;
             if (Session.role == ERole.main)
             {
                 Debug.Log("BeatCard");
-                if (nowChoosedCard != null) _table.BeatCard(this, nowChoosedCard);
+                if (nowChoosedCard != null)
+                    _table.BeatCard(this, nowChoosedCard);
             }
-
-            else if (gameObject.transform.position.y >= 1)
+            else if (_table)
             {
                 _table.ThrowCard(this);
             }
-
             GameObject.Find("Hands").GetComponent<CardController>().SetAllCardsPos();
         }
     }
@@ -120,11 +150,24 @@ public class GameCard : MonoBehaviour
     #endregion
 
     //Физическое передвижение GameObject
-    public IEnumerator MoveTo(Vector3 MoveToPoint, Vector3 rotate, Vector3 scale, float Time = 1)
+    private IEnumerator MoveTo(Vector3 MoveToPoint, Vector3 rotate, Vector3 scale, float Time = 1)
     {
         Debug.Log("GameCard: MoveTo (Time)");
         yield return moveTo(MoveToPoint, rotate, scale, Time);
     }
+
+    private IEnumerator MoveTo(Transform target)
+    {
+        var velocity = Vector3.zero;
+        while (enabled && target)
+        {
+            transform.position = Vector3.SmoothDamp(transform.position,
+                target.position, ref velocity, _smoothTime);
+            yield return null;
+        }
+        _corotune = null;
+    }
+
     private bool moveTo(Vector3 MoveToPoint, Vector3 rotate, Vector3 scale, float Time)
     {
         Debug.Log("GameCard: MoveTo (bigger )");
